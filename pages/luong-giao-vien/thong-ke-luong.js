@@ -10,7 +10,7 @@ const TrangThongKeLuongGiaoVien = props => {
     return (
       <Fragment>
         <ThanhDieuHuongNoiDung arrNavi={contentNavi}/>
-        <h1>Trang chủ quản lý thêm mới học sinh</h1>
+        <h1>Trang chủ thống kê lương giáo viên</h1>
       </Fragment>
     )
   }
