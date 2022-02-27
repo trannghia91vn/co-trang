@@ -1,0 +1,7 @@
+.main {
+    max-width: 1000px;
+    padding : var(--dim-sm--);
+    margin : 0 auto;
+    border-radius: 10px;
+    background-color: var(--mauNen--);
+}

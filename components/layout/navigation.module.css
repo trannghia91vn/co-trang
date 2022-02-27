@@ -1,0 +1,33 @@
+.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: var(--mauNen--);
+  font-size: var(--text-sm--);
+  margin-bottom: var(--dim-lg--);
+}
+.list {
+    display : flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+.item,
+.logout {
+    padding : var(--dim-xm--);
+    border : 1px solid var(--mauVien--);
+    cursor : pointer;
+    transition : all .3s;
+    text-align: center;
+}
+.logout {
+    align-self: stretch;
+}
+.item:hover {
+    background-color: var(--mauNut--);
+}
+.logout:hover {
+    background-color: var(--mauPhu2--);
+}
+.active {
+    background-color: var(--mauNut--);
+}

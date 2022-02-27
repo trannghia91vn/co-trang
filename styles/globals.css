@@ -1,16 +1,37 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-* {
+html {
   box-sizing: border-box;
+}
+
+body {
+  font-size : 62.5%;
+  margin : 0 ; 
+  padding : 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color : var(--mauVanBan--);
+  background-color : var(--mauVien--);
+
+  /* Biến phối màu cho web */
+  --mauNen-- : #fffffe;
+  --mauTieuDe-- : #181818;
+  --mauVanBan-- : #2e2e2e;
+  --mauVanBanMo-- : #2e2e2e86;
+  --mauNut-- : #4fc4cf;
+  --mauNut-ghost-- : rgb(200, 200, 200);
+  --mauNut-xacThuc-- : darkred;
+  --mauVien-- : #181818;
+  --mauChinh-- : #f2eef5;
+  --mauHighlight-- : #4fc4cf;
+  --mauPhu1-- : #994ff3;
+  --mauPhu2-- : #fbdd74;
+  --mauGiaoVien--: #2cb67d;
+  --mauHocSinh--:#994ff3;
+  /* Biến kích thước */
+  --dim-xm-- : .5rem ;
+  --dim-sm-- : 1rem ;
+  --dim-md-- : 1.5rem;
+  --dim-lg-- : 2rem;
+  --dim-xl-- : 2.5rem;
+  --text-sm-- : 1rem;
+  --text-md-- : 1.2rem;
+  --text-lg-- : 1.5rem;
 }
