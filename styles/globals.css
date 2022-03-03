@@ -16,11 +16,13 @@ body {
   --mauVanBan-- : #2e2e2e;
   --mauVanBanMo-- : #2e2e2e86;
   --mauNut-- : #4fc4cf;
-  --mauNut-ghost-- : rgb(200, 200, 200);
+  --mauNut-ghost-- : rgb(175, 175, 175);
   --mauNut-xacThuc-- : darkred;
   --mauVien-- : #181818;
+  --mauVienMo-- : #18181870;
   --mauChinh-- : #f2eef5;
   --mauHighlight-- : #4fc4cf;
+  --mauHighlightMo-- : #4fc4cf50;
   --mauPhu1-- : #994ff3;
   --mauPhu2-- : #fbdd74;
   --mauGiaoVien--: #2cb67d;
@@ -34,4 +36,65 @@ body {
   --text-sm-- : 1rem;
   --text-md-- : 1.2rem;
   --text-lg-- : 1.5rem;
+}
+
+/* Thiết lập chung các css cho nút */
+.btn {
+  border-radius: 5px;
+  padding : 4px 10px;
+  outline : none;
+  font-size: var(--text-sm--);
+  transition : all .3s;
+  margin : 0 .5rem;
+  cursor : pointer;
+}
+.btn-submit {
+  border : 1px solid var(--mauNut-xacThuc--);
+  background-color: var(--mauNut-xacThuc--);
+  color : #fff;
+}
+.btn-cancel {
+  border : 1px solid var(--mauNut-ghost--);
+  background-color: var(--mauNut-ghost--);
+  color : #fff;
+}
+.btn-submit:hover {
+  border : 1px solid var(--mauNut-xacThuc--);
+  background-color: #fff;
+  color : var(--mauNut-xacThuc--);
+}
+.btn-cancel:hover {
+  border : 1px solid var(--mauNut-ghost--);
+  background-color: #fff;
+  color : var(--mauNut-ghost--);
+}
+
+.btn-sm {
+  border-radius: 5px;
+  padding : 3px 8px;
+  outline : none;
+  font-size: .9rem;
+  transition : all .3s;
+  margin : 0 .5rem;
+  cursor : pointer;
+}
+.btn-sm-detail {
+  border : 1px solid var(--mauNut--);
+  background-color: var(--mauNut--);
+  color : #fff;
+}
+.btn-sm-detail:hover {
+  border : 1px solid var(--mauNut--);
+  background-color: #fff;
+  color : var(--mauNut--);
+}
+.btn-sm-delete {
+  border : 1px solid var(--mauNut-ghost--);
+  background-color: var(--mauNut-ghost--);
+  color : #fff;
+}
+.btn-sm-delete:hover {
+  border : 1px solid var(--mauNut-ghost--);
+  background-color: #fff;
+  color : var(--mauNut-ghost--);
 }

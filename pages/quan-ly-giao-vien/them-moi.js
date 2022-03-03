@@ -1,5 +1,6 @@
 import ThanhDieuHuongNoiDung from "../../components/UI/Breadscums";
 import { Fragment } from 'react';
+import FormThemMoiGiaoVien from "../../components/quan-ly-giao-vien/them-moi-gv/them-moi-gv";
 
 const TrangThemMoiGiaoVien = props => {
     //Tạo chay data mẫu cho điều hướng nối dung theo thứ tự luôn
@@ -10,7 +11,7 @@ const TrangThemMoiGiaoVien = props => {
     return (
       <Fragment>
         <ThanhDieuHuongNoiDung arrNavi={contentNavi}/>
-        <h1>Trang chủ quản lý thêm mới học sinh</h1>
+        <FormThemMoiGiaoVien/>
       </Fragment>
     )
   }

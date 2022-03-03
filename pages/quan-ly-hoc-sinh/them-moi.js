@@ -1,4 +1,5 @@
 import ThanhDieuHuongNoiDung from "../../components/UI/Breadscums";
+import FormThemMoiHocSinh from "../../components/quan-ly-hoc-sinh/them-moi-hs/them-moi-hs";
 import { Fragment } from 'react';
 
 const TrangThemMoiHocSinh = props => {
@@ -10,7 +11,7 @@ const TrangThemMoiHocSinh = props => {
     return (
       <Fragment>
         <ThanhDieuHuongNoiDung arrNavi={contentNavi}/>
-        <h1>Trang chủ quản lý thêm mới học sinh</h1>
+        <FormThemMoiHocSinh/>
       </Fragment>
     )
   }

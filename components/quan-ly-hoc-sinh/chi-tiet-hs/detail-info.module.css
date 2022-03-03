@@ -1,0 +1,102 @@
+.container {
+  font-size: var(--text-sm--);
+  border: dashed 1px var(--mauVienMo--);
+  padding: var(--dim-md--);
+  margin: 0 auto;
+  margin-top: var(--dim-sm--);
+  border-radius: 10px;
+  width: 80%;
+}
+.container h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: var(--dim-md--);
+  text-align: center;
+  text-transform: uppercase;
+}
+.btn-sub {
+  display: block;
+  border-radius: 5px;
+  padding: 3px 8px;
+  outline: none;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+  margin: 0.5rem auto 1.5rem;
+  cursor: pointer;
+  border: 1px solid var(--mauNut--);
+  background-color: var(--mauNut--);
+  color: #fff;
+}
+.btn-sub:hover {
+  border: 1px solid var(--mauNut--);
+  background-color: #fff;
+  color: var(--mauNut-ghost--);
+}
+.controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+}
+.control {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-bottom: var(--dim-md--);
+}
+.control > * {
+  margin-right: var(--dim-md--);
+}
+.control label {
+  margin-right: var(--dim-xm--);
+}
+.control input,
+.control select,
+.control textarea {
+  outline: none;
+  border: 1px solid var(--mauVanBanMo--);
+  border-radius: 5px;
+  padding: 1px 4px;
+}
+.control input:focus,
+.control select:focus,
+.control textarea:focus {
+  border: 1px solid var(--mauHighlight--);
+  background-color: var(--mauHighlightMo--);
+}
+.btn-check {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: rgba(211, 211, 211, 0.7);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-checked::after {
+  content: "";
+  display: flex;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  background-color: var(--mauGiaoVien--);
+}
+.input-date {
+  max-width: 160px;
+}
+.input-money {
+  max-width: 120px;
+}
+.input-name {
+  max-width: 300px;
+}
+.control textarea {
+  max-width: 80%;
+}
+.actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}

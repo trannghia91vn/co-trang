@@ -1,14 +1,15 @@
 import { Fragment } from "react";
 import classes from "./layout.module.css";
 import Navigation from "./navigation";
-import Header from '../UI/Header';
+// import { useContext } from "react";
+// import NotisContext from "../../store/context/Notification/noti-context";
+
 const Layout = (props) => {
   return (
     <Fragment>
       <Navigation />
-      <main className={classes.main}>
-        {props.children}
-      </main>
+      <div style={{marginBottom:'10px'}} id="push-noti"></div>
+      <main className={classes.main}>{props.children}</main>
     </Fragment>
   );
 };

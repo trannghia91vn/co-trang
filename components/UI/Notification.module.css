@@ -1,0 +1,24 @@
+.noti {
+    display : flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width : 60%;
+    padding : var(--dim-sm--);
+    opacity : .7;
+    font-size: var(--text-md--);
+    border-radius: 5px;
+    color : #fff;
+    margin : 0 auto;
+}
+.item {
+    margin : 0 10px;
+}
+.noti-sending {
+    background-color : #00bbf9;
+}
+.noti-success {
+    background-color: #2ec4b6;
+}
+.noti-error {
+    background-color: #d00000;
+}

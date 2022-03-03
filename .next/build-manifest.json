@@ -25,26 +25,6 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/hoc-phi-hoc-sinh": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/hoc-phi-hoc-sinh.js"
-    ],
-    "/luong-giao-vien": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/luong-giao-vien.js"
-    ],
-    "/luong-giao-vien/thong-ke-luong": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/luong-giao-vien/thong-ke-luong.js"
-    ],
-    "/luong-giao-vien/tinh-luong": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/luong-giao-vien/tinh-luong.js"
-    ],
     "/quan-ly-giao-vien": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
@@ -54,6 +34,16 @@
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/quan-ly-hoc-sinh.js"
+    ],
+    "/quan-ly-hoc-sinh/ds-ca-nhan": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/quan-ly-hoc-sinh/ds-ca-nhan.js"
+    ],
+    "/quan-ly-hoc-sinh/ds-nhom": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/quan-ly-hoc-sinh/ds-nhom.js"
     ]
   },
   "ampFirstPages": []
