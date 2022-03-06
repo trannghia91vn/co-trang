@@ -1,13 +1,9 @@
 import classes from "./them-moi-gv.module.css";
 import { useState, useRef, useContext } from "react";
 import { useRouter } from "next/router";
-import NotisContext from "../../../store/context/Notification/noti-context";
-import Notification from "../../UI/Notification";
+
 const FormThemMoiGiaoVien = (props) => {
   const router = useRouter();
-  const notiCtx = useContext(NotisContext);
-  const notiData = notiCtx.objNoti;
-  console.log(notiData);
   //Biến state input
   const [sex, changeSex] = useState("male");
   //Biến ref input
@@ -58,6 +54,9 @@ const FormThemMoiGiaoVien = (props) => {
     //Cuối cùng thì vần clear input để tiếp tục thêm nếu cần
     clearData();
     router.replace('/quan-ly-giao-vien')
+    setTimeout(()=>{
+      router.replace('/quan-ly-giao-vien/them-moi')
+    },300)
   };
   //Callback xử lý hủy thêm
   const cancelAddTeaHandler = () => {
@@ -171,7 +170,6 @@ const FormThemMoiGiaoVien = (props) => {
           </button>
         </div>
       </form>
-      {notiData.status !== "" && <Notification notiData={notiData} />}
     </section>
   );
 };

@@ -12,6 +12,7 @@
     font-size: var(--dim-md--);
     text-align: center;
     text-transform: uppercase;
+    margin-bottom: 10px;
 }
 .controls {
     display : flex;
@@ -81,3 +82,22 @@
     flex-direction: row;
     justify-content: center;
 }
+.btn-sub {
+    display: block;
+    border-radius: 5px;
+    padding: 3px 8px;
+    outline: none;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+    margin: 0.5rem auto 1.5rem;
+    cursor: pointer;
+    border: 1px solid var(--mauNut--);
+    background-color: var(--mauNut--);
+    color: #fff;
+  }
+  .btn-sub:hover {
+    border: 1px solid var(--mauNut--);
+    background-color: #fff;
+    color: var(--mauNut-ghost--);
+  }
+  

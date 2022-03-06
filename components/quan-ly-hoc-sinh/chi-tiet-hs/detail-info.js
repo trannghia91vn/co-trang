@@ -1,10 +1,13 @@
 import classes from "./detail-info.module.css";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 
 const ThongTinChiTiet = (props) => {
   const router = useRouter();
-  console.log(router.query.slug)
+  const dispatchFn = useDispatch();
+
+  console.log(props.stuData);
   //Tạo biến state cho phép edit các trường thông tin hay không
   const [isDisableInput, changeIsDisInput] = useState(true);
 
@@ -53,6 +56,7 @@ const ThongTinChiTiet = (props) => {
   //Calback chính cập nhật thông tin
   const editStudentHandler = (e) => {
     e.preventDefault();
+    changeIsDisInput(true);
     //Tổng hợp đối tượng học sinh để submit lên api
     const dataStudent = {
       singleClass: isSingle,
@@ -77,15 +81,9 @@ const ThongTinChiTiet = (props) => {
       body: JSON.stringify(dataSubmit),
       headers: { "Content-Type": "application/json" },
     });
-    //Xử lý push về trang qlhs rồi mới trỏ về đây để load lại data
-    router.replace("/quan-ly-hoc-sinh");
-    setTimeout(()=>{
-      if (isSingle){
-        router.replace(`quan-ly-hoc-sinh/ds-ca-nhan`);
-      } else if (isGroup) {
-        router.replace(`quan-ly-hoc-sinh/ds-nhom`);
-      }
-    },500)
+    //Reload lại trang đẻ có thông tin cập nhật
+    // router.replace('/quan-ly-hoc-sinh')
+    router.replace(`/quan-ly-hoc-sinh/chi-tiet/${props.stuData._id}`);
   };
   //Xử lý side effect giá trị mặc định cho 3 thằng này trước
   useEffect(() => {

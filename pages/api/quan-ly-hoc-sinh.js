@@ -25,7 +25,7 @@ const handler = async (req, res) => {
 
     //Đầu tiên là tiến hành xác thực các thông tin submit
     if (
-      (!singleClass && !groupClass) ||
+      // (!singleClass && !groupClass) ||
       (+singleFee === 0 && +groupFee === 0) ||
       nameStu.trim().length === 0
     ) {

@@ -44,6 +44,16 @@
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/quan-ly-hoc-sinh/ds-nhom.js"
+    ],
+    "/quan-ly-lop-nhom": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/quan-ly-lop-nhom.js"
+    ],
+    "/quan-ly-lop-nhom/them-moi": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/quan-ly-lop-nhom/them-moi.js"
     ]
   },
   "ampFirstPages": []

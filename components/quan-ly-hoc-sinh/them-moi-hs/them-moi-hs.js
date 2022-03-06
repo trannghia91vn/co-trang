@@ -1,13 +1,9 @@
 import classes from "./them-moi-hs.module.css";
-import { useState, useRef, useContext, Fragment } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/router";
-import NotisContext from "../../../store/context/Notification/noti-context";
-import Notification from "../../UI/Notification";
+
 const FormThemMoiHocSinh = (props) => {
   const router = useRouter();
-  const notiCtx = useContext(NotisContext);
-  const notiData = notiCtx.objNoti;
-  // console.log(notiData);
   //Biến state input
   const [isSingle, changeIsSingle] = useState(false);
   const [isGroup, changeIsGroup] = useState(false);
@@ -66,16 +62,19 @@ const FormThemMoiHocSinh = (props) => {
       address: addressRef.current.value,
       info: infoRef.current.value,
     };
-
     //Post request lên custom api route
     fetch("/api/quan-ly-hoc-sinh", {
       method: "POST",
       body: JSON.stringify(dataStudent),
       headers: { "Content-Type": "application/json" },
-    });
+    })
     //Cuối cùng thì vần clear input để tiếp tục thêm nếu cần
     clearData();
-    router.reload("/quan-ly-hoc-sinh");
+    //Push vè qlhs để reload lại data, sau đo push lại form
+    router.push("/quan-ly-hoc-sinh");
+    setTimeout(() => {
+      router.replace(router.pathname);
+    }, 300);
   };
   //Callback xử lý hủy thêm
   const cancelAddStuHandler = () => {
@@ -211,7 +210,6 @@ const FormThemMoiHocSinh = (props) => {
           </button>
         </div>
       </form>
-      {notiData.status !== "" && <Notification notiData={notiData} />}
     </section>
   );
 };

@@ -1,12 +1,14 @@
 import ThongTinChiTiet from "../../../components/quan-ly-hoc-sinh/chi-tiet-hs/detail-info";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { getStuById } from "../../../support/quan-ly-hoc-sinh/qlhc-uti";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import ThanhDieuHuongNoiDung from "../../../components/UI/Breadscums";
+import { fetchGetStudentData } from "../../../store/redux/quan-ly-hoc-sinh/qlhs-slice";
 
 const TrangThongTinChiTietHocSinh = (props) => {
   //Lấy về id học sinh
+  const dispatchFn = useDispatch();
   const router = useRouter();
   const _id = router.query.slug;
 
@@ -22,6 +24,11 @@ const TrangThongTinChiTietHocSinh = (props) => {
       isActive: true,
     },
   ];
+  console.log(studentData);
+  //Xử lý fetch get data để load lại thông tin cập nhật sau khi sửa
+  useEffect(() => {
+    dispatchFn(fetchGetStudentData());
+  }, []);
 
   return (
     <Fragment>
