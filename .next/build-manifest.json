@@ -25,26 +25,6 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/quan-ly-giao-vien": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/quan-ly-giao-vien.js"
-    ],
-    "/quan-ly-hoc-sinh": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/quan-ly-hoc-sinh.js"
-    ],
-    "/quan-ly-hoc-sinh/ds-ca-nhan": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/quan-ly-hoc-sinh/ds-ca-nhan.js"
-    ],
-    "/quan-ly-hoc-sinh/ds-nhom": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/quan-ly-hoc-sinh/ds-nhom.js"
-    ],
     "/quan-ly-lop-nhom": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",

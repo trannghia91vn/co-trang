@@ -1,0 +1,23 @@
+.tag {
+  font-size: 0.9rem;
+  outline: none;
+  padding: 5px 8px;
+  margin: 5px 7px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid var(--mauHocSinh--);
+  background-color: var(--mauNen--);
+  color: var(--mauHocSinh--);
+}
+.tag:hover {
+  border: 1px solid var(--mauHocSinh--);
+  background-color: var(--mauHocSinh--);
+  color: var(--mauNen--);
+}
+.tag-active {
+  border: 1px solid var(--mauHocSinh--);
+  background-color: var(--mauHocSinh--);
+  color: var(--mauNen--);
+}

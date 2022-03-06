@@ -25,8 +25,10 @@ const handler = async (req, res) => {
 
     //Đầu tiên là tiến hành xác thực các thông tin submit
     if (
-      // (!singleClass && !groupClass) ||
+      (!singleClass && !groupClass) ||
       (+singleFee === 0 && +groupFee === 0) ||
+      (singleClass && +singleFee === 0) ||
+      (groupClass && +groupFee === 0) ||
       nameStu.trim().length === 0
     ) {
       res.status(422).json({

@@ -1,0 +1,10 @@
+.container {
+    /* margin : var(--dim-sm--); */
+    padding : 10px;
+    /* border : 1px dashed var(--mauVienMo--); */
+    background-color: var(--mauPhu2--);
+    border-radius: 5px;
+    display : flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}

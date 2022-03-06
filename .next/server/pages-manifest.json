@@ -2,5 +2,6 @@
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
   "/_error": "pages/_error.js",
+  "/api/quan-ly-giao-vien": "pages/api/quan-ly-giao-vien.js",
   "/api/quan-ly-hoc-sinh": "pages/api/quan-ly-hoc-sinh.js"
 }

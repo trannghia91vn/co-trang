@@ -16,6 +16,15 @@ const initQlhs = {
     // singleFee: 1000
     // _id: "621ed48e7d158c6fbbca1167"}
   ],
+  arrStudentTags: [
+    // {
+    //   id : '',
+    //   name : '',
+    //   isSelected : null,
+    //    groupClass : ''
+    // singleClass:''
+    // }
+  ],
 };
 
 const QlhsSlice = createSlice({
@@ -23,10 +32,40 @@ const QlhsSlice = createSlice({
   initialState: initQlhs,
   reducers: {
     // NHÓM FUNCITON GHI DATA
-    //Chạy ghi đè lại mảng nội bộ để thao tác
+    //Chạy ghi đè lại mảng nội bộ để thao tác sau khi get về từ db
     replaceArrStudents(state, action) {
       state.arrStudents = action.payload;
     },
+    //Tạo mảng tags học sinh với các props cần thiết
+    createArrStuTags(state, action) {
+      const arrStusTags = action.payload.map((cv) => {
+        return {
+          id: cv._id,
+          name: cv.nameStu,
+          isSelected: false,
+          singleClass: cv.singleClass,
+          groupClass: cv.groupClass,
+        };
+      });
+      state.arrStudentTags = arrStusTags;
+    },
+    //Tạo func active / deactive tag học sinh
+    activeStuTag(state, action) {
+      const objStuMatched = state.arrStudentTags.find(
+        (cv) => cv.id === action.payload
+      );
+      objStuMatched.isSelected = true;
+    },
+    deActiveStuTag(state, action) {
+      const objStuMatched = state.arrStudentTags.find(
+        (cv) => cv.id === action.payload
+      );
+      objStuMatched.isSelected = false;
+    },
+    clearStuTag(state){
+      state.arrStudentTags.forEach(cv=>cv.isSelected = false)
+    }
+
     // NHÓM FUNCITON LẤY DATA
   },
 });
@@ -43,6 +82,23 @@ export const fetchGetStudentData = () => {
 
       const data = await response.json();
       dispatchFn(QlhsActions.replaceArrStudents(data.data));
+    } catch (error) {
+      console.log("Fetch get stu data is failed");
+      dispatchFn(LoadingActions.deactiveLoading());
+    }
+  };
+};
+
+//Tạo thunks func để lấy data học sinh về từ db sau đó tạo mảng tags học sinh
+export const getStusDataAndCreateArrTags = () => {
+  return async (dispatchFn) => {
+    dispatchFn(LoadingActions.activeLoading());
+    try {
+      const response = await fetch("/api/quan-ly-hoc-sinh");
+      dispatchFn(LoadingActions.deactiveLoading());
+
+      const data = await response.json();
+      dispatchFn(QlhsActions.createArrStuTags(data.data));
     } catch (error) {
       console.log("Fetch get stu data is failed");
       dispatchFn(LoadingActions.deactiveLoading());

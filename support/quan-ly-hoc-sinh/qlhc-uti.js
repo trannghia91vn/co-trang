@@ -13,3 +13,9 @@ export const getStuById = (arrAllStus,id) => {
     const objMatched = arrAllStus.find(cv=>cv._id === id);
     return objMatched;
 }
+
+//Lọc mảng tags học sinh được chọn 
+export const getArrSelectedStusTags = arrStusTags => {
+    const arrStusSelected = arrStusTags.filter(cv=>cv.isSelected)
+    return arrStusSelected;
+}
