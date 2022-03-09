@@ -51,10 +51,13 @@ const QlhsSlice = createSlice({
     },
     //Tạo func active / deactive tag học sinh
     activeStuTag(state, action) {
+      console.log("Its run");
       const objStuMatched = state.arrStudentTags.find(
         (cv) => cv.id === action.payload
       );
-      objStuMatched.isSelected = true;
+      if (objStuMatched) {
+        objStuMatched.isSelected = true;
+      }
     },
     deActiveStuTag(state, action) {
       const objStuMatched = state.arrStudentTags.find(
@@ -62,10 +65,9 @@ const QlhsSlice = createSlice({
       );
       objStuMatched.isSelected = false;
     },
-    clearStuTag(state){
-      state.arrStudentTags.forEach(cv=>cv.isSelected = false)
-    }
-
+    clearStuTag(state) {
+      state.arrStudentTags.forEach((cv) => (cv.isSelected = false));
+    },
     // NHÓM FUNCITON LẤY DATA
   },
 });

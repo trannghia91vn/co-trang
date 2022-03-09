@@ -11,9 +11,14 @@ const ListTag = (props) => {
       id={item.id}
       name={item.name}
       isSelected={item.isSelected}
+      disabled={props.disabled}
     />
   ));
-  return <div className={classes.container}>{renderListTags}</div>;
+  let allClass = classes.container;
+  if (props.disabled === "disabled") {
+    allClass = `${classes.container} ${classes.dis}`;
+  }
+  return <div className={allClass}>{renderListTags}</div>;
 };
 
 export default ListTag;

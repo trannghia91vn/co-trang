@@ -25,15 +25,25 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
+    "/diem-danh-ca-nhan": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/diem-danh-ca-nhan.js"
+    ],
+    "/diem-danh-ca-nhan/diem-danh": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/diem-danh-ca-nhan/diem-danh.js"
+    ],
     "/quan-ly-lop-nhom": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/quan-ly-lop-nhom.js"
     ],
-    "/quan-ly-lop-nhom/them-moi": [
+    "/quan-ly-lop-nhom/ds-lop-nhom": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/quan-ly-lop-nhom/them-moi.js"
+      "static/chunks/pages/quan-ly-lop-nhom/ds-lop-nhom.js"
     ]
   },
   "ampFirstPages": []

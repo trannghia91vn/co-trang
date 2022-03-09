@@ -1,0 +1,40 @@
+.item {
+  background-color: var(--mauNen--);
+  padding: 10px;
+  border-radius: 10px;
+  font-size: var(--text-sm--);
+  margin: 15px 0;
+  display: flex;
+  flex-direction: column;
+}
+.head h3 {
+  color: var(--mauPhu1--);
+  font-size: var(--text-sm--);
+  margin: 0 15px;
+}
+.head {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 10px 0;
+  border-bottom: dashed 1px var(--mauPhu1--);
+  margin-bottom: 15px;
+}
+.head > * {
+  margin: 8px;
+}
+.stus {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 10px 0;
+}
+.stu {
+  margin: 0.5rem;
+  background-color: var(--mauPhu2--);
+  color: var(--mauTieuDe--);
+  padding: 4px 8px;
+  border-radius: 5px;
+}

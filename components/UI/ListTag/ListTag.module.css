@@ -8,3 +8,6 @@
     flex-direction: row;
     justify-content: flex-start;
 }
+.dis {
+    cursor : not-allowed;
+}

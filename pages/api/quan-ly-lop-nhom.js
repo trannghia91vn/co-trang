@@ -1,6 +1,9 @@
 import {
   connectToMongoDb,
   writeDataToMongoDb,
+  readDataFromMongoDb,
+  deleteDataFromMongoDb,
+  replaceDataByIdToMongoDb,
 } from "../../support/uti-request/connect-to-mongodb";
 
 const handler = async (req, res) => {
@@ -35,7 +38,45 @@ const handler = async (req, res) => {
     cluster.close();
   } // End post request
 
+  //Xử lý get request
+  if (req.method === "GET") {
+    try {
+      const data = await readDataFromMongoDb(cluster, "mangLopNhom");
+      res.status(200).json({ data: data });
+    } catch (error) {
+      res.status(500).json({ thongbao: "Get data lớp nhóm từ db thất bại." });
+      cluster.close();
 
+      cluster.close();
+    }
+  }
+
+  //Xử lý del request
+  if (req.method === "DELETE") {
+    try {
+      await deleteDataFromMongoDb(cluster, "mangLopNhom", req.body);
+    } catch (error) {
+      res.status(500).json({ thongbao: "Xóa lớp nhóm thành công." });
+      cluster.close();
+    }
+    cluster.close();
+  } //End del request
+
+  //Xử lý sửa request
+  // if (req.method === "PUT") {
+  //   try {
+  //     await replaceDataByIdToMongoDb(
+  //       cluster,
+  //       "mangLopNhom",
+  //       req.body.id,
+  //       req.boyd.data
+  //     );
+  //   } catch (error) {
+  //     res.status(500).json({thongbao:'Sửa thông tin lớp nhóm thất bại.'})
+  //     cluster.close()
+  //   }
+  //   cluster.close();
+  // } //End put request
 };
 
 export default handler;

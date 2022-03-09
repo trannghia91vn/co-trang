@@ -21,3 +21,6 @@
   background-color: var(--mauHocSinh--);
   color: var(--mauNen--);
 }
+.tag:disabled {
+  cursor: not-allowed;
+}
