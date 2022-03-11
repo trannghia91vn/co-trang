@@ -14,3 +14,19 @@
     justify-content : center;
     margin-top: 1rem;
 }
+.editForm {
+    display : flex;
+    flex-direction: column;
+    padding : 1rem;
+    background-color: rgba(211, 211, 211, 0.35);
+    border-radius: 5px;
+}
+.editForm >* {
+    margin : .5rem 0;
+}
+.note {
+    font-size: .9rem;
+    color : gray;
+    margin-bottom: 8px;
+    line-height: 1.3;
+}

@@ -76,29 +76,35 @@ const LichDiemDanh = (props) => {
 
   return (
     <Fragment>
-        <div className={classes.overall}>
-          <h3>
-            Điểm danh tháng <span style={{ color: "yellow" }}>{nowMonth}</span>{" "}
-            năm <span style={{ color: "yellow" }}>{nowYear}</span>
-          </h3>
+      <div className={classes.overall}>
+        <h3>
+          Điểm danh tháng{" "}
+          <span style={{ color: "yellow" }}>
+            {props.objMonthYear.month > 0 ? props.objMonthYear.month : nowMonth}
+          </span>{" "}
+          năm{" "}
+          <span style={{ color: "yellow" }}>
+            {props.objMonthYear.year > 0 ? props.objMonthYear.year : nowYear}
+          </span>
+        </h3>
 
-          <div className={classes.notes}>
-            <div className={classes.note}>
-              <div className={classes.hoc} /> <label>Ngày học</label>
-            </div>
-            <div className={classes.note}>
-              <div className={classes.nghi} /> <label>Ngày nghỉ</label>
-            </div>
-            <div className={classes.note}>
-              <div className={classes.bu} /> <label>Ngày học bù</label>
-            </div>
-            <div className={classes.note}>
-              <div className={classes.tang} /> <label>Ngày tăng cường</label>
-            </div>
+        <div className={classes.notes}>
+          <div className={classes.note}>
+            <div className={classes.hoc} /> <label>Ngày học</label>
           </div>
-
-          <div className={classes.container}>{renderDatesChecked}</div>
+          <div className={classes.note}>
+            <div className={classes.nghi} /> <label>Ngày nghỉ</label>
+          </div>
+          <div className={classes.note}>
+            <div className={classes.bu} /> <label>Ngày học bù</label>
+          </div>
+          <div className={classes.note}>
+            <div className={classes.tang} /> <label>Ngày tăng cường</label>
+          </div>
         </div>
+
+        <div className={classes.container}>{renderDatesChecked}</div>
+      </div>
     </Fragment>
   );
 };

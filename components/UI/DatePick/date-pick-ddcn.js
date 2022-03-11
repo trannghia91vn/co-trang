@@ -2,12 +2,25 @@ import classes from "./date-pick.module.css";
 import { useState, useEffect } from "react";
 
 const FormChonNgayDDCN = (props) => {
+  console.log(props.objMonthYear)
   let dateDefault = "";
   let typeDefault = "";
+  //Xử lý default Date khi thao tác lọc tháng năm truyền xuống
+  if (props.objMonthYear) {
+    let month = props.objMonthYear.month;
+    if (month.toString().length === 1) {
+      month = `0${month}`;
+    }
+    //Tạo định dạng ngày tháng chuẩn
+    const defaultDateFormat = `${props.objMonthYear.year}-${month}-01`;
+    dateDefault = defaultDateFormat;
+  }
+  //Xử lý default Date khi thao tác edit truyền xuống
   if (props.defaultValue) {
     dateDefault = props.defaultValue.dateSingleCheck;
     typeDefault = props.defaultValue.typeSingleCheck;
   }
+
   //Biến state kiểm soát loại hành động
   const [actionType, changeActionType] = useState({
     them: true,
@@ -113,7 +126,7 @@ const FormChonNgayDDCN = (props) => {
         id="datePick"
         type="date"
         defaultValue={dateDefault ? dateDefault : ""}
-        disabled={dateDefault ? "disabled" : ""}
+        // disabled={dateDefault ? "disabled" : ""}
         required
       />
       <label>Chọn loại:</label>

@@ -3,6 +3,7 @@ import ChonHocSinh from "./ChonHocSinh";
 import ChonNgayDDCN from "./ChonNgayDDCN";
 import ChonGiaoVienCN from "./ChonGiaoVien";
 import LichDiemDanh from "../lich-diem-danh/LichDiemDanh";
+import LocNamThang from "../../UI/MonthYearPick/MonthYearPick";
 import { useSelector, useDispatch } from "react-redux";
 import { LoadingActions } from "../../../store/redux/loading/loading-slice";
 import { useState } from "react";
@@ -36,6 +37,13 @@ const DiemDanhCaNhan = (props) => {
   const editTeaDataTempHandler = (arr) => {
     console.log(arr);
     changeTeacherData(arr);
+  };
+  //Func xử lý khi lọc năm tháng được bấm thì load lại giao diện thêm mới thông tin ngày điềm danh đê có giá trị mặc định cho input ngày
+  const refreshAddUi = () => {
+    changeViewEditUi(true);
+    setTimeout(() => {
+      changeViewEditUi(false);
+    }, 100);
   };
   //Lấy thông tin mảng ngày điểm danh cá nhân
   const arrDiemDanhCaNhan = useSelector(
@@ -86,78 +94,97 @@ const DiemDanhCaNhan = (props) => {
     <section className={classes.container}>
       <ChonHocSinh arrTags={props.arrTags} />
 
-      {isTagSelected && !isViewEditUi && (
-        <ChonNgayDDCN getDateData={props.getDateData} />
+      {isTagSelected && (
+        <label className={classes.note}>
+          Không điền giá trị nếu muốn điểm danh tháng hiện tại.
+          <br /> Điền giá trị nếu muốn điểm danh theo tháng năm cần.{" "}
+        </label>
+      )}
+      {isTagSelected && (
+        <LocNamThang
+          getMonthYear={props.getMonthYear}
+          refresh={refreshAddUi}
+        />
       )}
 
-      {isTagSelected && !isViewEditUi && !props.isDateOff && (
-        <ChonGiaoVienCN getTeacherData={props.getTeacherData} />
-      )}
-
-      {isTagSelected && !isViewEditUi && (
-        <div className={classes.actions}>
-          <button
-            type="button"
-            style={{ fontSize: "1.2rem" }}
-            className="btn btn-submit"
-            onClick={props.diemDanh}
-            disabled={props.isSumitAccess ? "" : "disabled"}
-          >
-            Cập nhật
-          </button>
-          <button
-            type="button"
-            style={{ fontSize: "1.2rem" }}
-            className="btn btn-cancel"
-            onClick={props.huyDiemDanh}
-          >
-            Hủy
-          </button>
-        </div>
-      )}
+      <div className={classes.editForm}>
+        {isTagSelected && !isViewEditUi && (
+          <ChonNgayDDCN
+            getDateData={props.getDateData}
+            objMonthYear={props.objMonthYear}
+          />
+        )}
+        {isTagSelected && !isViewEditUi && !props.isDateOff && (
+          <ChonGiaoVienCN getTeacherData={props.getTeacherData} />
+        )}
+        {isTagSelected && !isViewEditUi && (
+          <div className={classes.actions}>
+            <button
+              type="button"
+              style={{ fontSize: "1.2rem" }}
+              className="btn btn-submit"
+              onClick={props.diemDanh}
+              disabled={props.isSumitAccess ? "" : "disabled"}
+            >
+              Cập nhật
+            </button>
+            <button
+              type="button"
+              style={{ fontSize: "1.2rem" }}
+              className="btn btn-cancel"
+              onClick={props.huyDiemDanh}
+            >
+              Hủy
+            </button>
+          </div>
+        )}
+      </div>
 
       {isTagSelected && (
         <LichDiemDanh
           dataDiemDanh={props.dataDiemDanh}
           editDate={switchEditHandler}
           activeRefetch={props.activeRefetch}
+          objMonthYear={props.objMonthYear}
         />
       )}
 
       {/* Phần này là giao diện chỉnh sửa cho ngày */}
-      {isTagSelected && isViewEditUi && (
-        <ChonNgayDDCN
-          defaultValue={objDateData}
-          editDateData={editDateDataTempHandler}
-        />
-      )}
+      <div className={classes.editForm}>
+        {isTagSelected && isViewEditUi && (
+          <ChonNgayDDCN
+            defaultValue={objDateData}
+            editDateData={editDateDataTempHandler}
+          />
+        )}
 
-      {isTagSelected && isViewEditUi && dateData.actionType !== "nghi" && (
-        <ChonGiaoVienCN
-          defaultValue={objDateData}
-          editTeacherData={editTeaDataTempHandler}
-        />
-      )}
-      {isTagSelected && isViewEditUi && (
-        <div className={classes.actions}>
-          <button
-            type="button"
-            style={{ fontSize: "1.2rem" }}
-            className="btn btn-submit"
-            onClick={editDateDataHandler}
-          >
-            Sửa
-          </button>
-          <button
-            type="button"
-            style={{ fontSize: "1.2rem" }}
-            className="btn btn-cancel"
-            onClick={cancelEditHandler}
-          >
-            Hủy
-          </button>
-        </div>
-      )}
+        {isTagSelected && isViewEditUi && dateData.actionType !== "nghi" && (
+          <ChonGiaoVienCN
+            defaultValue={objDateData}
+            editTeacherData={editTeaDataTempHandler}
+          />
+        )}
+        {isTagSelected && isViewEditUi && (
+          <div className={classes.actions}>
+            <button
+              type="button"
+              style={{ fontSize: "1.2rem" }}
+              className="btn btn-submit"
+              onClick={editDateDataHandler}
+            >
+              Sửa
+            </button>
+            <button
+              type="button"
+              style={{ fontSize: "1.2rem" }}
+              className="btn btn-cancel"
+              onClick={cancelEditHandler}
+            >
+              Hủy
+            </button>
+          </div>
+        )}
+      </div>
     </section>
   );
 };

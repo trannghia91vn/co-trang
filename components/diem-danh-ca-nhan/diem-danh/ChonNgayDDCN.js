@@ -17,6 +17,7 @@ const ChonNgayDDCN = (props) => {
         getDateData={props.getDateData}
         defaultValue={props.defaultValue}
         editDateData={props.editDateData}
+        objMonthYear={props.objMonthYear}
       />
     </Fragment>
   );

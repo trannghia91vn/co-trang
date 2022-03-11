@@ -1,0 +1,30 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap : wrap;
+    align-items : center;
+    padding : .5rem;
+    border-radius: 5px;
+    border : 1px dashed var(--mauPhu1--);
+    max-width: 380px;
+}
+.container >* {
+    margin : 0 .2rem;
+}
+.container input {
+    width : 60px;
+    padding : 4px 2px;
+    border-radius: 5px;
+    margin-right: 1rem;
+    outline: none;
+    border : 1px solid var(--mauPhu1--);
+}
+.container input:focus {
+    background-color: rgba(140, 0, 255, 0.1);
+}
+.noti {
+    margin : 10px 0 0 5rem;
+    color : var(--mauPhu1--);
+    font-size : .8rem;
+    /* justify-self: center; */
+}

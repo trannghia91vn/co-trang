@@ -88,6 +88,17 @@ body {
   background-color: #fff;
   color: var(--mauNut--);
 }
+.btn-sm-sub {
+  border: 1px solid var(--mauPhu1--);
+  background-color: var(--mauPhu1--);
+  color: #fff;
+}
+.btn-sm-sub:hover {
+  border: 1px solid var(--mauPhu1--);
+  background-color: #fff;
+  color: var(--mauPhu1--);
+}
+
 .btn-sm-delete {
   border: 1px solid var(--mauNut-ghost--);
   background-color: var(--mauNut-ghost--);

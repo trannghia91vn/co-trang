@@ -1,7 +1,7 @@
 import Header from "../../components/UI/Header";
 import { Fragment, useContext } from "react";
-import {useRouter} from 'next/router';
-import LabelsContext from '../../store/context/NavbarLabels/labels-context';
+import { useRouter } from "next/router";
+import LabelsContext from "../../store/context/NavbarLabels/labels-context";
 
 const TrangDiemDanhCaNhan = (props) => {
   //Lấy về slug

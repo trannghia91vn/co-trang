@@ -33,6 +33,8 @@ const TrangThemDiemDanhCaNhan = (props) => {
   const [dateData, changeDateData] = useState({ date: null, actionType: null });
   //Sumit -- thông tin giáo viên cho ngày điểm danh
   const [teacherData, changeTeacherData] = useState([]);
+  //Biến state quản lý lọc ngày tháng
+  const [objMonthYear, changeObjMonthYear] = useState({ month: "", year: "" });
   //Biến state quyết định cho phép bấm nút cập nhật hay không
   const [submitAccess, changeSubmitAccess] = useState(false);
   //Biến state nếu là ngày nghỉ thì không cần render thêm thông tin giáo viên
@@ -40,7 +42,7 @@ const TrangThemDiemDanhCaNhan = (props) => {
   //Biến state nội bộ render Loading cho send post request
   const [isLoading, changeIsLoading] = useState(null);
   //Biến state nộ bộ thực hiện fetch lại data khi cần
-  const [isRefetch,changeIsRefetch] = useState(false)
+  const [isRefetch, changeIsRefetch] = useState(false);
   useEffect(() => {
     //Kiểm tra submitAccess
     if (
@@ -78,6 +80,10 @@ const TrangThemDiemDanhCaNhan = (props) => {
   const getTeacherData = (data) => {
     changeTeacherData(data);
   };
+  //Func thay đổi đối tượng tháng năm từ props truyền lên
+  const changeMonthYearFilterHandler = (objMonthYear) => {
+    changeObjMonthYear(objMonthYear);
+  };
   //Submit -- Lấy gía trị tag được chọn
   const tagStuSelected = arrStusTags.find((tag) => tag.isSelected);
 
@@ -89,12 +95,24 @@ const TrangThemDiemDanhCaNhan = (props) => {
 
   //Lọc lại data điểm danh đã tồn tại trên redux của học sinh được chọn
   let dataDiemDanh = [];
-  if (tagStuSelected) {
+  //Xử lý nếu không lọc năm tháng thì trả về hiện tại và có lọc năm tháng thì trả về tương ứng
+  if (tagStuSelected && objMonthYear.month === "" && objMonthYear.year === "") {
     dataDiemDanh = getArrDiemDanhCaNhanByStuAndMonthYear(
       arrDiemDanhCaNhan,
       tagStuSelected.id,
       nowMonth,
       nowYear
+    );
+  } else if (
+    tagStuSelected &&
+    objMonthYear.month > 0 &&
+    objMonthYear.year > 0
+  ) {
+    dataDiemDanh = getArrDiemDanhCaNhanByStuAndMonthYear(
+      arrDiemDanhCaNhan,
+      tagStuSelected.id,
+      objMonthYear.month,
+      objMonthYear.year
     );
   }
   //Tổng hợp data submit fetch lên đê thêm data cho ngày được điểm danh
@@ -122,7 +140,7 @@ const TrangThemDiemDanhCaNhan = (props) => {
         changeIsLoading(false), router.reload();
       });
     //Chạy refetch lại data đẻ lấy được data mơi nhất từ db sau khi thêm mới ngày điẻm danh
-    changeIsRefetch(!isRefetch)
+    changeIsRefetch(!isRefetch);
   };
 
   const huyDiemDanhHandler = () => {
@@ -132,8 +150,8 @@ const TrangThemDiemDanhCaNhan = (props) => {
 
   //Calback kích hoạt refetch get lại
   const refetchGetHandler = () => {
-    changeIsRefetch(!isRefetch)
-  }
+    changeIsRefetch(!isRefetch);
+  };
 
   return (
     <Fragment>
@@ -153,6 +171,8 @@ const TrangThemDiemDanhCaNhan = (props) => {
           dateData={dateData}
           teacherData={teacherData}
           activeRefetch={refetchGetHandler}
+          getMonthYear={changeMonthYearFilterHandler}
+          objMonthYear={objMonthYear}
         />
       )}
     </Fragment>
