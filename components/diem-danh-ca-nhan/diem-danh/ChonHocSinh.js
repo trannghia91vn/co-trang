@@ -13,7 +13,7 @@ const ChonHocSinh = (props) => {
       >
         Chọn học sinh tiến hành điểm danh
       </h3>
-      <ListTag type="only-one" arrTags={props.arrTags} />
+      <ListTag type="only-one" arrTags={props.arrTags} changeStuTag={props.changeStuTag}/>
     </Fragment>
   );
 };

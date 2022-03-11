@@ -41,12 +41,14 @@ const ListTag = (props) => {
       isSelected={item.isSelected}
       disabled={props.disabled}
       type={props.type ? props.type : null}
+      changeStuTag={props.changeStuTag}
     />
   ));
   let allClass = classes.container;
   if (props.disabled === "disabled") {
     allClass = `${classes.container} ${classes.dis}`;
   }
+
   return arrTagsFinal.length === 0 ? (
     <Loading />
   ) : (

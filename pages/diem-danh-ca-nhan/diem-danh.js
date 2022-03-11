@@ -43,6 +43,8 @@ const TrangThemDiemDanhCaNhan = (props) => {
   const [isLoading, changeIsLoading] = useState(null);
   //Biến state nộ bộ thực hiện fetch lại data khi cần
   const [isRefetch, changeIsRefetch] = useState(false);
+  //Biến state quan sát thay đổi tag student
+  const [isChangeTagStuSelected, changeTagStuSelected] = useState(false);
   useEffect(() => {
     //Kiểm tra submitAccess
     if (
@@ -85,7 +87,7 @@ const TrangThemDiemDanhCaNhan = (props) => {
     changeObjMonthYear(objMonthYear);
   };
   //Submit -- Lấy gía trị tag được chọn
-  const tagStuSelected = arrStusTags.find((tag) => tag.isSelected);
+  const tagStuSelected = arrSingleStusTags.find((tag) => tag.isSelected);
 
   //Xử lý load trang thì fetch và tạo mảng tags học sinh cho việc chọn điểm danh, đồng thời fetch get mảng điểm danh để load phần ngày điêm danh đã có của học sinh
   useEffect(() => {
@@ -111,7 +113,7 @@ const TrangThemDiemDanhCaNhan = (props) => {
     dataDiemDanh = getArrDiemDanhCaNhanByStuAndMonthYear(
       arrDiemDanhCaNhan,
       tagStuSelected.id,
-      objMonthYear.month,
+      objMonthYear.month - 1,
       objMonthYear.year
     );
   }

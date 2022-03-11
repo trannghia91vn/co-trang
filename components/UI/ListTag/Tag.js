@@ -8,8 +8,11 @@ const Tag = (props) => {
   const { id, name, isSelected } = props;
   //Callack select,deselect
   const selectHandler = (id) => {
-    if (props.type === 'only-one') {
+    if (props.type === "only-one") {
       dispatchFn(QlhsActions.clearStuTag());
+      if (props.changeStuTag) {
+        props.changeStuTag();
+      }
     }
     dispatchFn(QlhsActions.activeStuTag(id));
   };

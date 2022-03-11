@@ -2,7 +2,6 @@ import classes from "./date-pick.module.css";
 import { useState, useEffect } from "react";
 
 const FormChonNgayDDCN = (props) => {
-  console.log(props.objMonthYear)
   let dateDefault = "";
   let typeDefault = "";
   //Xử lý default Date khi thao tác lọc tháng năm truyền xuống

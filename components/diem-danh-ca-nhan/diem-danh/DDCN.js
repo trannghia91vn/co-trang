@@ -7,7 +7,10 @@ import LocNamThang from "../../UI/MonthYearPick/MonthYearPick";
 import { useSelector, useDispatch } from "react-redux";
 import { LoadingActions } from "../../../store/redux/loading/loading-slice";
 import { useState } from "react";
-import { getArrDiemDanhCaNhanNow } from "../../../support/diem-danh-ca-nhan/ddcn-uti";
+import {
+  getArrDiemDanhCaNhanNow,
+  getArrDiemDanhCaNhanMonthYear,
+} from "../../../support/diem-danh-ca-nhan/ddcn-uti";
 
 const DiemDanhCaNhan = (props) => {
   const dispatchFn = useDispatch();
@@ -45,15 +48,32 @@ const DiemDanhCaNhan = (props) => {
       changeViewEditUi(false);
     }, 100);
   };
+
   //Lấy thông tin mảng ngày điểm danh cá nhân
   const arrDiemDanhCaNhan = useSelector(
     (state) => state.ddcn.arrDiemDanhCaNhan
   );
-  //Lọc lại arrDiemDanhCaNhanNow để chỉ lays data hiện tại
-  const arrDiemDanhCaNhanNow = getArrDiemDanhCaNhanNow(arrDiemDanhCaNhan);
-  //Xử lý lọc lại data từ mảng arrDiemDanhCaNhanNow với id ngày được click, data này được truyền xuống các gd chỉnh sửa đẻ làm default
-  const objDateData = arrDiemDanhCaNhanNow.find((cv) => cv._id === idDateTemp);
-  console.log(teacherData);
+  let objDateData = {};
+  //Lấy obj data ngày được click tương ứng với thời điẻm hiện tại không filter
+  if (props.objMonthYear.month === "" && props.objMonthYear.year === "") {
+    //Lọc lại arrDiemDanhCaNhanNow để chỉ lays data hiện tại
+    const arrDiemDanhCaNhanNow = getArrDiemDanhCaNhanNow(arrDiemDanhCaNhan);
+    objDateData = arrDiemDanhCaNhanNow.find((cv) => cv._id === idDateTemp);
+  }
+  //Lấy obj data ngày được click tương ứng với thời điẻm được filter
+  if (props.objMonthYear.month > 0 && props.objMonthYear.year > 0) {
+    //Lọc lại arrDiemDanhCaNhanNow để chỉ lays data hiện tại
+    const arrDiemDanhCaNhanNow = getArrDiemDanhCaNhanMonthYear(
+      arrDiemDanhCaNhan,
+      props.objMonthYear.month,
+      props.objMonthYear.year
+    );
+    objDateData = arrDiemDanhCaNhanNow.find((cv) => cv._id === idDateTemp);
+  }
+  //Func xử lý thêm mới data ngày điểm danh
+  const addDateDataHandler = () => {
+    props.diemDanh();
+  };
   //Func xử lý chính để submit thông tin ngày được chỉnh sửa
   const editDateDataHandler = () => {
     //Tổng hợp data submit cho edit ngày điểm danh
@@ -78,13 +98,17 @@ const DiemDanhCaNhan = (props) => {
       headers: { "Content-Type": "application/json" },
     })
       .then((res) => {
-        props.activeRefetch();
+        // props.activeRefetch();
         changeViewEditUi(false);
         dispatchFn(LoadingActions.deactiveLoading());
       })
       .catch((error) => {
-        changeViewEditUi(false), dispatchFn(LoadingActions.deactiveLoading());
+        // props.activeRefetch();
+        changeViewEditUi(false);
+        dispatchFn(LoadingActions.deactiveLoading());
       });
+    //Chạy reFetch ở comp chính liền
+    props.activeRefetch();
   };
   const cancelEditHandler = () => {
     changeViewEditUi(false);
@@ -92,7 +116,7 @@ const DiemDanhCaNhan = (props) => {
 
   return (
     <section className={classes.container}>
-      <ChonHocSinh arrTags={props.arrTags} />
+      <ChonHocSinh arrTags={props.arrTags} changeStuTag={props.changeStuTag}/>
 
       {isTagSelected && (
         <label className={classes.note}>
@@ -101,44 +125,43 @@ const DiemDanhCaNhan = (props) => {
         </label>
       )}
       {isTagSelected && (
-        <LocNamThang
-          getMonthYear={props.getMonthYear}
-          refresh={refreshAddUi}
-        />
+        <LocNamThang getMonthYear={props.getMonthYear} refresh={refreshAddUi} />
       )}
 
-      <div className={classes.editForm}>
-        {isTagSelected && !isViewEditUi && (
-          <ChonNgayDDCN
-            getDateData={props.getDateData}
-            objMonthYear={props.objMonthYear}
-          />
-        )}
-        {isTagSelected && !isViewEditUi && !props.isDateOff && (
-          <ChonGiaoVienCN getTeacherData={props.getTeacherData} />
-        )}
-        {isTagSelected && !isViewEditUi && (
-          <div className={classes.actions}>
-            <button
-              type="button"
-              style={{ fontSize: "1.2rem" }}
-              className="btn btn-submit"
-              onClick={props.diemDanh}
-              disabled={props.isSumitAccess ? "" : "disabled"}
-            >
-              Cập nhật
-            </button>
-            <button
-              type="button"
-              style={{ fontSize: "1.2rem" }}
-              className="btn btn-cancel"
-              onClick={props.huyDiemDanh}
-            >
-              Hủy
-            </button>
-          </div>
-        )}
-      </div>
+      {isTagSelected && (
+        <div className={classes.addForm}>
+          {isTagSelected && !isViewEditUi && (
+            <ChonNgayDDCN
+              getDateData={props.getDateData}
+              objMonthYear={props.objMonthYear}
+            />
+          )}
+          {isTagSelected && !isViewEditUi && !props.isDateOff && (
+            <ChonGiaoVienCN getTeacherData={props.getTeacherData} />
+          )}
+          {isTagSelected && !isViewEditUi && (
+            <div className={classes.actions}>
+              <button
+                type="button"
+                style={{ fontSize: "1.2rem" }}
+                className="btn btn-submit"
+                onClick={addDateDataHandler}
+                disabled={props.isSumitAccess ? "" : "disabled"}
+              >
+                Cập nhật
+              </button>
+              <button
+                type="button"
+                style={{ fontSize: "1.2rem" }}
+                className="btn btn-cancel"
+                onClick={props.huyDiemDanh}
+              >
+                Hủy
+              </button>
+            </div>
+          )}
+        </div>
+      )}
 
       {isTagSelected && (
         <LichDiemDanh
@@ -149,42 +172,43 @@ const DiemDanhCaNhan = (props) => {
         />
       )}
 
-      {/* Phần này là giao diện chỉnh sửa cho ngày */}
-      <div className={classes.editForm}>
-        {isTagSelected && isViewEditUi && (
-          <ChonNgayDDCN
-            defaultValue={objDateData}
-            editDateData={editDateDataTempHandler}
-          />
-        )}
+      {isTagSelected && (
+        <div className={classes.editForm}>
+          {isTagSelected && isViewEditUi && (
+            <ChonNgayDDCN
+              defaultValue={objDateData}
+              editDateData={editDateDataTempHandler}
+            />
+          )}
 
-        {isTagSelected && isViewEditUi && dateData.actionType !== "nghi" && (
-          <ChonGiaoVienCN
-            defaultValue={objDateData}
-            editTeacherData={editTeaDataTempHandler}
-          />
-        )}
-        {isTagSelected && isViewEditUi && (
-          <div className={classes.actions}>
-            <button
-              type="button"
-              style={{ fontSize: "1.2rem" }}
-              className="btn btn-submit"
-              onClick={editDateDataHandler}
-            >
-              Sửa
-            </button>
-            <button
-              type="button"
-              style={{ fontSize: "1.2rem" }}
-              className="btn btn-cancel"
-              onClick={cancelEditHandler}
-            >
-              Hủy
-            </button>
-          </div>
-        )}
-      </div>
+          {isTagSelected && isViewEditUi && dateData.actionType !== "nghi" && (
+            <ChonGiaoVienCN
+              defaultValue={objDateData}
+              editTeacherData={editTeaDataTempHandler}
+            />
+          )}
+          {isTagSelected && isViewEditUi && (
+            <div className={classes.actions}>
+              <button
+                type="button"
+                style={{ fontSize: "1.2rem" }}
+                className="btn btn-submit"
+                onClick={editDateDataHandler}
+              >
+                Sửa
+              </button>
+              <button
+                type="button"
+                style={{ fontSize: "1.2rem" }}
+                className="btn btn-cancel"
+                onClick={cancelEditHandler}
+              >
+                Hủy
+              </button>
+            </div>
+          )}
+        </div>
+      )}
     </section>
   );
 };

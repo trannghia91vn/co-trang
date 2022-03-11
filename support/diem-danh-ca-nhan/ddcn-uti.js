@@ -43,3 +43,13 @@ export const getArrDiemDanhCaNhanNow = (arrDiemDanhCaNhan) => {
   );
   return result;
 };
+
+//Func lọc mảng điểm danh cá nhân theo ngày tháng now
+export const getArrDiemDanhCaNhanMonthYear = (arrDiemDanhCaNhan,month,year) => {
+  const result = arrDiemDanhCaNhan.filter(
+    (cv) =>
+      new Date(cv.dateSingleCheck).getMonth() === month-1 &&
+      new Date(cv.dateSingleCheck).getFullYear() === year
+  );
+  return result;
+};
