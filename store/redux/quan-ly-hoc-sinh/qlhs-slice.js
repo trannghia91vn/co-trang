@@ -51,7 +51,6 @@ const QlhsSlice = createSlice({
     },
     //Tạo func active / deactive tag học sinh
     activeStuTag(state, action) {
-      console.log("Its run");
       const objStuMatched = state.arrStudentTags.find(
         (cv) => cv.id === action.payload
       );

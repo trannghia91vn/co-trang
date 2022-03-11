@@ -1,0 +1,48 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  border-radius: 5px;
+  border: 1px dashed var(--mauVienMo--);
+  padding: 5px 0;
+}
+.container > * {
+  margin: 0.4rem;
+}
+.container label {
+  margin-right: 0.2rem;
+}
+.container input {
+  outline: none;
+  border: 1px solid var(--mauVanBanMo--);
+  border-radius: 5px;
+  padding: 1px 4px;
+}
+.container input:focus {
+  border: 1px solid var(--mauHighlight--);
+  background-color: var(--mauHighlightMo--);
+}
+.btn {
+  align-self: center;
+  border-radius: 5px;
+  padding: 5px 10px;
+  outline: none;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+  margin: 0 0.5rem;
+  cursor: pointer;
+  border: 1px solid var(--mauNut--);
+  background-color: #fff;
+  color: var(--mauNut--);
+}
+.btn:hover {
+  border: 1px solid var(--mauNut--);
+  background-color: var(--mauNut--);
+  color: #fff;
+}
+.btn-active {
+  border: 1px solid var(--mauNut--);
+  background-color: var(--mauNut--);
+  color: #fff;
+}

@@ -1,0 +1,95 @@
+.overall {
+  margin-top: 1rem;
+  border-radius: 5px;
+  background-color: var(--mauVien--);
+  padding: var(--dim-xm--);
+  display: flex;
+  flex-direction: column;
+}
+.overall h3 {
+  margin: 0.5rem 0;
+  text-transform: uppercase;
+  color: #fff;
+  align-self: center;
+}
+.notes,
+.note {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+}
+.note {
+  margin: 0.5rem 0.8rem;
+  opacity: 0.7;
+}
+.note label {
+  color: #fff;
+}
+.hoc,
+.nghi,
+.bu,
+.tang {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+.hoc {
+  background-color: var(--mauNut--);
+}
+.nghi {
+  background-color: var(--mauPhu2--);
+}
+.bu {
+  background-color: var(--mauPhu1--);
+}
+.tang {
+  background-color: var(--mauGiaoVien--);
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.date p {
+  margin: 0;
+  margin-right: 10px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--mauTieuDe--);
+}
+.date {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem;
+  padding: 8px 15px;
+  border-radius: 5px;
+  background-color: var(--mauNut--);
+}
+.date > * {
+  margin: 0 0.2rem;
+}
+.date-nghi {
+  background-color: var(--mauPhu2--);
+}
+.date-bu {
+  background-color: var(--mauPhu1--);
+}
+.date-tang {
+  background-color: var(--mauGiaoVien--);
+}
+.xmbtn {
+  cursor: pointer;
+  outline: none;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid var(--mauVien--);
+  box-shadow: 2px 2px 2px gray;
+}

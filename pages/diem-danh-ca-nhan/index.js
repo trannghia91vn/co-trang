@@ -13,7 +13,7 @@ const TrangDiemDanhCaNhan = (props) => {
 
   //Tạo đối tượng chứa thông tin các tag điều hướng
   const arrOptions = [
-    { label: "Thêm mới", slug: "diem-danh" },
+    { label: "Điểm danh", slug: "diem-danh" },
     { label: "Thống kê", slug: "thong-ke" },
   ];
 

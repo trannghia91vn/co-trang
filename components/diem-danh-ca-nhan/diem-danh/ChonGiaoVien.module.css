@@ -1,0 +1,68 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  border: 1px dashed var(--mauVienMo--);
+  padding: 5px 0;
+}
+.container > * {
+  margin: 0.4rem;
+}
+.container label {
+  margin-right: 0.5rem;
+}
+.container input,
+.container select {
+  outline: none;
+  border: 1px solid var(--mauVanBanMo--);
+  border-radius: 5px;
+  padding: 1px 4px;
+  margin : 0 0.8rem;
+}
+.container input:focus,
+.container select:focus {
+  border: 1px solid var(--mauHighlight--);
+  background-color: var(--mauHighlightMo--);
+}
+.container input {
+  max-width: 50px;
+}
+.control {
+  display : flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  margin : .8rem .5rem;
+}
+.btnTime {
+  align-self: center;
+  border-radius: 50%;
+  padding: 6px;
+  outline: none;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+  margin: 0 0.3rem;
+  cursor: pointer;
+  border: 1px solid var(--mauPhu1--);
+  background-color: var(--mauPhu1--);
+  color: #fff;
+}
+.btnTime:hover {
+  border: 1px solid var(--mauPhu1--);
+  background-color: #fff;
+  color: var(--mauPhu1--);
+}
+.notis {
+  display : flex;
+  flex-direction: row;
+  flex-wrap : wrap;
+  padding : 10px;
+  border-radius: 5px;
+  background-color: rgb(253, 253, 200);
+  font-size: .9rem;
+  color : green;
+}
+.noti {
+  margin : 0 .5rem;
+}

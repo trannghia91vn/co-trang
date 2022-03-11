@@ -1,0 +1,106 @@
+import classes from "./LichDiemDanh.module.css";
+import { FaRegEdit } from "react-icons/fa";
+import { AiFillDelete } from "react-icons/ai";
+import { sortDateChecked } from "../../../support/diem-danh-ca-nhan/ddcn-uti";
+import { useDispatch } from "react-redux";
+import { LoadingActions } from "../../../store/redux/loading/loading-slice";
+import { Fragment } from "react";
+
+const LichDiemDanh = (props) => {
+  const dispatchFn = useDispatch();
+  //Tạo biến ngày hôm nay -> lọc ra tháng để chỉ render tháng cần điểm danh là now
+  const now = new Date();
+  const nowMonth = now.getMonth() + 1;
+  const nowYear = now.getFullYear();
+  //Lấy về data từ props để render lich điểm danh
+  const arrDateChecked = sortDateChecked(props.dataDiemDanh);
+  //Callback xử lý chính
+  const editDateHandler = (id) => {
+    props.editDate(id);
+  };
+  const delDateHandler = (id) => {
+    //Push loading
+    dispatchFn(LoadingActions.activeLoading());
+    //Chạy fetch xóa ngày điểm danh
+    fetch("/api/diem-danh-ca-nhan", {
+      method: "DELETE",
+      body: JSON.stringify(id),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then(
+        (res) => dispatchFn(LoadingActions.deactiveLoading()),
+        props.activeRefetch()
+      )
+      .catch(
+        (error) => dispatchFn(LoadingActions.deactiveLoading()),
+        props.activeRefetch()
+      );
+  };
+
+  //Biến render ra nội dung ngày điểm danh
+  const renderDatesChecked = arrDateChecked.map((date) => {
+    let finalDateCss = classes.date;
+    if (date.typeSingleCheck === "nghi") {
+      finalDateCss = `${classes.date} ${classes["date-nghi"]}`;
+    }
+    if (date.typeSingleCheck === "bu") {
+      finalDateCss = `${classes.date} ${classes["date-bu"]}`;
+    }
+    if (date.typeSingleCheck === "tang") {
+      finalDateCss = `${classes.date} ${classes["date-tang"]}`;
+    }
+    return (
+      <div key={date._id} className={finalDateCss}>
+        <p>{new Date(date.dateSingleCheck).getDate()}</p>
+        <button
+          className={classes.xmbtn}
+          type="button"
+          onClick={editDateHandler.bind(0, date._id)}
+        >
+          <FaRegEdit
+            style={{ color: "green", fontWeight: "bold", fontSize: "1rem" }}
+          />
+        </button>
+        <button
+          className={classes.xmbtn}
+          type="button"
+          onClick={delDateHandler.bind(0, date._id)}
+        >
+          <AiFillDelete
+            style={{ color: "darkred", fontWeight: "bold", fontSize: "1rem" }}
+          />
+        </button>
+      </div>
+    );
+  });
+
+  return (
+    <Fragment>
+        <div className={classes.overall}>
+          <h3>
+            Điểm danh tháng <span style={{ color: "yellow" }}>{nowMonth}</span>{" "}
+            năm <span style={{ color: "yellow" }}>{nowYear}</span>
+          </h3>
+
+          <div className={classes.notes}>
+            <div className={classes.note}>
+              <div className={classes.hoc} /> <label>Ngày học</label>
+            </div>
+            <div className={classes.note}>
+              <div className={classes.nghi} /> <label>Ngày nghỉ</label>
+            </div>
+            <div className={classes.note}>
+              <div className={classes.bu} /> <label>Ngày học bù</label>
+            </div>
+            <div className={classes.note}>
+              <div className={classes.tang} /> <label>Ngày tăng cường</label>
+            </div>
+          </div>
+
+          <div className={classes.container}>{renderDatesChecked}</div>
+        </div>
+    </Fragment>
+  );
+};
+
+export default LichDiemDanh;

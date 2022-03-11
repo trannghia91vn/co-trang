@@ -34,16 +34,6 @@
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/diem-danh-ca-nhan/diem-danh.js"
-    ],
-    "/quan-ly-lop-nhom": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/quan-ly-lop-nhom.js"
-    ],
-    "/quan-ly-lop-nhom/ds-lop-nhom": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/quan-ly-lop-nhom/ds-lop-nhom.js"
     ]
   },
   "ampFirstPages": []

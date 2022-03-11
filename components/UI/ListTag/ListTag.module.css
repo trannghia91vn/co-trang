@@ -1,13 +1,36 @@
+.overall {
+  padding: .6rem;
+  background-color: var(--mauPhu2--);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}
 .container {
-    /* margin : var(--dim-sm--); */
-    padding : 10px;
-    /* border : 1px dashed var(--mauVienMo--); */
-    background-color: var(--mauPhu2--);
-    border-radius: 5px;
-    display : flex;
-    flex-direction: row;
-    justify-content: flex-start;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-top: 0.8rem;
 }
 .dis {
-    cursor : not-allowed;
+  cursor: not-allowed;
+}
+.search {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: .5rem;
+  border-bottom: 2px dashed #fff;
+}
+.search label {
+  margin: 0 0.5rem;
+  color: gray;
+}
+.search input {
+  outline: none;
+  border: 1px solid var(--mauVanBanMo--);
+  border-radius: 5px;
+  padding: 1px 4px;
+}
+.search input:focus {
+  border: 1px solid var(--mauHighlight--);
+  background-color: var(--mauHighlightMo--);
 }
