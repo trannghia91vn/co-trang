@@ -4,6 +4,7 @@ import qlgvSlice from "./quan-ly-giao-vien/qlgv-slice";
 import qllnSlice from "./quan-ly-lop-nhom/qlln-slice";
 import loadingSlice from "./loading/loading-slice";
 import ddcnSlice from "./diem-danh-ca-nhan/ddcn-slice";
+import ddnSlice from "./diem-danh-nhom/ddn-slice";
 
 const Store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const Store = configureStore({
     qlgv: qlgvSlice,
     qlln: qllnSlice,
     ddcn: ddcnSlice,
+    ddn : ddnSlice,
     loading: loadingSlice,
   },
 });

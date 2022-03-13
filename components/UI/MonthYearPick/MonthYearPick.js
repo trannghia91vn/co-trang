@@ -36,7 +36,7 @@ const LocNamThang = (props) => {
       year: year,
     });
     clearInput();
-    props.refresh();
+    // props.refresh();
   };
   //Biến render thông báo
   const renderNoti = (

@@ -53,7 +53,11 @@ const ThemMoiLopNhom = (props) => {
           </div>
           <div className={classes.tags}>
             <label>Chọn học sinh cho lóp nhóm</label>
-            <ListTag arrTags={props.arrGroupStus} />
+            <ListTag
+              arrTags={props.arrGroupStus}
+              isStudent={true}
+              isTeacher={false}
+            />
           </div>
         </div>
         <div className={classes.actions}>

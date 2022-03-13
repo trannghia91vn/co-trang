@@ -8,13 +8,22 @@ const reducerFn = (preState, action) => {
   if (action.type === "ADD") {
     //Lấy về mảng trước đó
     const arrTeacherDataExist = [...preState];
+    console.log(arrTeacherDataExist);
     //Tìm kiếm xem data được thêm vào đã tồn tại chưa
     const objMatched = arrTeacherDataExist.find(
       (cv) => cv.idTea === action.idTea
     );
+    const indexMatched = arrTeacherDataExist.find(
+      (cv) => cv.idTea === action.idTea
+    );
     //Nếu có thì update, nếu chứa thì push vào
     if (objMatched) {
-      objMatched.teachedTime = action.teachedTime;
+      // objMatched.teachedTime = action.teachedTime;
+      const objCopy = { ...objMatched };
+      objCopy.teachedTime = action.teachedTime;
+      //Xóa thằng cú và push thằng mới vào
+      arrTeacherDataExist.splice(indexMatched, 1);
+      arrTeacherDataExist.push(objCopy);
       return arrTeacherDataExist;
     } else {
       arrTeacherDataExist.push({

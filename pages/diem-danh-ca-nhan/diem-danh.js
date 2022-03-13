@@ -44,7 +44,7 @@ const TrangThemDiemDanhCaNhan = (props) => {
   //Biến state nộ bộ thực hiện fetch lại data khi cần
   const [isRefetch, changeIsRefetch] = useState(false);
   //Biến state quan sát thay đổi tag student
-  const [isChangeTagStuSelected, changeTagStuSelected] = useState(false);
+  // const [isChangeTagStuSelected, changeTagStuSelected] = useState(false);
   useEffect(() => {
     //Kiểm tra submitAccess
     if (
@@ -73,7 +73,14 @@ const TrangThemDiemDanhCaNhan = (props) => {
   const arrStusTags = useSelector((state) => state.qlhs.arrStudentTags);
   //Lọc lại mảng tags cá nâhn
   const arrSingleStusTags = arrStusTags.filter((tag) => tag.singleClass);
-
+  //Func kích hoạt loading dùng cho comp bên dưới
+  const activeLoading = () => {
+    changeIsLoading(true);
+  };
+  //Func kích hoạt tắt loading dùng cho comp bên dưới
+  const deActiveLoading = () => {
+    changeIsLoading(false);
+  };
   //Func truyền dateData ngược lên từ props
   const getDateData = (data) => {
     changeDateData(data);
@@ -91,8 +98,10 @@ const TrangThemDiemDanhCaNhan = (props) => {
 
   //Xử lý load trang thì fetch và tạo mảng tags học sinh cho việc chọn điểm danh, đồng thời fetch get mảng điểm danh để load phần ngày điêm danh đã có của học sinh
   useEffect(() => {
+    changeIsLoading(true);
     dispatchFn(getStusDataAndCreateArrTags());
     dispatchFn(fetchGetArrDiemDanhCaNhan());
+    changeIsLoading(false);
   }, [isRefetch]);
 
   //Lọc lại data điểm danh đã tồn tại trên redux của học sinh được chọn
@@ -136,6 +145,7 @@ const TrangThemDiemDanhCaNhan = (props) => {
       headers: { "Content-Type": "application/json" },
     })
       .then((response) => {
+        router.reload();
         changeIsLoading(false);
       })
       .catch((error) => {
@@ -145,6 +155,8 @@ const TrangThemDiemDanhCaNhan = (props) => {
     changeIsRefetch(!isRefetch);
   };
 
+  
+
   const huyDiemDanhHandler = () => {
     //Tiến hành reload lại trang khi hủy
     router.reload();
@@ -152,7 +164,9 @@ const TrangThemDiemDanhCaNhan = (props) => {
 
   //Calback kích hoạt refetch get lại
   const refetchGetHandler = () => {
+    changeIsLoading(true);
     changeIsRefetch(!isRefetch);
+    changeIsLoading(false);
   };
 
   return (
@@ -161,19 +175,21 @@ const TrangThemDiemDanhCaNhan = (props) => {
       {isLoading && <Loading />}
       {!isLoading && (
         <DiemDanhCaNhan
-          arrTags={arrSingleStusTags}
           getDateData={getDateData}
           getTeacherData={getTeacherData}
+          getMonthYear={changeMonthYearFilterHandler}
           diemDanh={diemDanhHandler}
           huyDiemDanh={huyDiemDanhHandler}
+          activeRefetch={refetchGetHandler}
+          activeLoading={activeLoading}
+          deActiveLoading={deActiveLoading}
+          arrTags={arrSingleStusTags}
           isTagSelected={tagStuSelected}
           isSumitAccess={submitAccess}
           isDateOff={isDateOff}
           dataDiemDanh={dataDiemDanh}
           dateData={dateData}
           teacherData={teacherData}
-          activeRefetch={refetchGetHandler}
-          getMonthYear={changeMonthYearFilterHandler}
           objMonthYear={objMonthYear}
         />
       )}

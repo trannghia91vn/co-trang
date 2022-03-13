@@ -1,0 +1,28 @@
+.overall {
+  margin-top: 1rem;
+  border-radius: 5px;
+  background-color: var(--mauVien--);
+  padding: var(--dim-xm--);
+  display: flex;
+  flex-direction: column;
+}
+.overall h3 {
+  margin: 0.5rem 0;
+  /* text-transform: uppercase; */
+  color: rgba(255, 255, 255, 0.7);
+  align-self: center;
+  font-size: 1rem;
+}
+.overall span {
+  margin: 0 5px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: flex-start;
+  align-items: flex-start; */
+  flex-wrap: wrap;
+  padding : 0 1rem;
+}
+

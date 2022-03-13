@@ -8,9 +8,13 @@
 }
 .overall h3 {
   margin: 0.5rem 0;
-  text-transform: uppercase;
-  color: #fff;
+  /* text-transform: uppercase; */
+  color: rgba(255, 255, 255, 0.7);
   align-self: center;
+  font-size: 1rem;
+}
+.overall span {
+  margin : 0 5px;
 }
 .notes,
 .note {

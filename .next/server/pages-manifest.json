@@ -2,7 +2,9 @@
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
   "/_error": "pages/_error.js",
+  "/diem-danh-nhom/diem-danh": "pages/diem-danh-nhom/diem-danh.js",
+  "/api/quan-ly-giao-vien": "pages/api/quan-ly-giao-vien.js",
+  "/api/quan-ly-lop-nhom": "pages/api/quan-ly-lop-nhom.js",
   "/api/quan-ly-hoc-sinh": "pages/api/quan-ly-hoc-sinh.js",
-  "/api/diem-danh-ca-nhan": "pages/api/diem-danh-ca-nhan.js",
-  "/api/quan-ly-giao-vien": "pages/api/quan-ly-giao-vien.js"
+  "/api/diem-danh-nhom": "pages/api/diem-danh-nhom.js"
 }

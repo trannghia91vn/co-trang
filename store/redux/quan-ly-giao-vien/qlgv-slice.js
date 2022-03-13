@@ -3,6 +3,7 @@ import { LoadingActions } from "../loading/loading-slice";
 
 const initTeacher = {
   arrTeachers: [],
+  arrTeacherTags: [],
 };
 
 const QlgvSlice = createSlice({
@@ -11,6 +12,40 @@ const QlgvSlice = createSlice({
   reducers: {
     replaceArrTeachers(state, action) {
       state.arrTeachers = action.payload;
+    },
+    createArrTeacherTags(state) {
+      const arrTeachers = [...state.arrTeachers];
+      if (arrTeachers.length > 0) {
+        state.arrTeacherTags = arrTeachers.map((cv) => {
+          return {
+            id: cv._id,
+            name: cv.name,
+            isSelected: false,
+          };
+        });
+      } else {
+        return;
+      }
+    },
+    //Func kích hoạt và hủy kích hoạt teacher tags
+    activeTeaTag(state, action) {
+      const tagMatched = state.arrTeacherTags.find(
+        (tag) => tag.id === action.payload
+      );
+      if (tagMatched) {
+        tagMatched.isSelected = true;
+      }
+    },
+    deactiveTeaTag(state, action) {
+      const tagMatched = state.arrTeacherTags.find(
+        (tag) => tag.id === action.payload
+      );
+      if (tagMatched) {
+        tagMatched.isSelected = false;
+      }
+    },
+    clearAllTag(state) {
+      state.arrTeacherTags.forEach((tag) => (tag.isSelected = false));
     },
   },
 });
@@ -25,7 +60,9 @@ export const fetchGetArrTeacher = () => {
       const response = await fetch("/api/quan-ly-giao-vien");
       dispatchFn(LoadingActions.deactiveLoading());
       const data = await response.json();
+      //Ghi đề arrTeachers và tạo arr Tags cho redux
       dispatchFn(QlgvActions.replaceArrTeachers(data.data));
+      dispatchFn(QlgvActions.createArrTeacherTags())
     } catch (error) {
       console.log("Get thông tin giáo viên lỗi.");
       dispatchFn(LoadingActions.deactiveLoading());

@@ -3,10 +3,11 @@ import { FaRegEdit } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 import { sortDateChecked } from "../../../support/diem-danh-ca-nhan/ddcn-uti";
 import { useDispatch } from "react-redux";
-import { LoadingActions } from "../../../store/redux/loading/loading-slice";
 import { Fragment } from "react";
 
 const LichDiemDanh = (props) => {
+  //Lấy về tên học sinh được chọn để render cho dễ nhận biết
+  const nameStuSelected = props.stuSelected.name;
   const dispatchFn = useDispatch();
   //Tạo biến ngày hôm nay -> lọc ra tháng để chỉ render tháng cần điểm danh là now
   const now = new Date();
@@ -20,21 +21,15 @@ const LichDiemDanh = (props) => {
   };
   const delDateHandler = (id) => {
     //Push loading
-    dispatchFn(LoadingActions.activeLoading());
+    props.activeLoading();
     //Chạy fetch xóa ngày điểm danh
     fetch("/api/diem-danh-ca-nhan", {
       method: "DELETE",
       body: JSON.stringify(id),
       headers: { "Content-Type": "application/json" },
     })
-      .then(
-        (res) => dispatchFn(LoadingActions.deactiveLoading()),
-        props.activeRefetch()
-      )
-      .catch(
-        (error) => dispatchFn(LoadingActions.deactiveLoading()),
-        props.activeRefetch()
-      );
+      .then((res) => props.deActiveLoading(), props.activeRefetch())
+      .catch((error) => props.deActiveLoading(), props.activeRefetch());
   };
 
   //Biến render ra nội dung ngày điểm danh
@@ -78,11 +73,12 @@ const LichDiemDanh = (props) => {
     <Fragment>
       <div className={classes.overall}>
         <h3>
-          Điểm danh tháng{" "}
+          Hs: <span style={{ color: "yellow" }}> {nameStuSelected}</span> -
+          Time:
           <span style={{ color: "yellow" }}>
             {props.objMonthYear.month > 0 ? props.objMonthYear.month : nowMonth}
-          </span>{" "}
-          năm{" "}
+          </span>
+          /
           <span style={{ color: "yellow" }}>
             {props.objMonthYear.year > 0 ? props.objMonthYear.year : nowYear}
           </span>

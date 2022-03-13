@@ -1,0 +1,66 @@
+.item {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    padding : .5rem;
+    border-radius: 5px;
+    background-color: var(--mauNen--);
+    transition : all .2s;
+    position: relative;
+    margin : .5rem 0;
+}
+.item:hover {
+    bottom : 2px;
+    box-shadow : 2px 2px 2px rgba(255, 255, 255, 0.5);
+    background-color: rgb(253, 253, 223);
+}
+.item >* {
+    margin : .2rem .5rem;
+}
+.date {
+    display : flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding : 8px;
+    border-radius: 5px;
+    background-color: var(--mauGiaoVien--);
+    font-size: 1.1rem;
+    font-weight: bold;
+    color : #fff;
+}
+.time {
+    display : flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color : var(--mauGiaoVien--);
+    border : 1px solid var(--mauGiaoVien--);
+    border-radius: 5px;
+    padding :5px;
+}
+.stus {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.stus >* {
+    display : flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin : .3rem;
+    color : #fff;
+    border : 1px solid var(--mauPhu1--);
+    background-color: var(--mauPhu1--);
+    border-radius: 5px;
+    padding :3px 5px;
+}
+.actions {
+    display: flex;
+    flex-direction: row;
+}
+.actions >* {
+    margin : .3rem
+}

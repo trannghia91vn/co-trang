@@ -5,7 +5,6 @@ import ChonGiaoVienCN from "./ChonGiaoVien";
 import LichDiemDanh from "../lich-diem-danh/LichDiemDanh";
 import LocNamThang from "../../UI/MonthYearPick/MonthYearPick";
 import { useSelector, useDispatch } from "react-redux";
-import { LoadingActions } from "../../../store/redux/loading/loading-slice";
 import { useState } from "react";
 import {
   getArrDiemDanhCaNhanNow,
@@ -90,7 +89,7 @@ const DiemDanhCaNhan = (props) => {
       data: data,
     };
     //Push loading
-    dispatchFn(LoadingActions.activeLoading());
+    props.activeLoading();
     //Chạy fetch put
     fetch("/api/diem-danh-ca-nhan", {
       method: "PUT",
@@ -99,16 +98,17 @@ const DiemDanhCaNhan = (props) => {
     })
       .then((res) => {
         // props.activeRefetch();
-        changeViewEditUi(false);
-        dispatchFn(LoadingActions.deactiveLoading());
+        // changeViewEditUi(false);
+        props.deActiveLoading();
       })
       .catch((error) => {
         // props.activeRefetch();
-        changeViewEditUi(false);
-        dispatchFn(LoadingActions.deactiveLoading());
+        // changeViewEditUi(false);
+        props.deActiveLoading();
       });
     //Chạy reFetch ở comp chính liền
     props.activeRefetch();
+    changeViewEditUi(false);
   };
   const cancelEditHandler = () => {
     changeViewEditUi(false);
@@ -116,7 +116,7 @@ const DiemDanhCaNhan = (props) => {
 
   return (
     <section className={classes.container}>
-      <ChonHocSinh arrTags={props.arrTags} changeStuTag={props.changeStuTag}/>
+      <ChonHocSinh arrTags={props.arrTags} changeStuTag={props.changeStuTag} />
 
       {isTagSelected && (
         <label className={classes.note}>
@@ -167,8 +167,11 @@ const DiemDanhCaNhan = (props) => {
         <LichDiemDanh
           dataDiemDanh={props.dataDiemDanh}
           editDate={switchEditHandler}
+          activeLoading={props.activeLoading}
+          deActiveLoading={props.deActiveLoading}
           activeRefetch={props.activeRefetch}
           objMonthYear={props.objMonthYear}
+          stuSelected={props.isTagSelected}
         />
       )}
 
