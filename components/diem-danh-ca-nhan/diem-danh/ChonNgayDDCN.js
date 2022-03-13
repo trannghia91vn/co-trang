@@ -14,10 +14,8 @@ const ChonNgayDDCN = (props) => {
         Chọn ngày điểm danh
       </h3>
       <FormChonNgayDDCN
-        getDateData={props.getDateData}
-        defaultValue={props.defaultValue}
-        editDateData={props.editDateData}
-        objMonthYear={props.objMonthYear}
+        getDateType={props.getDateType}
+        dateTypeDefault={props.dateTypeDefault}
       />
     </Fragment>
   );

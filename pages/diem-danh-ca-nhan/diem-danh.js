@@ -3,19 +3,16 @@ import DiemDanhCaNhan from "../../components/diem-danh-ca-nhan/diem-danh/DDCN";
 import Loading from "../../components/UI/Loading/Loading";
 import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getStusDataAndCreateArrTags } from "../../store/redux/quan-ly-hoc-sinh/qlhs-slice";
-import { fetchGetArrDiemDanhCaNhan } from "../../store/redux/diem-danh-ca-nhan/ddcn-slice";
 import { useRouter } from "next/router";
-import { getArrDiemDanhCaNhanByStuAndMonthYear } from "../../support/diem-danh-ca-nhan/ddcn-uti";
+import {
+  fetchGetStudentData,
+  getStusDataAndCreateArrTags,
+} from "../../store/redux/quan-ly-hoc-sinh/qlhs-slice";
+import { fetchGetArrTeacher } from "../../store/redux/quan-ly-giao-vien/qlgv-slice";
+import { fetchGetArrDiemDanhCaNhan } from "../../store/redux/diem-danh-ca-nhan/ddcn-slice";
+import { LoadingActions } from "../../store/redux/loading/loading-slice";
 
 const TrangThemDiemDanhCaNhan = (props) => {
-  const dispatchFn = useDispatch();
-  const router = useRouter();
-  //Tạo biến năm tháng hiện tại
-  const now = new Date();
-  const nowMonth = +now.getMonth();
-  const nowYear = +now.getFullYear();
-
   //Tạo chay data mẫu cho điều hướng nối dung theo thứ tự luôn
   const contentNavi = [
     {
@@ -29,170 +26,201 @@ const TrangThemDiemDanhCaNhan = (props) => {
       isActive: true,
     },
   ];
-  //Submit -- ngày tháng và lọại điểm danh
-  const [dateData, changeDateData] = useState({ date: null, actionType: null });
-  //Sumit -- thông tin giáo viên cho ngày điểm danh
-  const [teacherData, changeTeacherData] = useState([]);
-  //Biến state quản lý lọc ngày tháng
-  const [objMonthYear, changeObjMonthYear] = useState({ month: "", year: "" });
-  //Biến state quyết định cho phép bấm nút cập nhật hay không
-  const [submitAccess, changeSubmitAccess] = useState(false);
-  //Biến state nếu là ngày nghỉ thì không cần render thêm thông tin giáo viên
-  const [isDateOff, changeIsDateOff] = useState(false);
-  //Biến state nội bộ render Loading cho send post request
-  const [isLoading, changeIsLoading] = useState(null);
-  //Biến state nộ bộ thực hiện fetch lại data khi cần
-  const [isRefetch, changeIsRefetch] = useState(false);
-  //Biến state quan sát thay đổi tag student
-  // const [isChangeTagStuSelected, changeTagStuSelected] = useState(false);
-  useEffect(() => {
-    //Kiểm tra submitAccess
-    if (
-      (dateData.date &&
-        dateData.actionType !== "nghi" &&
-        teacherData.length > 0) ||
-      (dateData.actionType === "nghi" && dateData.date)
-    ) {
-      changeSubmitAccess(true);
-    } else {
-      changeSubmitAccess(false);
-    }
-    //Kiểm tra ngày nghỉ
-    if (dateData.actionType === "nghi") {
-      changeIsDateOff(true);
-    } else {
-      changeIsDateOff(false);
-    }
-  }, [dateData, teacherData, dateData.actionType]);
 
-  //Lấy về mảng điểm danh cá nhân từ redux
+  //------------ KHU VỤC THIẾT LẬP BIẾN ------------
+  const dispatchFn = useDispatch();
+  const router = useRouter();
+  //Thiết lập biến chứa ngày tháng được lọc
+  const [monthYearFilter, changeMonthYearFilter] = useState({
+    month: "",
+    year: "",
+  });
+  //Biến tạm thời chứa thông tin ngày tháng, loại hành động điềm danh lấy từ comp thêm mới ngày điẻm danh
+  const [dateTypeData, changeDateTypeData] = useState({
+    date: "",
+    type: "",
+  });
+  //Biến tạm thời chứa thông tin giáo viên cho ngày điểm danh dạng ARR
+  const [teacherTaughtData, changeTeacherTaughtData] = useState([]);
+  //Biến tạm thời trạng thái cho phép ấn nút cạp nhật hay không
+  const [disUpdateBtn, changeDisUpdateBtn] = useState(true);
+  //Biến tạm thời chứa id ngày điềm danh được click khi sửa
+  const [idDateTemp, changeIdDateTemp] = useState("");
+
+  //------------ KHU VỤC LẤY VỀ DATA VÀ XỬ LÝ ĐÊ DÙNG ------------
+  //Lấy về mảng arrDiemDanhCaNhan để render Lịch điểm danh
   const arrDiemDanhCaNhan = useSelector(
     (state) => state.ddcn.arrDiemDanhCaNhan
   );
-  //Lấy về mảng tags hs cá nhân từ redux
-  const arrStusTags = useSelector((state) => state.qlhs.arrStudentTags);
-  //Lọc lại mảng tags cá nâhn
-  const arrSingleStusTags = arrStusTags.filter((tag) => tag.singleClass);
-  //Func kích hoạt loading dùng cho comp bên dưới
-  const activeLoading = () => {
-    changeIsLoading(true);
-  };
-  //Func kích hoạt tắt loading dùng cho comp bên dưới
-  const deActiveLoading = () => {
-    changeIsLoading(false);
-  };
-  //Func truyền dateData ngược lên từ props
-  const getDateData = (data) => {
-    changeDateData(data);
-  };
-  //Func truyền teacherData ngườc từ props lên
-  const getTeacherData = (data) => {
-    changeTeacherData(data);
-  };
-  //Func thay đổi đối tượng tháng năm từ props truyền lên
-  const changeMonthYearFilterHandler = (objMonthYear) => {
-    changeObjMonthYear(objMonthYear);
-  };
-  //Submit -- Lấy gía trị tag được chọn
-  const tagStuSelected = arrSingleStusTags.find((tag) => tag.isSelected);
+  //Lấy về biến quyết định render loading
+  const isLoading = useSelector((state) => state.loading.isLoading);
+  //Lấy về mảng tag học sinh để truỳen xuống comp dưới cho việc chọn hs để điểm danh
+  const arrStudentTags = useSelector((state) => state.qlhs.arrStudentTags);
+  //Lóc lại mảng học sinh cá nhân dùng thôi
+  const arrSingleStuTags = arrStudentTags.filter((cv) => cv.singleClass);
+  //DATA-DÙNG-SUBMIT Từ mảng tags học sinh, lọc ra học sinh được chọn theo id
+  const stuSelected = arrSingleStuTags.find((tag) => tag.isSelected);
 
-  //Xử lý load trang thì fetch và tạo mảng tags học sinh cho việc chọn điểm danh, đồng thời fetch get mảng điểm danh để load phần ngày điêm danh đã có của học sinh
-  useEffect(() => {
-    changeIsLoading(true);
-    dispatchFn(getStusDataAndCreateArrTags());
-    dispatchFn(fetchGetArrDiemDanhCaNhan());
-    changeIsLoading(false);
-  }, [isRefetch]);
-
-  //Lọc lại data điểm danh đã tồn tại trên redux của học sinh được chọn
-  let dataDiemDanh = [];
-  //Xử lý nếu không lọc năm tháng thì trả về hiện tại và có lọc năm tháng thì trả về tương ứng
-  if (tagStuSelected && objMonthYear.month === "" && objMonthYear.year === "") {
-    dataDiemDanh = getArrDiemDanhCaNhanByStuAndMonthYear(
-      arrDiemDanhCaNhan,
-      tagStuSelected.id,
-      nowMonth,
-      nowYear
-    );
-  } else if (
-    tagStuSelected &&
-    objMonthYear.month > 0 &&
-    objMonthYear.year > 0
-  ) {
-    dataDiemDanh = getArrDiemDanhCaNhanByStuAndMonthYear(
-      arrDiemDanhCaNhan,
-      tagStuSelected.id,
-      objMonthYear.month - 1,
-      objMonthYear.year
-    );
-  }
-  //Tổng hợp data submit fetch lên đê thêm data cho ngày được điểm danh
-  const dataSubmit = {
-    idStu: tagStuSelected ? tagStuSelected.id : "",
-    nameStu: tagStuSelected ? tagStuSelected.name : "",
-    arrTeacherTaught: teacherData,
-    dateSingleCheck: dateData.date,
-    typeSingleCheck: dateData.actionType,
+  //------------ KHU VỤC CALLBACKS ------------
+  //Thay đổi idDate tạm thời dùng để load data default cho giao diện sửa
+  const changeIdDateTempHandler = (id) => {
+    changeIdDateTemp(id);
   };
-
-  //Callback chính xử lý submit thông tin điểm danh
-  const diemDanhHandler = () => {
-    changeIsLoading(true);
-    // Chạy fetch post lưu ngày điểm danh
+  //Thay đổi đối tượng month year filter từ comp dưới
+  const changeMonthYearFilterHandler = (obj) => {
+    changeMonthYearFilter(obj);
+  };
+  //Lấy giá trị ngày tháng và loại hành động từ comp lấy data ngày điềm danh mới
+  const changeDateTypeHandler = (obj) => {
+    changeDateTypeData(obj);
+  };
+  //Lấy mảng giá trị giáo viên dạy trong ngày được điểm danh
+  const changeTeacherTaughtHandler = (arr) => {
+    changeTeacherTaughtData(arr);
+  };
+  //Chạy reload lại trang khi hoàn thành một thao tác nào đó bên dưới
+  const reloadPage = () => {
+    router.reload();
+  };
+  //SUBMIT Post request thêm ngày điêm danh mới
+  const addDateSingleCheckHandler = () => {
+    //Tổng hợp data tiến hành post request
+    const dataSubmit = {
+      idStu: stuSelected.id,
+      nameStu: stuSelected.name,
+      dateSingleCheck: dateTypeData.date,
+      typeSingleCheck: dateTypeData.type,
+      arrTeacherTaught: teacherTaughtData,
+    };
+    //Chạy submit
+    dispatchFn(LoadingActions.activeLoading());
     fetch("/api/diem-danh-ca-nhan", {
       method: "POST",
       body: JSON.stringify(dataSubmit),
       headers: { "Content-Type": "application/json" },
     })
-      .then((response) => {
-        router.reload();
-        changeIsLoading(false);
+      .then((res) => {
+        dispatchFn(LoadingActions.deactiveLoading());
+        reloadPage();
       })
       .catch((error) => {
-        changeIsLoading(false), router.reload();
+        dispatchFn(LoadingActions.deactiveLoading());
+        reloadPage();
       });
-    //Chạy refetch lại data đẻ lấy được data mơi nhất từ db sau khi thêm mới ngày điẻm danh
-    changeIsRefetch(!isRefetch);
+  };
+  //SUBMIT edit request sửa ngày điểm danh
+  const editDateSingleCheckHandler = () => {
+    //Tổng hợp lại data submit
+    const data = {
+      idStu: stuSelected.id,
+      nameStu: stuSelected.name,
+      dateSingleCheck: dateTypeData.date,
+      typeSingleCheck: dateTypeData.type,
+      arrTeacherTaught: teacherTaughtData,
+    };
+    const dataSubmit = {
+      id: idDateTemp,
+      data: data,
+    };
+    //Chạy submit
+    dispatchFn(LoadingActions.activeLoading());
+    fetch("/api/diem-danh-ca-nhan", {
+      method: "PUT",
+      body: JSON.stringify(dataSubmit),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => {
+        dispatchFn(LoadingActions.deactiveLoading());
+        reloadPage();
+      })
+      .catch((error) => {
+        dispatchFn(LoadingActions.deactiveLoading());
+        reloadPage();
+      });
+  };
+  //SUBMIT del request xóa ngày điểm danh
+  const delDateSingleCheckHandler = (id) => {
+    //Chạy submit
+    dispatchFn(LoadingActions.activeLoading());
+    fetch("/api/diem-danh-ca-nhan", {
+      method: "DELETE",
+      body: JSON.stringify(id),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => {
+        dispatchFn(LoadingActions.deactiveLoading());
+        reloadPage();
+      })
+      .catch((error) => {
+        dispatchFn(LoadingActions.deactiveLoading());
+        reloadPage();
+      });
   };
 
-  
+  //------------ KHU VỤC SIDE EFFECT ------------
+  //Xử lý load lại data để cạp nhật đúng data dùng trong app
+  useEffect(() => {
+    //Đầu tiên là get về mảng học sinh
+    dispatchFn(fetchGetStudentData());
+    //Tiếp đến là chuyển hóa mảng học sinh thành mảng hs tags
+    dispatchFn(getStusDataAndCreateArrTags());
+    //Get về mảng giáo viên để tạo danh sách giáo viên cho giao diện chọn giáo vien
+    dispatchFn(fetchGetArrTeacher());
+    //Get về mảng điểm danh cá nhân để có data render cho Lịch điểm danh
+    dispatchFn(fetchGetArrDiemDanhCaNhan());
+  }, []);
+  //Xử lý kiểm tra xem nút cập nhật có được bấm hay không
+  useEffect(() => {
+    if (
+      dateTypeData.date !== "" &&
+      dateTypeData.type !== "" &&
+      teacherTaughtData.length > 0
+    ) {
+      changeDisUpdateBtn(false);
+    } else {
+      changeDisUpdateBtn(true);
+    }
+  }, [dateTypeData, teacherTaughtData]);
 
-  const huyDiemDanhHandler = () => {
-    //Tiến hành reload lại trang khi hủy
-    router.reload();
-  };
+  //------------ KHU VỤC XỬ LÝ PHỤ ------------
 
-  //Calback kích hoạt refetch get lại
-  const refetchGetHandler = () => {
-    changeIsLoading(true);
-    changeIsRefetch(!isRefetch);
-    changeIsLoading(false);
-  };
+  //Xử lý lấy về giá trị mặc định cho giao diện chỉnh sửa
+  let dateTypeDefault = { date: "", type: "" };
+  let arrTeacherTaughtDefault = [];
+  //Clone lại arrDiemDanh cho chắc
+  const arrDiemDanhCN = [...arrDiemDanhCaNhan];
+  //Lọc lại đối tượng ngày điểm danh theo id
+  const result = arrDiemDanhCN.find((cv) => cv._id === idDateTemp);
+  if (result) {
+    dateTypeDefault.date = result.dateSingleCheck;
+    dateTypeDefault.type = result.typeSingleCheck;
+    arrTeacherTaughtDefault = result.arrTeacherTaught;
+  }
 
+  ////////////////////////////////////
   return (
     <Fragment>
       <ThanhDieuHuongNoiDung arrNavi={contentNavi} />
       {isLoading && <Loading />}
-      {!isLoading && (
-        <DiemDanhCaNhan
-          getDateData={getDateData}
-          getTeacherData={getTeacherData}
-          getMonthYear={changeMonthYearFilterHandler}
-          diemDanh={diemDanhHandler}
-          huyDiemDanh={huyDiemDanhHandler}
-          activeRefetch={refetchGetHandler}
-          activeLoading={activeLoading}
-          deActiveLoading={deActiveLoading}
-          arrTags={arrSingleStusTags}
-          isTagSelected={tagStuSelected}
-          isSumitAccess={submitAccess}
-          isDateOff={isDateOff}
-          dataDiemDanh={dataDiemDanh}
-          dateData={dateData}
-          teacherData={teacherData}
-          objMonthYear={objMonthYear}
-        />
-      )}
+      <DiemDanhCaNhan
+        arrStudentTags={arrSingleStuTags}
+        arrDiemDanhCaNhan={arrDiemDanhCaNhan}
+        stuSelected={stuSelected}
+        monthYearFilter={monthYearFilter}
+        dateType={dateTypeData}
+        disUpdateBtn={disUpdateBtn}
+        idDateTemp={idDateTemp}
+        dateTypeDefault={dateTypeDefault}
+        arrTeacherTaughtDefault={arrTeacherTaughtDefault}
+        getMonthYearFilter={changeMonthYearFilterHandler}
+        getDateType={changeDateTypeHandler}
+        getTeacherData={changeTeacherTaughtHandler}
+        getIdDateTemp={changeIdDateTempHandler}
+        doReload={reloadPage}
+        doPostRequest={addDateSingleCheckHandler}
+        doPutRequest={editDateSingleCheckHandler}
+        doDelRequest={delDateSingleCheckHandler}
+      />
     </Fragment>
   );
 };

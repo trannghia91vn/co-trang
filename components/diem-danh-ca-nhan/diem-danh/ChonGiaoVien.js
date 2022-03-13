@@ -8,7 +8,6 @@ const reducerFn = (preState, action) => {
   if (action.type === "ADD") {
     //Lấy về mảng trước đó
     const arrTeacherDataExist = [...preState];
-    console.log(arrTeacherDataExist);
     //Tìm kiếm xem data được thêm vào đã tồn tại chưa
     const objMatched = arrTeacherDataExist.find(
       (cv) => cv.idTea === action.idTea
@@ -18,9 +17,9 @@ const reducerFn = (preState, action) => {
     );
     //Nếu có thì update, nếu chứa thì push vào
     if (objMatched) {
-      // objMatched.teachedTime = action.teachedTime;
+      // objMatched.taughtTime = action.teachedTime;
       const objCopy = { ...objMatched };
-      objCopy.teachedTime = action.teachedTime;
+      objCopy.taughtTime = action.taughtTime;
       //Xóa thằng cú và push thằng mới vào
       arrTeacherDataExist.splice(indexMatched, 1);
       arrTeacherDataExist.push(objCopy);
@@ -28,14 +27,12 @@ const reducerFn = (preState, action) => {
     } else {
       arrTeacherDataExist.push({
         idTea: action.idTea,
-        teachedTime: action.teachedTime,
+        taughtTime: action.taughtTime,
       });
       return arrTeacherDataExist;
     }
   }
   if (action.type === "DEL") {
-    console.log(action.idTea);
-    console.log(preState);
     //Lấy về mảng trước đó
     const arrTeacherDataExist = [...preState];
     //TÌm kiếm data tồn tại để xóa
@@ -60,10 +57,10 @@ const ChonGiaoVienCN = (props) => {
   const dispatchFn = useDispatch();
   //Biến state quản lý giá trị giáo viên và giờ dạy
   const [teacher, changeTeacher] = useState("none");
-  const [refresh, changeRefresh] = useState(false);
-  const teachedTime = useRef();
+  const taughtTime = useRef();
   //Biến sate quản lý mảng giáo viên được chọn cho ngày dạy
   const [arrTeacherData, dispatchTeaData] = useReducer(reducerFn, []);
+
   //Lấy về mảng teacher để map vào chọn giáo viên
   const arrTeachers = useSelector((state) => state.qlgv.arrTeachers);
   //Lọc về mảng giáo viên với hai props cần là tên và idTea
@@ -81,43 +78,34 @@ const ChonGiaoVienCN = (props) => {
     </option>
   ));
   //Callback lấy giá trị giờ dạy
-  const getQuickTeachedTime = (value) => {
-    // changeTeachedTime(value);
+  const getQuicktaughtTime = (value) => {
+    // changetaughtTime(value);
     document.getElementById("hour-teach").value = value;
   };
   //Callback lấy giá trị giáo viên
   const getTeacher = (event) => {
     changeTeacher(event.target.value);
   };
-  //Sử lý side efffect getch get mảng teacher về khi load comp này
-  useEffect(() => {
-    dispatchFn(fetchGetArrTeacher());
-  }, []);
+
   //Xử lý lấy danh sách default giáo viên đã tồn tại khi được edit
   useEffect(() => {
-    if (props.defaultValue) {
+    if (props.arrTeacherTaughtDefault) {
       dispatchTeaData({
         type: "REPLACE",
-        data: props.defaultValue.arrTeacherTaught,
+        data: props.arrTeacherTaughtDefault,
       });
     }
   }, []);
+
   //Func chinhs xử lý thêm thông tin giáo viên lên comp chính
   const addTeacherDataHandler = (e) => {
     e.preventDefault();
-    const teachedTimeVal = +teachedTime.current.value;
+    const taughtTimeVal = +taughtTime.current.value;
     dispatchTeaData({
       type: "ADD",
       idTea: teacher,
-      teachedTime: teachedTimeVal,
+      taughtTime: taughtTimeVal,
     });
-    // if (props.getTeacherData) {
-    //   props.getTeacherData(arrTeacherData);
-    // }
-    // if (props.editTeacherData) {
-    //   props.editTeacherData(arrTeacherData)
-    // }
-    changeRefresh(!refresh);
   };
   //Func xóa giáo viên tạm thời
   const delTempTeaHandler = () => {
@@ -125,14 +113,9 @@ const ChonGiaoVienCN = (props) => {
       type: "DEL",
       idTea: teacher,
     });
-    changeRefresh(!refresh);
-    // if (props.getTeacherData) {
-    //   props.getTeacherData(arrTeacherData);
-    // }
-    // if (props.editTeacherData) {
-    //   props.editTeacherData(arrTeacherData)
-    // }
   };
+
+  //Xử lý truyền data lên comp chính
   useEffect(() => {
     if (props.getTeacherData) {
       props.getTeacherData(arrTeacherData);
@@ -141,12 +124,14 @@ const ChonGiaoVienCN = (props) => {
       props.editTeacherData(arrTeacherData);
     }
   }, [arrTeacherData]);
+
   //Tạo biến render tạm giáo viên được chọn data
   const renderSubNoti = arrTeacherData.map((cv) => (
     <div key={cv.idTea} className={classes.noti}>
-      {getTeaNameById(arrTeachers, cv.idTea)} - {cv.teachedTime} phút
+      {getTeaNameById(arrTeachers, cv.idTea)} - {cv.taughtTime} phút
     </div>
   ));
+
   return (
     <Fragment>
       <h3
@@ -168,22 +153,22 @@ const ChonGiaoVienCN = (props) => {
         </div>
         <div className={classes.control}>
           <label htmlFor="hour-teach">Giờ dạy (phút)</label>
-          <input ref={teachedTime} id="hour-teach" type="number" required />
+          <input ref={taughtTime} id="hour-teach" type="number" required />
           <div
             className={classes.btnTime}
-            onClick={getQuickTeachedTime.bind(0, 30)}
+            onClick={getQuicktaughtTime.bind(0, 30)}
           >
             30
           </div>
           <div
             className={classes.btnTime}
-            onClick={getQuickTeachedTime.bind(0, 45)}
+            onClick={getQuicktaughtTime.bind(0, 45)}
           >
             45
           </div>
           <div
             className={classes.btnTime}
-            onClick={getQuickTeachedTime.bind(0, 60)}
+            onClick={getQuicktaughtTime.bind(0, 60)}
           >
             60
           </div>

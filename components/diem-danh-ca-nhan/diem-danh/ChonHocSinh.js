@@ -15,8 +15,7 @@ const ChonHocSinh = (props) => {
       </h3>
       <ListTag
         type="only-one"
-        arrTags={props.arrTags}
-        changeStuTag={props.changeStuTag}
+        arrTags={props.arrStudentTags}
         isStudent={true}
         isTeacher={false}
       />

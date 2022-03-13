@@ -7,10 +7,9 @@ const initDdcn = {
     //   _id: "t1",
     //   idStu: "ok1",
     //   nameStu: "Chí Pèo",
-    //   idTeacherTaught: "tea-1",
-    //   minutesTaught: 45,
     //   dateSingleCheck: "2022-03-11",
     //   typeSingleCheck: "them",
+    //  arrTeacherTaught :[{idTea:'',taughtTime:''}]
     // },
   ],
 };

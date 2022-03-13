@@ -1,118 +1,47 @@
 import classes from "./date-pick.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const FormChonNgayDDCN = (props) => {
-  let dateDefault = "";
-  let typeDefault = "";
-  //Xử lý default Date khi thao tác lọc tháng năm truyền xuống
-  if (props.objMonthYear) {
-    let month = props.objMonthYear.month;
-    if (month.toString().length === 1) {
-      month = `0${month}`;
-    }
-    //Tạo định dạng ngày tháng chuẩn
-    const defaultDateFormat = `${props.objMonthYear.year}-${month}-01`;
-    dateDefault = defaultDateFormat;
-  }
-  //Xử lý default Date khi thao tác edit truyền xuống
-  if (props.defaultValue) {
-    dateDefault = props.defaultValue.dateSingleCheck;
-    typeDefault = props.defaultValue.typeSingleCheck;
-  }
+  //Biến state quản lý nút được click và giá trị loại của nó
+  const [actionType, changeActionType] = useState("them");
+  //Biến state kiểm tra input date thay đổi để làm submit
+  const [isDateChange, changeDateChange] = useState(false);
+  //Biến ref cho input ngày
+  const dateRef = useRef();
 
-  //Biến state kiểm soát loại hành động
-  const [actionType, changeActionType] = useState({
-    them: true,
-    nghi: false,
-    bu: false,
-    tang: false,
-  });
-  //Chạy side effect lần đầu thiét lập các giá trị mặc định
-  useEffect(() => {
-    if (typeDefault === "them") {
-      changeActionType({ them: true, nghi: false, bu: false, tang: false });
-    }
-    if (typeDefault === "bu") {
-      changeActionType({ them: false, nghi: false, bu: true, tang: false });
-    }
-    if (typeDefault === "nghi") {
-      changeActionType({ them: false, nghi: true, bu: false, tang: false });
-    }
-    if (typeDefault === "tang") {
-      changeActionType({ them: false, nghi: false, bu: false, tang: true });
-    }
-  }, []);
-
-  //Biến state quan sát ngày
-  const [datePick, changeDatePick] = useState("");
-  //Callback lấy giá trị ngày được chọn
-  const getPickedDate = (event) => {
-    changeDatePick(event.target.value);
-  };
-  //Tạo callback reset lại biến state
-  const resetActionType = () => {
-    changeActionType({ them: false, nghi: false, bu: false, tang: false });
-  };
-  //Tạo callback kích hoạt loại cụ thể
+  //Callback active nút tương ứng
   const activeActionType = (val) => {
-    resetActionType();
-    changeActionType((preState) => {
-      if (val === "them") {
-        preState.them = true;
-      }
-      if (val === "nghi") {
-        preState.nghi = true;
-      }
-      if (val === "bu") {
-        preState.bu = true;
-      }
-      if (val === "tang") {
-        preState.tang = true;
-      }
-      return preState;
-    });
+    changeActionType(val);
   };
-  let actionTypeFinal = "";
-  if (actionType.them) {
-    actionTypeFinal = "them";
-  }
-  if (actionType.bu) {
-    actionTypeFinal = "bu";
-  }
-  if (actionType.nghi) {
-    actionTypeFinal = "nghi";
-  }
-  if (actionType.tang) {
-    actionTypeFinal = "tang";
-  }
+  //Callback kiểm tra khi input ngày thay đổi
+  const checkDateChange = () => {
+    changeDateChange(!isDateChange);
+  };
+
+  const makeInputDefault = (date, type) => {
+    dateRef.current.value = date;
+    changeActionType(type);
+  };
+
+  //Dùng side effect để truyền ngược data lên comp chính khi có thay đổi về chọn ngày và chọn lọại hoạt động
+  useEffect(() => {
+    if (dateRef.current.value !== "") {
+      props.getDateType({
+        date: dateRef.current.value,
+        type: actionType,
+      });
+    }
+  }, [isDateChange, actionType]);
+  //Dùng side efect load lần đầu giá trị mặc định cho giao diện view
   useEffect(() => {
     if (
-      datePick.trim().length > 0 &&
-      (actionType.them || actionType.nghi || actionType.bu || actionType.tang)
+      props.dateTypeDefault && props.dateTypeDefault.date !== "" &&
+      props.dateTypeDefault.type !== ""
     ) {
-      if (props.getDateData) {
-        props.getDateData({
-          date: datePick,
-          actionType: actionTypeFinal,
-        });
-      }
-    }
-    if (props.editDateData) {
-      props.editDateData({
-        date: dateDefault,
-        actionType: actionTypeFinal,
-      });
-    }
-  }, [datePick, actionType]);
-  //Trong lần load ban đầu nếu không có chỉnh sửa thì vần truyền ngược lên cho chế độ edti
-  useEffect(() => {
-    if (props.editDateData) {
-      props.editDateData({
-        date: dateDefault,
-        actionType: actionTypeFinal,
-      });
+      makeInputDefault(props.dateTypeDefault.date, props.dateTypeDefault.type);
     }
   }, []);
+
   //Biến render css cho nút
   let btnCss = classes.btn;
   let btnActiveCss = `${classes.btn} ${classes["btn-active"]}`;
@@ -121,37 +50,36 @@ const FormChonNgayDDCN = (props) => {
     <div className={classes.container}>
       <label htmlFor="datePick">Chọn ngày:</label>
       <input
-        onChange={getPickedDate}
         id="datePick"
         type="date"
-        defaultValue={dateDefault ? dateDefault : ""}
-        // disabled={dateDefault ? "disabled" : ""}
+        ref={dateRef}
+        onChange={checkDateChange}
         required
       />
       <label>Chọn loại:</label>
       <button
-        className={actionType.them ? btnActiveCss : btnCss}
+        className={actionType === "them" ? btnActiveCss : btnCss}
         type="button"
         onClick={activeActionType.bind(0, "them")}
       >
         Thêm
       </button>
       <button
-        className={actionType.nghi ? btnActiveCss : btnCss}
+        className={actionType === "nghi" ? btnActiveCss : btnCss}
         type="button"
         onClick={activeActionType.bind(0, "nghi")}
       >
         Nghỉ
       </button>
       <button
-        className={actionType.bu ? btnActiveCss : btnCss}
+        className={actionType === "bu" ? btnActiveCss : btnCss}
         type="button"
         onClick={activeActionType.bind(0, "bu")}
       >
         Bù
       </button>
       <button
-        className={actionType.tang ? btnActiveCss : btnCss}
+        className={actionType === "tang" ? btnActiveCss : btnCss}
         type="button"
         onClick={activeActionType.bind(0, "tang")}
       >

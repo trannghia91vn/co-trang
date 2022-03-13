@@ -4,149 +4,66 @@ import ChonNgayDDCN from "./ChonNgayDDCN";
 import ChonGiaoVienCN from "./ChonGiaoVien";
 import LichDiemDanh from "../lich-diem-danh/LichDiemDanh";
 import LocNamThang from "../../UI/MonthYearPick/MonthYearPick";
-import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
-import {
-  getArrDiemDanhCaNhanNow,
-  getArrDiemDanhCaNhanMonthYear,
-} from "../../../support/diem-danh-ca-nhan/ddcn-uti";
 
 const DiemDanhCaNhan = (props) => {
-  const dispatchFn = useDispatch();
-  //Lấy về giá trị tag đã được chọn chưa để cho phép render các trường thêm thông tin
-  const isTagSelected = props.isTagSelected;
-  //Dùng biến state quản lý render giao diện thêm mới data hoẵc sủa data
+  //Lấy về đói tượng stuSelected để quết định render giao diện thao tác cho học sinh này
+  const {
+    stuSelected,
+    dateType,
+    disUpdateBtn,
+    arrStudentTags,
+    arrDiemDanhCaNhan,
+    monthYearFilter,
+    idDateTemp,
+    dateTypeDefault,
+    arrTeacherTaughtDefault,
+  } = props;
+  //Biến state trạng thái giao diện add/edit
   const [isViewEditUi, changeViewEditUi] = useState(false);
-  //Biên state quản lý nội bộ giá trị id ngày nhận được
-  const [idDateTemp, changeIdDateTemp] = useState();
-
-  //Submit -- ngày tháng và lọại điểm danh
-  const [dateData, changeDateData] = useState({ date: null, actionType: null });
-  //Sumit -- thông tin giáo viên cho ngày điểm danh
-  const [teacherData, changeTeacherData] = useState([]);
-
-  //Func xử lý chuyển giao diện chỉnh sửa data cho ngày
-  const switchEditHandler = (idDate) => {
-    changeIdDateTemp(idDate);
-    //Chuyển giao diện chỉnh sửa
-    changeViewEditUi(true);
-  };
-  //Func xử lý lấy data ngày từ giao diện chọn ngày chỉnh sửa
-  const editDateDataTempHandler = (objData) => {
-    changeDateData(objData);
-  };
-  //Func xử lý lấy data giáo viên từ giao diện sửa giáo viên
-  const editTeaDataTempHandler = (arr) => {
-    console.log(arr);
-    changeTeacherData(arr);
-  };
-  //Func xử lý khi lọc năm tháng được bấm thì load lại giao diện thêm mới thông tin ngày điềm danh đê có giá trị mặc định cho input ngày
-  const refreshAddUi = () => {
-    changeViewEditUi(true);
-    setTimeout(() => {
-      changeViewEditUi(false);
-    }, 100);
-  };
-
-  //Lấy thông tin mảng ngày điểm danh cá nhân
-  const arrDiemDanhCaNhan = useSelector(
-    (state) => state.ddcn.arrDiemDanhCaNhan
-  );
-  let objDateData = {};
-  //Lấy obj data ngày được click tương ứng với thời điẻm hiện tại không filter
-  if (props.objMonthYear.month === "" && props.objMonthYear.year === "") {
-    //Lọc lại arrDiemDanhCaNhanNow để chỉ lays data hiện tại
-    const arrDiemDanhCaNhanNow = getArrDiemDanhCaNhanNow(arrDiemDanhCaNhan);
-    objDateData = arrDiemDanhCaNhanNow.find((cv) => cv._id === idDateTemp);
-  }
-  //Lấy obj data ngày được click tương ứng với thời điẻm được filter
-  if (props.objMonthYear.month > 0 && props.objMonthYear.year > 0) {
-    //Lọc lại arrDiemDanhCaNhanNow để chỉ lays data hiện tại
-    const arrDiemDanhCaNhanNow = getArrDiemDanhCaNhanMonthYear(
-      arrDiemDanhCaNhan,
-      props.objMonthYear.month,
-      props.objMonthYear.year
-    );
-    objDateData = arrDiemDanhCaNhanNow.find((cv) => cv._id === idDateTemp);
-  }
-  //Func xử lý thêm mới data ngày điểm danh
-  const addDateDataHandler = () => {
-    props.diemDanh();
-  };
-  //Func xử lý chính để submit thông tin ngày được chỉnh sửa
-  const editDateDataHandler = () => {
-    //Tổng hợp data submit cho edit ngày điểm danh
-    const data = {
-      idStu: props.isTagSelected ? props.isTagSelected.id : "",
-      nameStu: props.isTagSelected ? props.isTagSelected.name : "",
-      dateSingleCheck: dateData.date,
-      typeSingleCheck: dateData.actionType,
-      arrTeacherTaught: teacherData,
-    };
-    //Tổng hợp lịa data submit cuối
-    const dataSubmit = {
-      id: idDateTemp,
-      data: data,
-    };
-    //Push loading
-    props.activeLoading();
-    //Chạy fetch put
-    fetch("/api/diem-danh-ca-nhan", {
-      method: "PUT",
-      body: JSON.stringify(dataSubmit),
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((res) => {
-        // props.activeRefetch();
-        // changeViewEditUi(false);
-        props.deActiveLoading();
-      })
-      .catch((error) => {
-        // props.activeRefetch();
-        // changeViewEditUi(false);
-        props.deActiveLoading();
-      });
-    //Chạy reFetch ở comp chính liền
-    props.activeRefetch();
+  //Callback chuyển đổi giao diện
+  const viewAddUiHandler = () => {
     changeViewEditUi(false);
   };
-  const cancelEditHandler = () => {
-    changeViewEditUi(false);
+  const viewEditUiHandler = (idDate) => {
+    changeViewEditUi(true);
+    props.getIdDateTemp(idDate);
+  };
+
+  //Callback chính submit
+  const submitEditHandler = () => {
+    viewAddUiHandler();
+    props.doPostRequest();
   };
 
   return (
     <section className={classes.container}>
-      <ChonHocSinh arrTags={props.arrTags} changeStuTag={props.changeStuTag} />
+      <ChonHocSinh arrStudentTags={arrStudentTags} />
 
-      {isTagSelected && (
+      {stuSelected && !isViewEditUi && (
         <label className={classes.note}>
           Không điền giá trị nếu muốn điểm danh tháng hiện tại.
           <br /> Điền giá trị nếu muốn điểm danh theo tháng năm cần.{" "}
         </label>
       )}
-      {isTagSelected && (
-        <LocNamThang getMonthYear={props.getMonthYear} refresh={refreshAddUi} />
+      {stuSelected && !isViewEditUi && (
+        <LocNamThang getMonthYear={props.getMonthYearFilter} />
       )}
 
-      {isTagSelected && (
+      {stuSelected && !isViewEditUi && (
         <div className={classes.addForm}>
-          {isTagSelected && !isViewEditUi && (
-            <ChonNgayDDCN
-              getDateData={props.getDateData}
-              objMonthYear={props.objMonthYear}
-            />
-          )}
-          {isTagSelected && !isViewEditUi && !props.isDateOff && (
+          {stuSelected && <ChonNgayDDCN getDateType={props.getDateType} />}
+          {stuSelected && dateType.type !== "nghi" && (
             <ChonGiaoVienCN getTeacherData={props.getTeacherData} />
           )}
-          {isTagSelected && !isViewEditUi && (
+          {stuSelected && (
             <div className={classes.actions}>
               <button
                 type="button"
                 style={{ fontSize: "1.2rem" }}
                 className="btn btn-submit"
-                onClick={addDateDataHandler}
-                disabled={props.isSumitAccess ? "" : "disabled"}
+                onClick={submitEditHandler}
+                disabled={!disUpdateBtn ? "" : "disabled"}
               >
                 Cập nhật
               </button>
@@ -154,7 +71,7 @@ const DiemDanhCaNhan = (props) => {
                 type="button"
                 style={{ fontSize: "1.2rem" }}
                 className="btn btn-cancel"
-                onClick={props.huyDiemDanh}
+                onClick={props.doReload}
               >
                 Hủy
               </button>
@@ -163,40 +80,38 @@ const DiemDanhCaNhan = (props) => {
         </div>
       )}
 
-      {isTagSelected && (
+      {stuSelected && !isViewEditUi && (
         <LichDiemDanh
-          dataDiemDanh={props.dataDiemDanh}
-          editDate={switchEditHandler}
-          activeLoading={props.activeLoading}
-          deActiveLoading={props.deActiveLoading}
-          activeRefetch={props.activeRefetch}
-          objMonthYear={props.objMonthYear}
-          stuSelected={props.isTagSelected}
+          stuSelected={stuSelected}
+          arrDDCN={arrDiemDanhCaNhan}
+          monthYearFilter={monthYearFilter}
+          doDelRequest={props.doDelRequest}
+          changeEditUi={viewEditUiHandler}
         />
       )}
 
-      {isTagSelected && (
+      {stuSelected && isViewEditUi && (
         <div className={classes.editForm}>
-          {isTagSelected && isViewEditUi && (
+          {stuSelected && isViewEditUi && (
             <ChonNgayDDCN
-              defaultValue={objDateData}
-              editDateData={editDateDataTempHandler}
+              getDateType={props.getDateType}
+              dateTypeDefault={dateTypeDefault}
             />
           )}
 
-          {isTagSelected && isViewEditUi && dateData.actionType !== "nghi" && (
+          {stuSelected && isViewEditUi && dateType.type !== "nghi" && (
             <ChonGiaoVienCN
-              defaultValue={objDateData}
-              editTeacherData={editTeaDataTempHandler}
+              arrTeacherTaughtDefault={arrTeacherTaughtDefault}
+              getTeacherData={props.getTeacherData}
             />
           )}
-          {isTagSelected && isViewEditUi && (
+          {stuSelected && isViewEditUi && (
             <div className={classes.actions}>
               <button
                 type="button"
                 style={{ fontSize: "1.2rem" }}
                 className="btn btn-submit"
-                onClick={editDateDataHandler}
+                onClick={props.doPutRequest}
               >
                 Sửa
               </button>
@@ -204,7 +119,7 @@ const DiemDanhCaNhan = (props) => {
                 type="button"
                 style={{ fontSize: "1.2rem" }}
                 className="btn btn-cancel"
-                onClick={cancelEditHandler}
+                onClick={props.doReload}
               >
                 Hủy
               </button>

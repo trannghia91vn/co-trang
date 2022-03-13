@@ -6,30 +6,25 @@ import { useDispatch } from "react-redux";
 import { Fragment } from "react";
 
 const LichDiemDanh = (props) => {
+  //Lấy về props
+  const {stuSelected,arrDDCN} = props;
   //Lấy về tên học sinh được chọn để render cho dễ nhận biết
-  const nameStuSelected = props.stuSelected.name;
-  const dispatchFn = useDispatch();
+  const nameStuSelected = stuSelected.name;
+  //Lấy về mảng ddcn lọc lại theo học id học sinh
+  const arrDiemDanhCaNhan = arrDDCN.filter(cv=>cv.idStu === stuSelected.id);
   //Tạo biến ngày hôm nay -> lọc ra tháng để chỉ render tháng cần điểm danh là now
   const now = new Date();
   const nowMonth = now.getMonth() + 1;
   const nowYear = now.getFullYear();
   //Lấy về data từ props để render lich điểm danh
-  const arrDateChecked = sortDateChecked(props.dataDiemDanh);
+  const arrDateChecked = sortDateChecked(arrDiemDanhCaNhan);
+
   //Callback xử lý chính
-  const editDateHandler = (id) => {
-    props.editDate(id);
+  const editDateHandler = (idDate) => {
+    props.changeEditUi(idDate)
   };
-  const delDateHandler = (id) => {
-    //Push loading
-    props.activeLoading();
-    //Chạy fetch xóa ngày điểm danh
-    fetch("/api/diem-danh-ca-nhan", {
-      method: "DELETE",
-      body: JSON.stringify(id),
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((res) => props.deActiveLoading(), props.activeRefetch())
-      .catch((error) => props.deActiveLoading(), props.activeRefetch());
+  const delDateHandler = (idDate) => {
+    props.doDelRequest(idDate);
   };
 
   //Biến render ra nội dung ngày điểm danh
@@ -76,11 +71,15 @@ const LichDiemDanh = (props) => {
           Hs: <span style={{ color: "yellow" }}> {nameStuSelected}</span> -
           Time:
           <span style={{ color: "yellow" }}>
-            {props.objMonthYear.month > 0 ? props.objMonthYear.month : nowMonth}
+            {props.monthYearFilter.month > 0
+              ? props.monthYearFilter.month
+              : nowMonth}
           </span>
           /
           <span style={{ color: "yellow" }}>
-            {props.objMonthYear.year > 0 ? props.objMonthYear.year : nowYear}
+            {props.monthYearFilter.year > 0
+              ? props.monthYearFilter.year
+              : nowYear}
           </span>
         </h3>
 
