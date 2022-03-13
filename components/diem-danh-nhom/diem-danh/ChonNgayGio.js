@@ -2,13 +2,15 @@ import classes from "./ChonNgayGio.module.css";
 import { Fragment, useRef, useState } from "react";
 
 const ChonNgayGio = (props) => {
-
   //Lấy về giá trị default
-  let dateDefault = '';
-  let timeDefault = '';
+  let dateDefault = "";
+  let timeDefault = "";
   if (props.defaultData) {
     dateDefault = props.defaultData.taughtDate;
     timeDefault = props.defaultData.taughtTime;
+  }
+  if (props.defaultAddDate) {
+    dateDefault = props.defaultAddDate;
   }
 
   const teachedTimeRef = useRef();
@@ -70,7 +72,13 @@ const ChonNgayGio = (props) => {
       <form onSubmit={addDateDataHandler} className={classes.container}>
         <div className={classes.control}>
           <label htmlFor="date-select">Ngày</label>
-          <input ref={teachedDateRef} type="date" id="date-select" required defaultValue={dateDefault ? dateDefault : ''}/>
+          <input
+            ref={teachedDateRef}
+            type="date"
+            id="date-select"
+            required
+            defaultValue={dateDefault ? dateDefault : ""}
+          />
 
           <label htmlFor="hour-teach">Giờ dạy (phút)</label>
           <input
@@ -80,7 +88,7 @@ const ChonNgayGio = (props) => {
             type="number"
             required
             min="0"
-            defaultValue={timeDefault ? timeDefault : ''}
+            defaultValue={timeDefault ? timeDefault : ""}
           />
 
           <div

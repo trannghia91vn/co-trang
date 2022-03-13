@@ -15,6 +15,15 @@ const DiemDanhNhom = (props) => {
   const arrDiemDanhNhom = props.arrDDN;
   //Biến state chuyển giao diện thêm và sửa
   const [showAddUi, changeShowAddUi] = useState(true);
+  //Biến state disable một số comp tạm thời
+  const [disable, changeDisable] = useState(false);
+  //Callback kích hoạt disable comp Thêm mới và load lại đẻ lấy input ngày mặc định
+  const disableAddUiTemHandler = () => {
+    changeDisable(true);
+    setTimeout(() => {
+      changeDisable(false);
+    }, 200);
+  };
   //Callback kích hoạt chuyển giao diện add/edit
   const showAddUiHandler = () => {
     changeShowAddUi(true);
@@ -37,6 +46,13 @@ const DiemDanhNhom = (props) => {
     objDateSelected = arrDiemDanhNhom.find((cv) => cv._id === idDateTemp);
   }
 
+  //Xử lý giá trị ngày mặc định cho giao diện thêm mới ngày điêm danh
+  const monthYearFilter = props.monthYearFilter;
+  let defaultAddDate = `${monthYearFilter.year}-${monthYearFilter.month}-01`;
+  if (monthYearFilter.month.toString().length === 1) {
+    defaultAddDate = `${monthYearFilter.year}-0${monthYearFilter.month}-01`;
+  }
+
   return (
     <Fragment>
       <section className={classes.container}>
@@ -48,11 +64,19 @@ const DiemDanhNhom = (props) => {
             <br /> Điền giá trị nếu muốn điểm danh theo tháng năm cần.{" "}
           </label>
         )}
-        {teaSelected && <LocNamThang getMonthYear={props.getMonthYear} />}
+        {teaSelected && (
+          <LocNamThang
+            getMonthYear={props.getMonthYear}
+            refreshAddForm={disableAddUiTemHandler}
+          />
+        )}
 
-        {teaSelected && showAddUi && (
+        {teaSelected && showAddUi && !disable && (
           <div className={classes.addForm}>
-            <ChonNgayGio getDateTimeData={props.getDateTimeData} />
+            <ChonNgayGio
+              getDateTimeData={props.getDateTimeData}
+              defaultAddDate={defaultAddDate}
+            />
             <ChonHocSinhNhom
               arrTags={props.arrStuTags}
               arrLopNhom={props.arrLopNhom}
