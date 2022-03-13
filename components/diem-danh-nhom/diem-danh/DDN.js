@@ -22,7 +22,7 @@ const DiemDanhNhom = (props) => {
   const showEditUiHandler = (idDate) => {
     changeShowAddUi(false);
     changeIdDateTemp(idDate);
-    props.getIdDateTemp(idDate)
+    props.getIdDateTemp(idDate);
   };
   //Từ idDateTemp và mảng điểm danh nhóm -> lọc lại đói tượng điểm dánh được clicj theo id ngày, dùng đối tượng data này để truyền xuống default cho gd sửa
   let objDateSelected = {
@@ -77,7 +77,7 @@ const DiemDanhNhom = (props) => {
           </div>
         )}
 
-        {teaSelected && (
+        {teaSelected && showAddUi && (
           <LichDiemDanhNhom
             arrDDN={props.arrDDN}
             teaSelected={props.teaSelected}

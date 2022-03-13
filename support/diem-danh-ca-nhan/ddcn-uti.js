@@ -8,7 +8,7 @@ export const getArrDiemDanhCaNhanByStuAndMonthYear = (
   const result = arrDiemDanhCaNhan.filter(
     (cv) =>
       cv.idStu === idStu &&
-      new Date(cv.dateSingleCheck).getMonth() === +month &&
+      new Date(cv.dateSingleCheck).getMonth() === +month-1 &&
       new Date(cv.dateSingleCheck).getFullYear() === +year
   );
   return result;

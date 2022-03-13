@@ -21,6 +21,15 @@ const DiemDanhCaNhan = (props) => {
   } = props;
   //Biến state trạng thái giao diện add/edit
   const [isViewEditUi, changeViewEditUi] = useState(false);
+  //Biến refresh lại toàn bộ khi ta nhấn lọc ngày tháng ở comp dươkc
+  const [disable, changeDisable] = useState(false);
+
+  //Tạo biến date mặc định truyền xuống add form khi có monthYearFileter
+  let defaultDateAddForm = `${monthYearFilter.year}-${monthYearFilter.month}-01`;
+  if (monthYearFilter.month.toString().length === 1) {
+    defaultDateAddForm = `${monthYearFilter.year}-0${monthYearFilter.month}-01`;
+  }
+
   //Callback chuyển đổi giao diện
   const viewAddUiHandler = () => {
     changeViewEditUi(false);
@@ -28,6 +37,14 @@ const DiemDanhCaNhan = (props) => {
   const viewEditUiHandler = (idDate) => {
     changeViewEditUi(true);
     props.getIdDateTemp(idDate);
+  };
+
+  //Dùng comp này đẻ load lại gía trị mặc định cho giao diẹn thêm mới ngày điẻm danh
+  const tempDisableCompHandler = () => {
+    changeDisable(true);
+    setTimeout(() => {
+      changeDisable(false);
+    }, 200);
   };
 
   //Callback chính submit
@@ -47,12 +64,20 @@ const DiemDanhCaNhan = (props) => {
         </label>
       )}
       {stuSelected && !isViewEditUi && (
-        <LocNamThang getMonthYear={props.getMonthYearFilter} />
+        <LocNamThang
+          getMonthYear={props.getMonthYearFilter}
+          refreshAddForm={tempDisableCompHandler}
+        />
       )}
 
-      {stuSelected && !isViewEditUi && (
+      {stuSelected && !isViewEditUi && !disable && (
         <div className={classes.addForm}>
-          {stuSelected && <ChonNgayDDCN getDateType={props.getDateType} />}
+          {stuSelected && (
+            <ChonNgayDDCN
+              getDateType={props.getDateType}
+              dateAddDefault={defaultDateAddForm}
+            />
+          )}
           {stuSelected && dateType.type !== "nghi" && (
             <ChonGiaoVienCN getTeacherData={props.getTeacherData} />
           )}

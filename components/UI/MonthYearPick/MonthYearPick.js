@@ -36,7 +36,10 @@ const LocNamThang = (props) => {
       year: year,
     });
     clearInput();
-    // props.refresh();
+    //Xử lý load lại comp thêm mới ngày điềm danh cá nhân để có giá trị ngày mặc định
+    if (props.refreshAddForm) {
+      props.refreshAddForm();
+    }
   };
   //Biến render thông báo
   const renderNoti = (

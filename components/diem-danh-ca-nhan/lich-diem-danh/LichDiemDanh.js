@@ -1,27 +1,48 @@
 import classes from "./LichDiemDanh.module.css";
 import { FaRegEdit } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
-import { sortDateChecked } from "../../../support/diem-danh-ca-nhan/ddcn-uti";
+import {
+  sortDateChecked,
+  getArrDiemDanhCaNhanByStuAndMonthYear,
+} from "../../../support/diem-danh-ca-nhan/ddcn-uti";
 import { useDispatch } from "react-redux";
 import { Fragment } from "react";
 
 const LichDiemDanh = (props) => {
   //Lấy về props
-  const {stuSelected,arrDDCN} = props;
+  const { stuSelected, arrDDCN, monthYearFilter } = props;
   //Lấy về tên học sinh được chọn để render cho dễ nhận biết
   const nameStuSelected = stuSelected.name;
   //Lấy về mảng ddcn lọc lại theo học id học sinh
-  const arrDiemDanhCaNhan = arrDDCN.filter(cv=>cv.idStu === stuSelected.id);
+  const arrDiemDanhCaNhan = arrDDCN.filter((cv) => cv.idStu === stuSelected.id);
   //Tạo biến ngày hôm nay -> lọc ra tháng để chỉ render tháng cần điểm danh là now
   const now = new Date();
-  const nowMonth = now.getMonth() + 1;
+  const nowMonth = now.getMonth()+1;
   const nowYear = now.getFullYear();
+
+  //Xử lý lọc lại arrDiemDanhCaNhan theo idStu và ngày tháng
+  let arrHandler = [];
+  if (monthYearFilter.month === "" && monthYearFilter.year === "") {
+    arrHandler = getArrDiemDanhCaNhanByStuAndMonthYear(
+      arrDiemDanhCaNhan,
+      stuSelected.id,
+      nowMonth,
+      nowYear
+    );
+  } else {
+    arrHandler = getArrDiemDanhCaNhanByStuAndMonthYear(
+      arrDiemDanhCaNhan,
+      stuSelected.id,
+      monthYearFilter.month,
+      monthYearFilter.year
+    );
+  }
   //Lấy về data từ props để render lich điểm danh
-  const arrDateChecked = sortDateChecked(arrDiemDanhCaNhan);
+  const arrDateChecked = sortDateChecked(arrHandler);
 
   //Callback xử lý chính
   const editDateHandler = (idDate) => {
-    props.changeEditUi(idDate)
+    props.changeEditUi(idDate);
   };
   const delDateHandler = (idDate) => {
     props.doDelRequest(idDate);

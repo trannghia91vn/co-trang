@@ -16,6 +16,7 @@ const ChonNgayDDCN = (props) => {
       <FormChonNgayDDCN
         getDateType={props.getDateType}
         dateTypeDefault={props.dateTypeDefault}
+        dateAddDefault={props.dateAddDefault}
       />
     </Fragment>
   );

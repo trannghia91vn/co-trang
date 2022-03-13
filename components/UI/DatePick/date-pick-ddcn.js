@@ -40,6 +40,9 @@ const FormChonNgayDDCN = (props) => {
     ) {
       makeInputDefault(props.dateTypeDefault.date, props.dateTypeDefault.type);
     }
+    if (props.dateAddDefault) {
+      dateRef.current.value = props.dateAddDefault;
+    }
   }, []);
 
   //Biến render css cho nút
