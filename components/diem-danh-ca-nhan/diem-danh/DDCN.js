@@ -60,7 +60,7 @@ const DiemDanhCaNhan = (props) => {
       {stuSelected && !isViewEditUi && (
         <label className={classes.note}>
           Không điền giá trị nếu muốn điểm danh tháng hiện tại.
-          <br /> Điền giá trị nếu muốn điểm danh theo tháng năm cần.{" "}
+          <br /> Điền giá trị nếu muốn xem lại / chỉnh sửa tháng cũ.{" "}
         </label>
       )}
       {stuSelected && !isViewEditUi && (

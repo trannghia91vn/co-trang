@@ -11,7 +11,7 @@ const ChonHocSinh = (props) => {
           color: `var(--mauTieuDe--)`,
         }}
       >
-        Chọn học sinh tiến hành điểm danh
+        Chọn học sinh
       </h3>
       <ListTag
         type="only-one"

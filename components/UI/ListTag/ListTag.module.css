@@ -4,6 +4,7 @@
   border-radius: 5px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 4px 4px gray;
 }
 .container {
   display: flex;

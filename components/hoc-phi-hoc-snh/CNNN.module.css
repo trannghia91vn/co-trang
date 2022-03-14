@@ -1,0 +1,66 @@
+.overall {
+    display : flex;
+    flex-direction: column;
+    flex-wrap : wrap;
+    align-self: flex-start;
+    margin-bottom: .3rem;
+}
+.overall h3 {
+    margin : 0.2rem;
+    font-size: 1rem;
+}
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  align-items: center;
+  border-radius: 5px;
+  padding: 5px 10px;
+  border: 1px dashed var(--mauVien--);
+  margin : .5rem 0;
+}
+.dateTags {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.date {
+  border-radius: 5px;
+  border: 1px solid var(--mauGiaoVien--);
+  color: var(--mauGiaoVien--);
+  padding: 6px 8px;
+  text-align: center;
+  margin: 0.2rem;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.date:hover,
+.date-active {
+  border: 1px solid var(--mauGiaoVien--);
+  color: #fff;
+  background-color: var(--mauGiaoVien--);
+}
+.selection {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin : .2rem .5rem;
+}
+.selection label {
+  font-size: 0.9rem;
+  color: gray;
+  margin-right: .2rem;
+}
+.selection select {
+  outline: none;
+  border: 1px solid var(--mauVanBanMo--);
+  border-radius: 5px;
+  padding: 1px 4px;
+}
+
+.selection select:focus {
+  border: 1px solid var(--mauHighlight--);
+  background-color: var(--mauHighlightMo--);
+}
