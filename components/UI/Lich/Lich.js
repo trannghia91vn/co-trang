@@ -28,13 +28,11 @@ const Lich = (props) => {
   arrWeekday.forEach((wd) => {
     //Lấy về đối tượng đếm cho từng cột weekday
     const objCount = getColumnWeekdayData(arrLich, wd);
-    console.log(objCount);
     //Nếu đếm được thì push vào mảng thông báo
     if (objCount && objCount.countTotal > 1) {
       arrCountNoti.push(objCount);
     }
   });
-  console.log(arrCountNoti);
   //Tạo biến render thông báo đếm cột ngày điểm dánh
   let renderCountNoti = "";
   if (arrCountNoti.length > 0) {

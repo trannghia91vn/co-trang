@@ -1,0 +1,64 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding: 0.5rem;
+  background-color: rgba(255, 255, 0, 0.2);
+  margin: 0.5rem 0;
+  border-radius: 5px;
+}
+.horizental {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.horizental h3 {
+  margin: 0.5rem 0 1rem;
+  font-size: 1rem;
+}
+.results {
+  display: grid;
+  grid-template-columns: 150px 2fr 150px 150px;
+  grid-template-rows: 50px 5fr;
+}
+.label {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.9rem;
+  background-color: var(--mauGiaoVien--);
+  color: var(--mauTieuDe--);
+  border: 1px solid #fff;
+  border-radius: 5px;
+}
+.cell {
+  background-color: #2cb67dc7;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  padding : 5px;
+  text-align: center;
+}
+.result {
+    font-weight: bold;
+    /* color : var(--mauPhu1--); */
+    font-size: .9rem;
+}
+.final {
+    font-weight: bold;
+    color : var(--mauPhu1--);
+    font-size: .9rem;
+}
+.hide {
+    opacity : 0;
+}
+

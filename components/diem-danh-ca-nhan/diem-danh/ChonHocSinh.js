@@ -18,6 +18,7 @@ const ChonHocSinh = (props) => {
         arrTags={props.arrStudentTags}
         isStudent={true}
         isTeacher={false}
+        doRefresh={props.doRefresh}
       />
     </Fragment>
   );

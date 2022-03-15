@@ -50,6 +50,7 @@ const ListTag = (props) => {
       changeStuTag={props.changeStuTag}
       isTeacher={props.isTeacher}
       isStudent={props.isStudent}
+      doRefresh={props.doRefresh}
     />
   ));
   let allClass = classes.container;

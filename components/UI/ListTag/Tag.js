@@ -26,6 +26,10 @@ const Tag = (props) => {
       }
       dispatchFn(QlgvActions.activeTeaTag(id));
     }
+    //Xư lý refresh lại comp chính nếu có
+    if (props.doRefresh) {
+      props.doRefresh();
+    }
   };
   const deSelectHandler = (id) => {
     //Xử lý chó học sịnh
@@ -35,6 +39,10 @@ const Tag = (props) => {
     //Xử lý cho giáovieen
     if (props.isTeacher) {
       dispatchFn(QlgvActions.deactiveTeaTag(id));
+    }
+    //Xư lý refresh lại comp chính nếu có
+    if (props.doRefresh) {
+      props.doRefresh();
     }
   };
   return (
