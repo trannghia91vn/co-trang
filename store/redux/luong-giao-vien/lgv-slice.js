@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { LoadingActions } from "../loading/loading-slice";
 import {
   getArrStudentsTaughtByIdTeaMonthYear,
   getArrDdcnHandeled,
@@ -11,6 +12,20 @@ const initLuongGiaoVien = {
   arrLuongNhom: [],
   arrPhuPhi: [],
   //Nhứng mảng bên dưới dùng cho load data từ db về và thao tác ở giào diện chỉnh sửa
+  arrLuongThangGiaoVien: [],
+};
+
+//tạo Callback hỗ trợ tìm đối tượng lương tháng theo idTea,monthYear trong arrLuongThangGiaoVien
+const getMonthWageByIdTeaMonthYear = (idTea, monthYear, state) => {
+  const result = state.arrLuongThangGiaoVien.find(
+    (cv) =>
+      cv.idTea === idTea &&
+      +cv.monthYear.month === +monthYear.month &&
+      +cv.monthYear.year === +monthYear.year
+  );
+  if (result) {
+    return result;
+  }
 };
 
 const LgvSlice = createSlice({
@@ -85,7 +100,8 @@ const LgvSlice = createSlice({
       if (state.arrPhuPhi.length === 0) {
         idPlusWageDate = "pls-1";
       } else {
-        const lastId = state.arrPhuPhi[state.arrPhuPhi.length - 1].idPlusWageDate;
+        const lastId =
+          state.arrPhuPhi[state.arrPhuPhi.length - 1].idPlusWageDate;
         const lastIdNum = +lastId.split("-")[1];
         idPlusWageDate = `pls-${lastIdNum + 1}`;
       }
@@ -108,9 +124,124 @@ const LgvSlice = createSlice({
     }, //Xóa ngày phụ phí
 
     ////////////// NHÓM REDUCER DÙNG CHO GIAO DIỆN EDIT LƯƠNG GIÁO VIÊN ///////////////
+    getDataDbAndCreateArrDb(state, action) {
+      //Ghi đè tương ứng
+      state.arrLuongThangGiaoVien = action.payload;
+    }, //Khi lấy data từ db về thì chuyền vào đây và tạo các arr tương ứng
+    changeSingleStuScale(state, action) {
+      //Des
+      const { idStu, scale, idTea, monthYear } = action.payload;
+      //Tìm tháng lương trùng khớp
+      const monthWageMatched = getMonthWageByIdTeaMonthYear(
+        idTea,
+        monthYear,
+        state
+      );
+      //Tìm đối tượng học sinh
+      const objStuMatched = monthWageMatched.arrLuongCaNhan.find(
+        (cv) => cv.idStu === idStu
+      );
+      //Thay đổi scale
+      if (objStuMatched) {
+        objStuMatched.scale = scale;
+      }
+    }, //Thay đổi lại hệ số tính trong mảng lương cá nhân của mảng arrLuongThangGiaoVien
+    addDesToDateExist(state, action) {
+      //Des
+      const { idTea, monthYear, idGroupDate, description } = action.payload;
+      //Tìm tháng lương trùng khớp
+      const monthWageMatched = getMonthWageByIdTeaMonthYear(
+        idTea,
+        monthYear,
+        state
+      );
+      //Tìm ngày theo id và chỉnh sủa mô tả của nó
+      const dateMatched = monthWageMatched.arrLuongNhom.find(
+        (cv) => cv.idGroupDate === idGroupDate
+      );
+      if (dateMatched) {
+        dateMatched.description = description;
+      }
+    }, //Thêm ghi chú của ngày
+    delDesDateExist(state, action) {
+      //Des
+      const { idTea, monthYear, idGroupDate } = action.payload;
+      //Tìm tháng lương trùng khớp
+      const monthWageMatched = getMonthWageByIdTeaMonthYear(
+        idTea,
+        monthYear,
+        state
+      );
+      //Tìm ngày theo id và chỉnh sủa mô tả của nó
+      const dateMatched = monthWageMatched.arrLuongNhom.find(
+        (cv) => cv.idGroupDate === idGroupDate
+      );
+      if (dateMatched) {
+        dateMatched.description = "";
+      }
+    }, //Xóa ghi chú ngày
+    addPlusWageExist(state, action) {
+      //Des ra các thông tin cần để tìm đối tượng tháng lương
+      const { idTea, monthYear } = action.payload;
+      //Tìm tháng lương trùng khớp
+      const monthWageMatched = getMonthWageByIdTeaMonthYear(
+        idTea,
+        monthYear,
+        state
+      );
+      //Đánh id cho đối tượng được bổ sung vào
+      let idPlusWageDate = "";
+      if (monthWageMatched.arrPhuPhi.length === 0) {
+        idPlusWageDate = "pls-1";
+      } else {
+        const lastId =
+          monthWageMatched.arrPhuPhi[monthWageMatched.arrPhuPhi.length - 1]
+            .idPlusWageDate;
+        const lastIdNum = +lastId.split("-")[1];
+        idPlusWageDate = `pls-${lastIdNum + 1}`;
+      }
+      //Thêm vào cho data submit lên
+      const remakeDataSubmit = {
+        idPlusWageDate,
+        ...action.payload,
+      };
+      //Đẩy vaò
+      monthWageMatched.arrPhuPhi.push(remakeDataSubmit);
+    }, //Thêm mới ngày phụ phí vào magnr db
+    delPlusWageExist(state, action) {
+      //Des ra các thông tin cần để tìm đối tượng tháng lương
+      const { idTea, monthYear, idPlusWageDate } = action.payload;
+      //Tìm tháng lương trùng khớp
+      const monthWageMatched = getMonthWageByIdTeaMonthYear(
+        idTea,
+        monthYear,
+        state
+      );
+      const indexDateMatched = monthWageMatched.arrPhuPhi.findIndex(
+        (cv) => cv.idPlusWageDate === idPlusWageDate
+      );
+      if (indexDateMatched !== -1) {
+        monthWageMatched.arrPhuPhi.splice(indexDateMatched, 1);
+      }
+    }, //Xóa ngày phụ phí trong db
   },
 });
 
 export const LgvActions = LgvSlice.actions;
+
+//Tạo thunks get data lương giáo viên về
+export const fetchGetLuongGiaoVien = () => {
+  return async (dispatchFn) => {
+    try {
+      dispatchFn(LoadingActions.activeLoading());
+      const response = await fetch("/api/luong-giao-vien");
+      dispatchFn(LoadingActions.deactiveLoading());
+      const data = await response.json();
+      dispatchFn(LgvActions.getDataDbAndCreateArrDb(data.data));
+    } catch (error) {
+      dispatchFn(LoadingActions.deactiveLoading());
+    }
+  };
+};
 
 export default LgvSlice.reducer;

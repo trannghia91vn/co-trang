@@ -63,14 +63,14 @@ export const DesLuongNhom = (props) => {
 
 const LuongNhom = (props) => {
   //Des
-  const { monthYear, teaSelected, groupWage } = props;
+  const { monthYear, teaSelected, groupWage,idTeaSelected } = props;
   //Lấy về mảng lương nhóm được tạo khi click giáo viên ban đầu -- khi dùng cho giao diẹn edti thay thế mảng này là xong
   const arrLuongNhom = useSelector((state) => state.lgv.arrLuongNhom);
 
   //Lọc lại mảng lương nhóm theo id giáo viên , month year -- dùng support cho gọn
   const arrLuongNhomFilter = filterArrLuongNhomByIdTeaMonthYear(
     arrLuongNhom,
-    teaSelected.id,
+    idTeaSelected,
     monthYear
   );
   //Mảng labels
@@ -88,7 +88,7 @@ const LuongNhom = (props) => {
   //Biến render hàng data
   const renderDataRow = arrLuongNhomFilter.map((cv) => {
     //Biến lấy lại ngày thôi
-    const day = new Date(cv.taughtDate).getDay();
+    const day = new Date(cv.taughtDate).getDate();
     //Xử lý đổi phút ra giờ dạy
     const taughtCalc = +cv.taughtTime / 60;
     const taughtHourView = taughtCalc.toFixed(2);

@@ -38,13 +38,35 @@
   background-color: rgba(255, 255, 0, 0.2);
   border-radius: 5px;
   padding : 1rem 0;
+  text-align: center;
 }
 .result label {
   font-size: 1.5rem;
   font-weight: bold;
   text-transform: uppercase;
+  margin : .5rem;
 }
 .result h3 {
   font-size: 1.5rem;
   color : var(--mauPhu1--)
+}
+.noti {
+  border-radius: 5px;
+  background-color: rgba(255, 255, 0, 0.2);
+  padding : 1rem;
+}
+.linkBtn a {
+  text-decoration: none;
+  transition : all .2s;
+}
+.linkBtn {
+  padding : 5px;
+  margin : 0 3px;
+  border-radius: 5px;
+  background-color: var(--mauNut--);
+  cursor : pointer;
+  text-align: center;
+}
+.linkBtn a:hover {
+  color : #fff;
 }

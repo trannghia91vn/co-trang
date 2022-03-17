@@ -85,7 +85,7 @@ export const getSingleGroupWageTeacher = (arrTeachers, idTea) => {
     luongCaNhan = objMatched.singleWage;
     luongNhom = objMatched.groupWage;
   }
-  return { singleWage : luongCaNhan , groupWage:luongNhom };
+  return { singleWage: luongCaNhan, groupWage: luongNhom };
 };
 
 //Func tính tổng giờ, thành tiền của học sinh
@@ -152,7 +152,7 @@ export const getInitArrLuongNhom = (arrDiemDanhNhom, idTea, monthYear) => {
   let arrResult = [];
   arrDDNFilterIdteaMonthYear.forEach((cv) =>
     arrResult.push({
-      idGroupDate : cv._id,
+      idGroupDate: cv._id,
       idTea: cv.idTea,
       monthYear: monthYear,
       taughtDate: cv.taughtDate,
@@ -175,4 +175,39 @@ export const filterArrLuongNhomByIdTeaMonthYear = (
       +monthYearObj.year === +cv.monthYear.year
   );
   return result;
+};
+
+//Từ arrLuongThangGiaoVien lấy các thông tin cần thiét từ đối tượng tìm thấy thông qua idTea,monthYEar
+export const getMonthWageData = (arrLuongThangGiaoVien, idTea, monthYear) => {
+  //Tiếp đến ta sẽ tìm đối tượng lương tháng theo idTea,monthYear phù phơk
+  const objMonthWage = arrLuongThangGiaoVien.find(
+    (cv) =>
+      cv.idTea === idTea &&
+      +cv.monthYear.month === +monthYear.month &&
+      +cv.monthYear.year === +monthYear.year
+  );
+
+  //Tạo các biến mảng chứa data cá nhân, nhóm ,phụ phi để lấy ra từ đối tượng trên --> truyền xuống render kết quả
+  let arrLuongCaNhanData = [];
+  let arrLuongNhomData = [];
+  let arrPhuPhiData = [];
+  let singleWageData = 0;
+  let groupWageData = 0;
+  let idMonthWage = "";
+  if (objMonthWage) {
+    arrLuongCaNhanData = objMonthWage.arrLuongCaNhan;
+    arrLuongNhomData = objMonthWage.arrLuongNhom;
+    arrPhuPhiData = objMonthWage.arrPhuPhi;
+    singleWageData = objMonthWage.singleWage;
+    groupWageData = objMonthWage.groupWage;
+    idMonthWage = objMonthWage._id;
+  }
+  return {
+    arrLuongCaNhanData,
+    arrLuongNhomData,
+    arrPhuPhiData,
+    singleWageData,
+    groupWageData,
+    idMonthWage,
+  };
 };

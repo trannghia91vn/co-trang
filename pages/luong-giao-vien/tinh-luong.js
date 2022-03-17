@@ -7,11 +7,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchGetArrTeacher } from "../../store/redux/quan-ly-giao-vien/qlgv-slice";
 import { fetchGetArrDiemDanhCaNhan } from "../../store/redux/diem-danh-ca-nhan/ddcn-slice";
 import { fetchGetArrDiemDanhNhom } from "../../store/redux/diem-danh-nhom/ddn-slice";
+import { fetchGetLuongGiaoVien } from "../../store/redux/luong-giao-vien/lgv-slice";
 import {
   getArrStudentsTaughtByIdTeaMonthYear,
   getSingleGroupWageTeacher,
+  getMonthWageData,
 } from "../../support/luong-giao-vien/lgn-uti";
 import { LgvActions } from "../../store/redux/luong-giao-vien/lgv-slice";
+import { useRouter } from "next/router";
 
 const TrangTinhLuongGiaoVien = (props) => {
   //Tạo chay data mẫu cho điều hướng nối dung theo thứ tự luôn
@@ -24,6 +27,7 @@ const TrangTinhLuongGiaoVien = (props) => {
     },
   ];
   //------------ KHU TẠO BIẾN ------------
+  const router = useRouter();
   const dispatchFn = useDispatch();
   //Biến nội bộ chạy reload lại comp bên dưới khi thay đỏi chọn tag giáo viên
   const [refresh, changeRefresh] = useState(false);
@@ -43,7 +47,6 @@ const TrangTinhLuongGiaoVien = (props) => {
   //Biến nội bộ lấy gía trị tổng tiền nhóm truyền từ comp dưới
   const [totalSingleWage, changeTotalSingleWage] = useState(0);
 
-  console.log(totalSingleWage);
   //------------ KHU LẤY DATA VỀ VÀ XỬ LÝ DATA ------------
   //Lấy về biến isLoading
   const isLoading = useSelector((state) => state.loading.isLoading);
@@ -74,6 +77,26 @@ const TrangTinhLuongGiaoVien = (props) => {
   );
   //Lấy về mảng điểm danh nhóm
   const arrDiemDanhNhom = useSelector((state) => state.ddn.arrDiemDanhNhom);
+  //Lấy về mảng lương cá nhân để submit post
+  const arrLuongCaNhan = useSelector((state) => state.lgv.arrLuongCaNhan);
+  //Lấy về mảng lương cá nhân để submit post
+  const arrLuongNhom = useSelector((state) => state.lgv.arrLuongNhom);
+  //Lấy về mảng lương cá nhân để submit post
+  const arrPhuPhi = useSelector((state) => state.lgv.arrPhuPhi);
+
+  //Lấy về mảng lương tháng giáo viên để render giao diện edit
+  const arrLuongThangGiaoVien = useSelector(
+    (state) => state.lgv.arrLuongThangGiaoVien
+  );
+  //Lọc ra đối tượng lương tháng theo idTea,monthYEar
+  const monthWageData = getMonthWageData(
+    arrLuongThangGiaoVien,
+    idTea,
+    monthYearFilter
+  );
+  //Des ra ba mảng cần để render kết quả
+  const { arrLuongCaNhanData, arrLuongNhomData, arrPhuPhiData, idMonthWage } =
+    monthWageData;
 
   //------------ KHU CALLBACK------------
   //Func lấy giá trị tổng tiền phụ phí
@@ -101,8 +124,99 @@ const TrangTinhLuongGiaoVien = (props) => {
     changeMonthYearFilter(obj);
   };
   //SUBMIT -- callback chính tiến hành thêm mới lương tháng của giáo vien
-  const addMonthWageHandler = () => {};
+  const addMonthWageHandler = () => {
+    //Tổng hợp lại data để submit lương tháng cho giáo viên
+    const dataSubmit = {
+      idTea: idTea,
+      nameTea: teacherSelected.name,
+      monthYear: monthYearFilter,
+      singleWage: singleWage,
+      groupWage: groupWage,
+      arrLuongCaNhan: arrLuongCaNhan,
+      arrLuongNhom: arrLuongNhom,
+      arrPhuPhi: arrPhuPhi,
+    };
+    //Chạy fetch thôi
+    dispatchFn(LoadingActions.activeLoading());
+    fetch("/api/luong-giao-vien", {
+      method: "POST",
+      body: JSON.stringify(dataSubmit),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then(
+        (res) => dispatchFn(LoadingActions.deactiveLoading()),
+        router.reload()
+      )
+      .catch(
+        (error) => dispatchFn(LoadingActions.deactiveLoading()),
+        router.reload()
+      );
+  };
+  //SUBMIT -- callback chính tiến hành update lại lương tháng của giáo vien
+  const updateMonthWageHandler = () => {
+    //Tổng hợp lại data để submit
+    const data = {
+      idTea: idTea,
+      nameTea: teacherSelected.name,
+      monthYear: monthYearFilter,
+      singleWage: singleWage,
+      groupWage: groupWage,
+      arrLuongCaNhan: arrLuongCaNhanData,
+      arrLuongNhom: arrLuongNhomData,
+      arrPhuPhi: arrPhuPhiData,
+    };
+    const dataSubmit = {
+      id: idMonthWage,
+      data: data,
+    };
+    //Chạy fetch thôi
+    dispatchFn(LoadingActions.activeLoading());
+    fetch("/api/luong-giao-vien", {
+      method: "PUT",
+      body: JSON.stringify(dataSubmit),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then(
+        (res) => dispatchFn(LoadingActions.deactiveLoading()),
+        router.reload()
+      )
+      .catch(
+        (error) => dispatchFn(LoadingActions.deactiveLoading()),
+        router.reload()
+      );
+  };
+  //SUBMIT -- xóa data lương tháng luôn
+  const delMonthWageHandler = () => {
+    //Chạy fetch thôi
+    dispatchFn(LoadingActions.activeLoading());
+    fetch("/api/luong-giao-vien", {
+      method: "DELETE",
+      body: JSON.stringify(idMonthWage),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then(
+        (res) => dispatchFn(LoadingActions.deactiveLoading()),
+        router.reload()
+      )
+      .catch(
+        (error) => dispatchFn(LoadingActions.deactiveLoading()),
+        router.reload()
+      );
+  };
   //------------ KHU XỬ LÝ SIDE EFFECT ------------
+  //Xử lý side effect get data
+  useEffect(() => {
+    //Get data giáo viên về tạo mảng tags
+    dispatchFn(fetchGetArrTeacher());
+    //Get data điểm danh cá nhân về để xác thực
+    dispatchFn(fetchGetArrDiemDanhCaNhan());
+    //Get data điểm danh nhóm về để xác thực
+    dispatchFn(fetchGetArrDiemDanhNhom());
+    //Phải get data lương giáo viên về để check xem lương tháng giáo viên đã tồn tại chưa, nếu đã tồn tại thì không cho thêm mới nữa mà phải chuyển sang giao diện chỉnh sửa
+    dispatchFn(fetchGetLuongGiaoVien());
+    //--> nếu chạy get cái này sẽ bị lỗi 304 vì bên thong ke lương ta đã get rồi -- lỗi 304 tức ta get data 2 lần mà data đó là như nhau
+    //Để khắc phục điều này --> khi load trang này ta sé cho redirect qua thằng thông ke trước để nó load data rồi mới trở lại đây, hoặc đẩy fetch mảng lương thagns lên page trước
+  }, []);
   //Ngay khi một giáo viên được click, xử lý tạo logic trên redux cho việc render thông tin điểm danh cá nhân , nhóm và phụ phí
   useEffect(() => {
     if (teacherSelected) {
@@ -123,16 +237,7 @@ const TrangTinhLuongGiaoVien = (props) => {
         })
       );
     }
-  }, [teacherSelected]);
-  //Xử lý side effect get data
-  useEffect(() => {
-    //Get data giáo viên về tạo mảng tags
-    dispatchFn(fetchGetArrTeacher());
-    //Get data điểm danh cá nhân về để xác thực
-    dispatchFn(fetchGetArrDiemDanhCaNhan());
-    //Get data điểm danh nhóm về để xác thực
-    dispatchFn(fetchGetArrDiemDanhNhom());
-  }, []);
+  }, [teacherSelected, monthYearFilter]);
   //------------ KHU XỬ LÝ PHỤ ------------
 
   return (
@@ -143,8 +248,12 @@ const TrangTinhLuongGiaoVien = (props) => {
         <LuongGiaoVien
           arrTeacherTags={arrTeacherTags}
           teaSelected={teacherSelected}
+          idTeaSelected={idTea}
           monthYear={monthYearFilter}
           arrDataCaNhan={arrDataCaNhan}
+          arrLuongCaNhanData={arrLuongCaNhanData}
+          arrLuongNhomData={arrLuongNhomData}
+          arrPhuPhiData={arrPhuPhiData}
           singleWage={singleWage}
           groupWage={groupWage}
           totalPlusWage={totalPlusWage}
@@ -156,6 +265,8 @@ const TrangTinhLuongGiaoVien = (props) => {
           getTotalSingleWage={getTotalSingleWageHandler}
           doRefresh={doRefreshHandler}
           doAddMonthWage={addMonthWageHandler}
+          doUpdateMonthWage={updateMonthWageHandler}
+          doDelMonthWage={delMonthWageHandler}
         />
       )}
     </Fragment>

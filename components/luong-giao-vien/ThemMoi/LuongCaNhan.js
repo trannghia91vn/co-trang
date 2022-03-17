@@ -1,17 +1,14 @@
 import classes from "./LuongCaNhan.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { LgvActions } from "../../../store/redux/luong-giao-vien/lgv-slice";
-import { Fragment,useEffect } from "react";
-import {
-  getCalcMoneyEachStu,
-  getRoundUpThoundsand,
-} from "../../../support/luong-giao-vien/lgn-uti";
+import { Fragment, useEffect } from "react";
+import { getCalcMoneyEachStu } from "../../../support/luong-giao-vien/lgn-uti";
 import { formatMoney } from "../../../support/hoc-phi-hoc-sinh/hphs-uti";
 
 const LuongCaNhan = (props) => {
   const dispatchFn = useDispatch();
   //Des props
-  const { monthYear, singleWage } = props;
+  const { monthYear, singleWage, idTeaSelected } = props;
   //mảng labels cho hàng đầu tiên
   const arrLabels = ["Học sinh", "Ngày học", "Hs", "Tổng giờ", "Thành tiền"];
   //Biến render hàng labels
@@ -22,7 +19,15 @@ const LuongCaNhan = (props) => {
   ));
 
   //Lấy về từ redux mảng ddcn để redner --- Arr này là data chinh để render, khi làm giao diện edit chỉ cần load arr này từ db là xong
-  const arrDataCaNhanFinal = useSelector((state) => state.lgv.arrLuongCaNhan);
+  const arrLuongCaNhan = useSelector((state) => state.lgv.arrLuongCaNhan);
+
+  //Lọc lại theo id teacher và month year
+  const arrDataCaNhanFinal = arrLuongCaNhan.filter(
+    (cv) =>
+      cv.isTea === idTeaSelected &&
+      +cv.monthYear.month === +monthYear.month &&
+      +cv.monthYear.year === +monthYear.year
+  );
 
   //Tạo mảng chứa các giá trị tiền tính được của từng dòng data, mỗi vòng lặp bên dưới push vào mản này
   let arrThanhTien = [];
@@ -81,7 +86,7 @@ const LuongCaNhan = (props) => {
       cv.scale
     );
     //Đẩy giá trị tính được của dòng vào mảng tính tổng tiền
-    arrThanhTien.push(totalWage)
+    arrThanhTien.push(totalWage);
     const renderCalcHour = (
       <div className={classes.cell}>
         {cv.scale === 1
@@ -99,9 +104,7 @@ const LuongCaNhan = (props) => {
         <Fragment>{renderScale}</Fragment>
         <Fragment>{renderCalcHour}</Fragment>
         <div className={classes.cell}>
-          {cv.scale === 1
-            ? "None"
-            : `${formatMoney(totalWage)} đ`}
+          {cv.scale === 1 ? "None" : `${formatMoney(totalWage)} đ`}
         </div>
       </Fragment>
     );
@@ -110,22 +113,30 @@ const LuongCaNhan = (props) => {
   //Biến render hàng tính tổng
   //Tính ra tổng tiền
   let totalMoneyCalc = 0;
-  if (arrThanhTien.length>0) {
-      totalMoneyCalc = arrThanhTien.reduce((cv,tong)=>cv+tong)
+  if (arrThanhTien.length > 0) {
+    totalMoneyCalc = arrThanhTien.reduce((cv, tong) => cv + tong);
   }
   //Xử lý side effect push tổng tiền cá nhân lên comp chính
-  useEffect(()=>{
-    props.getTotalSingleWage(totalMoneyCalc)
-  },[arrDataCaNhanFinal])
+  useEffect(() => {
+    props.getTotalSingleWage(totalMoneyCalc);
+  }, [arrDataCaNhanFinal]);
   //Biến render hàng tổng
-  const renderResultRow = <Fragment>
+  const renderResultRow = (
+    <Fragment>
       <div className={classes.hide}></div>
       <div className={classes.hide}></div>
       <div className={classes.hide}></div>
-      <div className={classes.cell} style={{fontWeight:'bold'}}>Tổng:</div>
-      <div className={classes.cell} style={{fontWeight:'bold',color:'var(--mauPhu1--'}}>{formatMoney(totalMoneyCalc)} đ</div>
-  </Fragment>
-
+      <div className={classes.cell} style={{ fontWeight: "bold" }}>
+        Tổng:
+      </div>
+      <div
+        className={classes.cell}
+        style={{ fontWeight: "bold", color: "var(--mauPhu1--" }}
+      >
+        {formatMoney(totalMoneyCalc)} đ
+      </div>
+    </Fragment>
+  );
 
   return (
     <section className={classes.overall}>
