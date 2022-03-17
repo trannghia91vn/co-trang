@@ -11,13 +11,14 @@ const ChonGiaoVien = (props) => {
           color: `var(--mauTieuDe--)`,
         }}
       >
-        Chọn giáo viên tiến hành điểm danh nhóm
+        Chọn giáo viên 
       </h3>
       <ListTag
         type="only-one"
         arrTags={props.arrTags}
         isStudent={false}
         isTeacher={true}
+        doRefresh={props.doRefresh}
       />
     </Fragment>
   );

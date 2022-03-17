@@ -1,9 +1,5 @@
 {
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
-  "/_error": "pages/_error.js",
-  "/api/diem-danh-ca-nhan": "pages/api/diem-danh-ca-nhan.js",
-  "/api/quan-ly-hoc-sinh": "pages/api/quan-ly-hoc-sinh.js",
-  "/api/hoc-phi-hoc-sinh": "pages/api/hoc-phi-hoc-sinh.js",
-  "/hoc-phi-hoc-sinh/tinh-phi-thang-moi": "pages/hoc-phi-hoc-sinh/tinh-phi-thang-moi.js"
+  "/_error": "pages/_error.js"
 }
