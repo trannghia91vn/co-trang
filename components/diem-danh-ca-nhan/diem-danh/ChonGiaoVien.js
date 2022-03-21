@@ -172,6 +172,19 @@ const ChonGiaoVienCN = (props) => {
           >
             60
           </div>
+          <div
+            className={classes.btnTime}
+            onClick={getQuicktaughtTime.bind(0, 90)}
+          >
+            90
+          </div>
+          <div
+            className={classes.btnTime}
+            onClick={getQuicktaughtTime.bind(0, 120)}
+          >
+            120
+          </div>
+
           <button
             style={{ marginLeft: "20px", fontSize: "1rem" }}
             type="submit"

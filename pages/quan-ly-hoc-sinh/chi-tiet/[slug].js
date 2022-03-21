@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { getStuById } from "../../../support/quan-ly-hoc-sinh/qlhc-uti";
 import { Fragment, useEffect } from "react";
 import ThanhDieuHuongNoiDung from "../../../components/UI/Breadscums";
-import { fetchGetStudentData } from "../../../store/redux/quan-ly-hoc-sinh/qlhs-slice";
 
 const TrangThongTinChiTietHocSinh = (props) => {
   //Lấy về id học sinh
@@ -24,11 +23,6 @@ const TrangThongTinChiTietHocSinh = (props) => {
       isActive: true,
     },
   ];
-  console.log(studentData);
-  //Xử lý fetch get data để load lại thông tin cập nhật sau khi sửa
-  useEffect(() => {
-    dispatchFn(fetchGetStudentData());
-  }, []);
 
   return (
     <Fragment>

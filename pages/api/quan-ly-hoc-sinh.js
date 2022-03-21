@@ -40,6 +40,9 @@ const handler = async (req, res) => {
     //Tiến hành ghi vào database
     try {
       await writeDataToMongoDb(cluster, "mangHocSinh", req.body);
+      res.status(200).json({
+        thongbao: "Lưu thông tin học sinh mới vào mongodb thành công",
+      });
     } catch (error) {
       cluster.close();
       res.status(500).json({

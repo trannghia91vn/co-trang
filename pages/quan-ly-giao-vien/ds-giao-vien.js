@@ -22,12 +22,11 @@ const TrangDanhSachGiaoVien = (props) => {
   useEffect(() => {
     dispatchFn(fetchGetArrTeacher());
   }, []);
+  console.log(arrTeachers)
   return (
     <Fragment>
       <ThanhDieuHuongNoiDung arrNavi={contentNavi} />
-      {!isLoading && (
-        <DanhSach arrTeachers={arrTeachers} title="Danh sách giáo viên" />
-      )}
+      <DanhSach arrTeachers={arrTeachers} title="Danh sách giáo viên" />
       {isLoading && <Loading />}
     </Fragment>
   );

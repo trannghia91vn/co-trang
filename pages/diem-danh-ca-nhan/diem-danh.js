@@ -172,9 +172,10 @@ const TrangThemDiemDanhCaNhan = (props) => {
   //Xử lý kiểm tra xem nút cập nhật có được bấm hay không
   useEffect(() => {
     if (
-      dateTypeData.date !== "" &&
-      dateTypeData.type !== "" &&
-      teacherTaughtData.length > 0
+      (dateTypeData.date !== "" &&
+        dateTypeData.type !== "" &&
+        teacherTaughtData.length > 0) ||
+      (dateTypeData.date !== "" && dateTypeData.type === "nghi")
     ) {
       changeDisUpdateBtn(false);
     } else {

@@ -1,16 +1,17 @@
 import ThanhDieuHuongNoiDung from "../../../components/UI/Breadscums";
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import DanhSach from "../../../components/UI/List/List";
-import { getSingleArrStuddents } from "../../../support/quan-ly-hoc-sinh/qlhc-uti";
-import { fetchGetStudentData } from "../../../store/redux/quan-ly-hoc-sinh/qlhs-slice";
+import {
+  getSingleArrStuddents,
+  sortArrByName,
+} from "../../../support/quan-ly-hoc-sinh/qlhc-uti";
 import Loading from "../../../components/UI/Loading/Loading";
 
 const TrangDanhSachCaNhan = (props) => {
-  const dispatchFn = useDispatch();
   //Load về mảng học sinh tử redux
   const arrStudents = useSelector((state) => state.qlhs.arrStudents);
-  //Lấy về trạng thái loading
+  //Load về biến loading
   const isLoading = useSelector((state) => state.loading.isLoading);
   const contentNavi = [
     { label: "Quản lý học sinh", slug: "quan-ly-hoc-sinh", isActive: false },
@@ -22,21 +23,17 @@ const TrangDanhSachCaNhan = (props) => {
   ];
   //Lọc lại danh sách học sinh cá nhân
   const arrSingleStus = getSingleArrStuddents(arrStudents);
-  //truyền váo DanhSach prop tuong ứng arrStu và arrTeach
-  //Xử lý side effect để luôn load được trang này từ db
-  useEffect(() => {
-    dispatchFn(fetchGetStudentData());
-  }, []);
+  //Sort lại view theo name alphabet
+  const arrSingleStusSort = sortArrByName(arrSingleStus);
+
   return (
     <Fragment>
-      <ThanhDieuHuongNoiDung arrNavi={contentNavi} />
-      {!isLoading && (
-        <DanhSach
-          title={"Danh sách học sinh cá nhân"}
-          arrStudents={arrSingleStus}
-        />
-      )}
       {isLoading && <Loading />}
+      <ThanhDieuHuongNoiDung arrNavi={contentNavi} />
+      <DanhSach
+        title={"Danh sách học sinh cá nhân"}
+        arrStudents={arrSingleStusSort}
+      />
     </Fragment>
   );
 };

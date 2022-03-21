@@ -11,19 +11,21 @@ const DanhSach = (props) => {
         name={stu.nameStu}
         birthday={stu.dateBorn}
         _id={stu._id}
-        type='student'
+        type="student"
       />
     ));
   const renderArrTeachers =
     arrTeachers &&
     arrTeachers.length > 0 &&
-    arrTeachers.map((tea) => <PhanTuDanhSach 
-      key={tea._id}
-      _id={tea._id}
-      name={tea.name}
-      birthday={tea.dateBorn}
-      type='teacher'
-    />);
+    arrTeachers.map((tea) => (
+      <PhanTuDanhSach
+        key={tea._id}
+        _id={tea._id}
+        name={tea.name}
+        birthday={tea.dateBorn}
+        type="teacher"
+      />
+    ));
   return (
     <section className={classes.container}>
       <h3>{title}</h3>

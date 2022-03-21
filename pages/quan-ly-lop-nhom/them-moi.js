@@ -14,7 +14,7 @@ const TrangThemLopNhom = (props) => {
   const isLoading = useSelector((state) => state.loading.isLoading);
   //Lấy về mảng tags học sinh từ redux
   const arrStusTags = useSelector((state) => state.qlhs.arrStudentTags);
-  console.log(arrStusTags)
+  console.log(arrStusTags);
   //Tạo chay data mẫu cho điều hướng nối dung theo thứ tự luôn
   const contentNavi = [
     { label: "Quản lý lớp nhóm", slug: "quan-ly-lop-nhom", isActive: false },
@@ -29,22 +29,19 @@ const TrangThemLopNhom = (props) => {
   const arrGroupStusTags = getGroupArrStuddents(arrStusTags);
   const arrSelectedStusTags = getArrSelectedStusTags(arrGroupStusTags);
 
-  console.log(arrGroupStusTags)
 
   //Xử lý side effect mỗi lần load trang này phải fetch lại tạo magnr hs tags
-  useEffect(()=>{
-    dispatchFn(getStusDataAndCreateArrTags())
-  },[]);
+  useEffect(() => {
+    dispatchFn(getStusDataAndCreateArrTags());
+  }, []);
 
   return (
     <Fragment>
       <ThanhDieuHuongNoiDung arrNavi={contentNavi} />
-      {!isLoading && (
-        <ThemMoiLopNhom
-          arrGroupStus={arrGroupStusTags}
-          arrGroupSelectedStus={arrSelectedStusTags}
-        />
-      )}
+      <ThemMoiLopNhom
+        arrGroupStus={arrGroupStusTags}
+        arrGroupSelectedStus={arrSelectedStusTags}
+      />
       {isLoading && <Loading />}
     </Fragment>
   );

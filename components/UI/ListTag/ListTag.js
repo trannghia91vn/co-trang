@@ -1,7 +1,7 @@
 import classes from "./ListTag.module.css";
 import Tag from "./Tag";
 import { FaSearch } from "react-icons/fa";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import Loading from "../../UI/Loading/Loading";
 import { useDispatch } from "react-redux";
 import { QlhsActions } from "../../../store/redux/quan-ly-hoc-sinh/qlhs-slice";
@@ -19,7 +19,7 @@ const ListTag = (props) => {
   const searchHandler = (e) => {
     setTimeout(() => {
       changeSearchVal(e.target.value);
-    }, 1200);
+    }, 500);
   };
 
   //Xử lý lọc lại arr có name trùng với kí tự search
@@ -108,31 +108,34 @@ const ListTag = (props) => {
     }
   }, []);
   //Return cuối
-  return arrTagsFinal.length === 0 ? (
-    <Loading />
-  ) : (
-    <div className={classes.overall}>
-      <div className={classes.search}>
-        <label>
-          <FaSearch
-            style={{ fontSize: ".9rem", position: "relative", top: "3px" }}
-          />{" "}
-        </label>
-        <input type="text" id="search" onChange={searchHandler} />
-        {props.isSelectClass && <label htmlFor="chonLopNhom">Chọn lớp:</label>}
-        {props.isSelectClass && (
-          <select
-            className={classes.lopNhom}
-            id="chonLopNhom"
-            onChange={getLopNhomHandler}
-            defaultValue="none"
-          >
-            {renderOptions}
-          </select>
-        )}
+  return (
+    <Fragment>
+      {arrTagsFinal.length === 0 && <Loading />}
+      <div className={classes.overall}>
+        <div className={classes.search}>
+          <label>
+            <FaSearch
+              style={{ fontSize: ".9rem", position: "relative", top: "3px" }}
+            />{" "}
+          </label>
+          <input type="text" id="search" onChange={searchHandler} />
+          {props.isSelectClass && (
+            <label htmlFor="chonLopNhom">Chọn lớp:</label>
+          )}
+          {props.isSelectClass && (
+            <select
+              className={classes.lopNhom}
+              id="chonLopNhom"
+              onChange={getLopNhomHandler}
+              defaultValue="none"
+            >
+              {renderOptions}
+            </select>
+          )}
+        </div>
+        <div className={allClass}>{renderListTags}</div>
       </div>
-      <div className={allClass}>{renderListTags}</div>
-    </div>
+    </Fragment>
   );
 };
 

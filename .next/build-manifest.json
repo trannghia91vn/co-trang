@@ -25,6 +25,11 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
+    "/hoc-phi-hoc-sinh": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/hoc-phi-hoc-sinh.js"
+    ],
     "/luong-giao-vien": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",

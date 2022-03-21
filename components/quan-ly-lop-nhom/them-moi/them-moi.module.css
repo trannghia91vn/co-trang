@@ -7,6 +7,7 @@
   border-radius: 10px;
   width: 80%;
   text-align: center;
+
 }
 .container h3 {
   margin: 0;
@@ -47,7 +48,7 @@
   margin: 10px 0;
 }
 .actions {
-  display : flex;
+  display: flex;
   flex-direction: row;
   justify-content: center;
   margin-top: var(--dim-sm--);

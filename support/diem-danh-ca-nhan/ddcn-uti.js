@@ -53,3 +53,30 @@ export const getArrDiemDanhCaNhanMonthYear = (arrDiemDanhCaNhan,month,year) => {
   );
   return result;
 };
+
+//Callback lấy Phần tên : ví dụ : Trần Nghĩa ->> lấy Nghĩa : phục vụ cho func bên dưới
+const getLastName = (name) => {
+  const arrNameSplit = name.trim().split(" ");
+  const lastName = arrNameSplit[arrNameSplit.length - 1];
+  return lastName;
+};
+//Lọc lại mảng theo thứ tự tên abc
+export const sortArrByName = (arr) => {
+  //CHú ý : khi tái sủ dụng cái này thì thay props nameStu tương ứng bên dưới là đượcÏ
+  //map về mảng lastname
+  const arrNameStu = arr.map((cv) => cv.name);
+  const arrLastNameStu = arrNameStu.map((cv) => getLastName(cv));
+  //Sort mảng này lại
+  const arrLastNameSort = arrLastNameStu.sort();
+  //Tạo mảng rổng chứa kết quả, tìm kiếm tên được sort trong mảng gôc và đẩy
+  const arrResult = [];
+  arrLastNameSort.forEach((name) => {
+    const indexObjMatched = arr.findIndex((cv) => cv.name.includes(name));
+    if (indexObjMatched !== -1) {
+      arrResult.push(arr[indexObjMatched]);
+      arr.splice(indexObjMatched, 1);
+    }
+  });
+  return arrResult;
+};
+

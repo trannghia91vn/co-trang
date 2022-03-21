@@ -11,6 +11,9 @@ const QlgvSlice = createSlice({
   initialState: initTeacher,
   reducers: {
     replaceArrTeachers(state, action) {
+      if (action.payload.length > 0) {
+        state.arrTeachers = action.payload;
+      }
       state.arrTeachers = action.payload;
     },
     createArrTeacherTags(state) {
@@ -62,7 +65,7 @@ export const fetchGetArrTeacher = () => {
       const data = await response.json();
       //Ghi đề arrTeachers và tạo arr Tags cho redux
       dispatchFn(QlgvActions.replaceArrTeachers(data.data));
-      dispatchFn(QlgvActions.createArrTeacherTags())
+      dispatchFn(QlgvActions.createArrTeacherTags());
     } catch (error) {
       console.log("Get thông tin giáo viên lỗi.");
       dispatchFn(LoadingActions.deactiveLoading());

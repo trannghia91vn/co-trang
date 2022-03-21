@@ -29,6 +29,9 @@ const handler = async (req, res) => {
     //Tiến hành lưu vào db
     try {
       await writeDataToMongoDb(cluster, "mangLopNhom", req.body);
+      res
+        .status(200)
+        .json({ thongbao: "Lưu thông tin lớp nhóm vào db thành công." });
     } catch (error) {
       res
         .status(500)
@@ -55,6 +58,9 @@ const handler = async (req, res) => {
   if (req.method === "DELETE") {
     try {
       await deleteDataFromMongoDb(cluster, "mangLopNhom", req.body);
+      res
+      .status(200)
+      .json({ thongbao: "Xóa thông tin lớp nhóm vào db thành công." });
     } catch (error) {
       res.status(500).json({ thongbao: "Xóa lớp nhóm thành công." });
       cluster.close();

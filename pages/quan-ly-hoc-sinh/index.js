@@ -2,18 +2,11 @@ import Header from "../../components/UI/Header";
 import { Fragment, useContext, useEffect } from "react";
 import LabelsContext from "../../store/context/NavbarLabels/labels-context";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { fetchGetStudentData } from "../../store/redux/quan-ly-hoc-sinh/qlhs-slice";
 
 const TrangQuanLyHocSinh = (props) => {
-  // const dispatchFn = useDispatch();
-  // useEffect(()=>{
-  //   dispatchFn(fetchGetStudentData())
-  // },[])
-  // useEffect(() => {
-  //   //Chạy get data qlhs lần đầu khi load mục này
-  //   fetch("api/quan-ly-hoc-sinh")
-  //     .then((res) => res.json())
-  //     .then((data) => dispatchFn(QlhsActions.replaceArrStudents(data.data)));
-  // }, []);
+  const dispatchFn = useDispatch();
   //Lấy về slug
   const route = useRouter().route.replace("/", "");
   //Lấy về ctx labels navbar để load cho header
@@ -33,6 +26,11 @@ const TrangQuanLyHocSinh = (props) => {
     title,
     arrOptions,
   };
+
+  //Xử lý side effect gom get Data ở đây
+  useEffect(() => {
+    dispatchFn(fetchGetStudentData());
+  }, []);
 
   return (
     <Fragment>

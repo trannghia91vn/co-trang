@@ -5,6 +5,7 @@ import ChonGiaoVienCN from "./ChonGiaoVien";
 import LichDiemDanh from "../lich-diem-danh/LichDiemDanh";
 import LocNamThang from "../../UI/MonthYearPick/MonthYearPick";
 import { useState } from "react";
+import { sortArrByName } from "../../../support/diem-danh-ca-nhan/ddcn-uti";
 
 const DiemDanhCaNhan = (props) => {
   //Lấy về đói tượng stuSelected để quết định render giao diện thao tác cho học sinh này
@@ -30,6 +31,8 @@ const DiemDanhCaNhan = (props) => {
     defaultDateAddForm = `${monthYearFilter.year}-0${monthYearFilter.month}-01`;
   }
 
+  //Sort lại mảng arrTag học sinh cho dễ nhìn
+  const arrStudentTagsSort = sortArrByName(arrStudentTags);
   //Callback chuyển đổi giao diện
   const viewAddUiHandler = () => {
     changeViewEditUi(false);
@@ -55,7 +58,7 @@ const DiemDanhCaNhan = (props) => {
 
   return (
     <section className={classes.container}>
-      <ChonHocSinh arrStudentTags={arrStudentTags} />
+      <ChonHocSinh arrStudentTags={arrStudentTagsSort} />
 
       {stuSelected && !isViewEditUi && (
         <label className={classes.note}>
@@ -144,7 +147,7 @@ const DiemDanhCaNhan = (props) => {
                 type="button"
                 style={{ fontSize: "1.2rem" }}
                 className="btn btn-cancel"
-                onClick={props.doReload}
+                onClick={viewAddUiHandler}
               >
                 Hủy
               </button>
