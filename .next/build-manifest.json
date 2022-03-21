@@ -25,15 +25,25 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
+    "/diem-danh-ca-nhan": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/diem-danh-ca-nhan.js"
+    ],
+    "/diem-danh-ca-nhan/diem-danh": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/diem-danh-ca-nhan/diem-danh.js"
+    ],
     "/hoc-phi-hoc-sinh": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/hoc-phi-hoc-sinh.js"
     ],
-    "/luong-giao-vien": [
+    "/hoc-phi-hoc-sinh/tinh-phi-thang-moi": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/luong-giao-vien.js"
+      "static/chunks/pages/hoc-phi-hoc-sinh/tinh-phi-thang-moi.js"
     ],
     "/luong-giao-vien/tinh-luong": [
       "static/chunks/webpack.js",
