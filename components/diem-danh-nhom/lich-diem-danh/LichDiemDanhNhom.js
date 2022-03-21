@@ -1,4 +1,4 @@
-import classes from "./LichDiemDanhnhom.module.css";
+import classes from "./LichDiemDanhNhom.module.css";
 import NgayDiemDanhItem from "./NgayDiemDanh";
 import { Fragment } from "react";
 import { filterArrDdnIdteaMonthYear } from "../../../support/diem-danh-nhom/ddn-uti";
