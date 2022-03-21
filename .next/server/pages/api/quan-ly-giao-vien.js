@@ -1,45 +1,103 @@
 "use strict";
-/*
- * ATTENTION: An "eval-source-map" devtool has been used.
- * This devtool is neither made for production nor for readable output files.
- * It uses "eval()" calls to create a separate source file with attached SourceMaps in the browser devtools.
- * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
- * or disable the default devtool with "devtool: false".
- * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
- */
 (() => {
 var exports = {};
-exports.id = "pages/api/quan-ly-giao-vien";
-exports.ids = ["pages/api/quan-ly-giao-vien"];
+exports.id = 1508;
+exports.ids = [1508];
 exports.modules = {
 
-/***/ "mongodb":
-/*!**************************!*\
-  !*** external "mongodb" ***!
-  \**************************/
+/***/ 8013:
 /***/ ((module) => {
 
 module.exports = require("mongodb");
 
 /***/ }),
 
-/***/ "(api)/./pages/api/quan-ly-giao-vien.js":
-/*!****************************************!*\
-  !*** ./pages/api/quan-ly-giao-vien.js ***!
-  \****************************************/
+/***/ 6848:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../support/uti-request/connect-to-mongodb */ \"(api)/./support/uti-request/connect-to-mongodb.js\");\n\nconst handler = async (req, res)=>{\n    //Xử lý kiểm tra điều kiện của thông tin submit lên\n    const { singleWage , groupWage , name  } = req.body;\n    if (+singleWage === 0 && +groupWage === 0) {\n        res.status(422).json({\n            thongbao: \"Th\\xf4ng tin input kh\\xf4ng hợp lệ.\"\n        });\n        return;\n    } //Kết thúc kiểm trả đk các giá trị submit lên\n    let cluster;\n    //Chạy connect đến db trước\n    try {\n        cluster = await (0,_support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__.connectToMongoDb)(\"qlgv\");\n    } catch (error) {\n        res.status(500).json({\n            thongbao: \"Kết nối đến db qlgv thất bại.\"\n        });\n        cluster.close();\n    }\n    //Xử lý post request\n    if (req.method === \"POST\") {\n        try {\n            await (0,_support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__.writeDataToMongoDb)(cluster, \"mangGiaoVien\", req.body);\n        } catch (error) {\n            res.status(500).json({\n                thongbao: \"Th\\xeam mới gi\\xe1o vi\\xean v\\xe0o db thất bại.\"\n            });\n            cluster.close();\n        }\n        cluster.close();\n    } //end if xử lý post\n    //Xử lý get request\n    if (req.method === \"GET\") {\n        try {\n            const dataGot = await (0,_support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__.readDataFromMongoDb)(cluster, \"mangGiaoVien\");\n            res.status(200).json({\n                thongbao: \"Lấy về data gi\\xe1o vi\\xean th\\xe0nh c\\xf4ng.\",\n                data: dataGot\n            });\n        } catch (error) {\n            res.status(500).json({\n                thongbao: \"Lấy về data gi\\xe1o vi\\xean thất bại\"\n            });\n            cluster.close();\n        }\n        cluster.close();\n    } //End if xử lý get\n    //Xử lý del request\n    if (req.method === \"DELETE\") {\n        try {\n            await (0,_support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__.deleteDataFromMongoDb)(cluster, \"mangGiaoVien\", req.body);\n            res.status(200).json({\n                thongbao: \"X\\xf3a gi\\xe1o vi\\xean th\\xe0nh c\\xf4ng\"\n            });\n        } catch (error) {\n            res.status(500).json({\n                thongbao: \"X\\xf3a gi\\xe1o vi\\xean thất bại.\"\n            });\n            cluster.close();\n        }\n        cluster.close();\n    } // end delete request\n    //Xử lý put request update thông tin giáo viên\n    if (req.method === \"PUT\") {\n        try {\n            await (0,_support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__.replaceDataByIdToMongoDb)(cluster, \"mangGiaoVien\", req.body._id, req.body.data);\n        } catch (error) {\n            res.status(500).json({\n                thongbao: 'Sửa th\\xf4ng tin gi\\xe1o vi\\xean thất bại.'\n            });\n            cluster.close();\n        }\n        cluster.close();\n    }\n};\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (handler);\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,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TSxDQUFDLEdBQUcsRUFBRUMsSUFBSSxDQUFDLENBQUM7Z0JBQ3BCQyxRQUFRLEVBQUUsQ0FBeUI7WUFDOUIsQ0FBTjtZQUNEQyxPQUFPLENBQUNFLEtBQUs7UUFDZixDQUFDO1FBQ0RGLE9BQU8sQ0FBQ0UsS0FBSztJQUNmLENBQUMsQ0FBc0I7SUFFdkIsRUFBOEM7SUFDeEMsRUFBSixFQUFFWCxHQUFHLENBQUNZLE1BQU0sS0FBSyxDQUFLLE1BQUUsQ0FBQztRQUN6QixHQUFHLENBQUMsQ0FBQztZQUNILEtBQUssQ0FBQ2QsaUdBQXdCLENBQzVCVyxPQUFPLEVBQ1AsQ0FBYyxlQUNkVCxHQUFHLENBQUNLLElBQUksQ0FBQ1UsR0FBRyxFQUNaZixHQUFHLENBQUNLLElBQUksQ0FBQ1MsSUFBSTtRQUVqQixDQUFDLENBQUMsS0FBSyxFQUFFSixLQUFLLEVBQUUsQ0FBQztZQUNmVCxHQUFHLENBQUNLLE1BQU0sQ0FBQyxHQUFHLEVBQUVDLElBQUksQ0FBQyxDQUFDQztnQkFBQUEsUUFBUSxFQUFDLENBQW1DO1lBQUEsQ0FBQztZQUNuRUMsT0FBTyxDQUFDRSxLQUFLO1FBQ2YsQ0FBQztRQUNERixPQUFPLENBQUNFLEtBQUs7SUFDZixDQUFDO0FBQ0gsQ0FBQztBQUNELGlFQUFlWixPQUFPLEVBQUMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly9yb290Ly4vcGFnZXMvYXBpL3F1YW4tbHktZ2lhby12aWVuLmpzP2VhYWIiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHtcbiAgY29ubmVjdFRvTW9uZ29EYixcbiAgd3JpdGVEYXRhVG9Nb25nb0RiLFxuICByZWFkRGF0YUZyb21Nb25nb0RiLFxuICBkZWxldGVEYXRhRnJvbU1vbmdvRGIsXG4gIHJlcGxhY2VEYXRhQnlJZFRvTW9uZ29EYixcbn0gZnJvbSBcIi4uLy4uL3N1cHBvcnQvdXRpLXJlcXVlc3QvY29ubmVjdC10by1tb25nb2RiXCI7XG5jb25zdCBoYW5kbGVyID0gYXN5bmMgKHJlcSwgcmVzKSA9PiB7XG4gIC8vWOG7rSBsw70ga2nhu4NtIHRyYSDEkWnhu4F1IGtp4buHbiBj4bunYSB0aMO0bmcgdGluIHN1Ym1pdCBsw6puXG4gIGNvbnN0IHsgc2luZ2xlV2FnZSwgZ3JvdXBXYWdlLCBuYW1lIH0gPSByZXEuYm9keTtcbiAgaWYgKCtzaW5nbGVXYWdlID09PSAwICYmICtncm91cFdhZ2UgPT09IDApIHtcbiAgICByZXMuc3RhdHVzKDQyMikuanNvbih7IHRob25nYmFvOiBcIlRow7RuZyB0aW4gaW5wdXQga2jDtG5nIGjhu6NwIGzhu4cuXCIgfSk7XG4gICAgcmV0dXJuO1xuICB9IC8vS+G6v3QgdGjDumMga2nhu4NtIHRy4bqjIMSRayBjw6FjIGdpw6EgdHLhu4sgc3VibWl0IGzDqm5cblxuICBsZXQgY2x1c3RlcjtcbiAgLy9DaOG6oXkgY29ubmVjdCDEkeG6v24gZGIgdHLGsOG7m2NcbiAgdHJ5IHtcbiAgICBjbHVzdGVyID0gYXdhaXQgY29ubmVjdFRvTW9uZ29EYihcInFsZ3ZcIik7XG4gIH0gY2F0Y2ggKGVycm9yKSB7XG4gICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyB0aG9uZ2JhbzogXCJL4bq/dCBu4buRaSDEkeG6v24gZGIgcWxndiB0aOG6pXQgYuG6oWkuXCIgfSk7XG4gICAgY2x1c3Rlci5jbG9zZSgpO1xuICB9XG5cbiAgLy9Y4butIGzDvSBwb3N0IHJlcXVlc3RcbiAgaWYgKHJlcS5tZXRob2QgPT09IFwiUE9TVFwiKSB7XG4gICAgdHJ5IHtcbiAgICAgIGF3YWl0IHdyaXRlRGF0YVRvTW9uZ29EYihjbHVzdGVyLCBcIm1hbmdHaWFvVmllblwiLCByZXEuYm9keSk7XG4gICAgfSBjYXRjaCAoZXJyb3IpIHtcbiAgICAgIHJlcy5zdGF0dXMoNTAwKS5qc29uKHsgdGhvbmdiYW86IFwiVGjDqm0gbeG7m2kgZ2nDoW8gdmnDqm4gdsOgbyBkYiB0aOG6pXQgYuG6oWkuXCIgfSk7XG4gICAgICBjbHVzdGVyLmNsb3NlKCk7XG4gICAgfVxuICAgIGNsdXN0ZXIuY2xvc2UoKTtcbiAgfSAvL2VuZCBpZiB44butIGzDvSBwb3N0XG5cbiAgLy9Y4butIGzDvSBnZXQgcmVxdWVzdFxuICBpZiAocmVxLm1ldGhvZCA9PT0gXCJHRVRcIikge1xuICAgIHRyeSB7XG4gICAgICBjb25zdCBkYXRhR290ID0gYXdhaXQgcmVhZERhdGFGcm9tTW9uZ29EYihjbHVzdGVyLCBcIm1hbmdHaWFvVmllblwiKTtcbiAgICAgIHJlcy5zdGF0dXMoMjAwKS5qc29uKHtcbiAgICAgICAgdGhvbmdiYW86IFwiTOG6pXkgduG7gSBkYXRhIGdpw6FvIHZpw6puIHRow6BuaCBjw7RuZy5cIixcbiAgICAgICAgZGF0YTogZGF0YUdvdCxcbiAgICAgIH0pO1xuICAgIH0gY2F0Y2ggKGVycm9yKSB7XG4gICAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7XG4gICAgICAgIHRob25nYmFvOiBcIkzhuqV5IHbhu4EgZGF0YSBnacOhbyB2acOqbiB0aOG6pXQgYuG6oWlcIixcbiAgICAgIH0pO1xuICAgICAgY2x1c3Rlci5jbG9zZSgpO1xuICAgIH1cbiAgICBjbHVzdGVyLmNsb3NlKCk7XG4gIH0gLy9FbmQgaWYgeOG7rSBsw70gZ2V0XG5cbiAgLy9Y4butIGzDvSBkZWwgcmVxdWVzdFxuICBpZiAocmVxLm1ldGhvZCA9PT0gXCJERUxFVEVcIikge1xuICAgIHRyeSB7XG4gICAgICBhd2FpdCBkZWxldGVEYXRhRnJvbU1vbmdvRGIoY2x1c3RlciwgXCJtYW5nR2lhb1ZpZW5cIiwgcmVxLmJvZHkpO1xuICAgICAgcmVzLnN0YXR1cygyMDApLmpzb24oe1xuICAgICAgICB0aG9uZ2JhbzogXCJYw7NhIGdpw6FvIHZpw6puIHRow6BuaCBjw7RuZ1wiLFxuICAgICAgfSk7XG4gICAgfSBjYXRjaCAoZXJyb3IpIHtcbiAgICAgIHJlcy5zdGF0dXMoNTAwKS5qc29uKHtcbiAgICAgICAgdGhvbmdiYW86IFwiWMOzYSBnacOhbyB2acOqbiB0aOG6pXQgYuG6oWkuXCIsXG4gICAgICB9KTtcbiAgICAgIGNsdXN0ZXIuY2xvc2UoKTtcbiAgICB9XG4gICAgY2x1c3Rlci5jbG9zZSgpO1xuICB9IC8vIGVuZCBkZWxldGUgcmVxdWVzdFxuXG4gIC8vWOG7rSBsw70gcHV0IHJlcXVlc3QgdXBkYXRlIHRow7RuZyB0aW4gZ2nDoW8gdmnDqm5cbiAgaWYgKHJlcS5tZXRob2QgPT09IFwiUFVUXCIpIHtcbiAgICB0cnkge1xuICAgICAgYXdhaXQgcmVwbGFjZURhdGFCeUlkVG9Nb25nb0RiKFxuICAgICAgICBjbHVzdGVyLFxuICAgICAgICBcIm1hbmdHaWFvVmllblwiLFxuICAgICAgICByZXEuYm9keS5faWQsXG4gICAgICAgIHJlcS5ib2R5LmRhdGFcbiAgICAgICk7XG4gICAgfSBjYXRjaCAoZXJyb3IpIHtcbiAgICAgIHJlcy5zdGF0dXMoNTAwKS5qc29uKHt0aG9uZ2JhbzonU+G7rWEgdGjDtG5nIHRpbiBnacOhbyB2acOqbiB0aOG6pXQgYuG6oWkuJ30pXG4gICAgICBjbHVzdGVyLmNsb3NlKClcbiAgICB9XG4gICAgY2x1c3Rlci5jbG9zZSgpXG4gIH1cbn07XG5leHBvcnQgZGVmYXVsdCBoYW5kbGVyO1xuIl0sIm5hbWVzIjpbImNvbm5lY3RUb01vbmdvRGIiLCJ3cml0ZURhdGFUb01vbmdvRGIiLCJyZWFkRGF0YUZyb21Nb25nb0RiIiwiZGVsZXRlRGF0YUZyb21Nb25nb0RiIiwicmVwbGFjZURhdGFCeUlkVG9Nb25nb0RiIiwiaGFuZGxlciIsInJlcSIsInJlcyIsInNpbmdsZVdhZ2UiLCJncm91cFdhZ2UiLCJuYW1lIiwiYm9keSIsInN0YXR1cyIsImpzb24iLCJ0aG9uZ2JhbyIsImNsdXN0ZXIiLCJlcnJvciIsImNsb3NlIiwibWV0aG9kIiwiZGF0YUdvdCIsImRhdGEiLCJfaWQiXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///(api)/./pages/api/quan-ly-giao-vien.js\n");
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8630);
 
-/***/ }),
+const handler = async (req, res)=>{
+    //Xử lý kiểm tra điều kiện của thông tin submit lên
+    const { singleWage , groupWage , name  } = req.body;
+    if (+singleWage === 0 && +groupWage === 0) {
+        res.status(422).json({
+            thongbao: "Th\xf4ng tin input kh\xf4ng hợp lệ."
+        });
+        return;
+    } //Kết thúc kiểm trả đk các giá trị submit lên
+    let cluster;
+    //Chạy connect đến db trước
+    try {
+        cluster = await (0,_support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__/* .connectToMongoDb */ .bV)("qlgv");
+    } catch (error) {
+        res.status(500).json({
+            thongbao: "Kết nối đến db qlgv thất bại."
+        });
+        cluster.close();
+    }
+    //Xử lý post request
+    if (req.method === "POST") {
+        try {
+            await (0,_support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__/* .writeDataToMongoDb */ .iU)(cluster, "mangGiaoVien", req.body);
+        } catch (error) {
+            res.status(500).json({
+                thongbao: "Th\xeam mới gi\xe1o vi\xean v\xe0o db thất bại."
+            });
+            cluster.close();
+        }
+        cluster.close();
+    } //end if xử lý post
+    //Xử lý get request
+    if (req.method === "GET") {
+        try {
+            const dataGot = await (0,_support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__/* .readDataFromMongoDb */ .Dt)(cluster, "mangGiaoVien");
+            res.status(200).json({
+                thongbao: "Lấy về data gi\xe1o vi\xean th\xe0nh c\xf4ng.",
+                data: dataGot
+            });
+        } catch (error) {
+            res.status(500).json({
+                thongbao: "Lấy về data gi\xe1o vi\xean thất bại"
+            });
+            cluster.close();
+        }
+        cluster.close();
+    } //End if xử lý get
+    //Xử lý del request
+    if (req.method === "DELETE") {
+        try {
+            await (0,_support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__/* .deleteDataFromMongoDb */ .CA)(cluster, "mangGiaoVien", req.body);
+            res.status(200).json({
+                thongbao: "X\xf3a gi\xe1o vi\xean th\xe0nh c\xf4ng"
+            });
+        } catch (error) {
+            res.status(500).json({
+                thongbao: "X\xf3a gi\xe1o vi\xean thất bại."
+            });
+            cluster.close();
+        }
+        cluster.close();
+    } // end delete request
+    //Xử lý put request update thông tin giáo viên
+    if (req.method === "PUT") {
+        try {
+            await (0,_support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__/* .replaceDataByIdToMongoDb */ .Mb)(cluster, "mangGiaoVien", req.body._id, req.body.data);
+        } catch (error) {
+            res.status(500).json({
+                thongbao: 'Sửa th\xf4ng tin gi\xe1o vi\xean thất bại.'
+            });
+            cluster.close();
+        }
+        cluster.close();
+    }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (handler);
 
-/***/ "(api)/./support/uti-request/connect-to-mongodb.js":
-/*!***************************************************!*\
-  !*** ./support/uti-request/connect-to-mongodb.js ***!
-  \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"connectToMongoDb\": () => (/* binding */ connectToMongoDb),\n/* harmony export */   \"writeDataToMongoDb\": () => (/* binding */ writeDataToMongoDb),\n/* harmony export */   \"readDataFromMongoDb\": () => (/* binding */ readDataFromMongoDb),\n/* harmony export */   \"deleteDataFromMongoDb\": () => (/* binding */ deleteDataFromMongoDb),\n/* harmony export */   \"replaceDataByIdToMongoDb\": () => (/* binding */ replaceDataByIdToMongoDb)\n/* harmony export */ });\n/* harmony import */ var mongodb__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mongodb */ \"mongodb\");\n/* harmony import */ var mongodb__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mongodb__WEBPACK_IMPORTED_MODULE_0__);\n\nconst connectToMongoDb = async (dbName)=>{\n    const cluster = await mongodb__WEBPACK_IMPORTED_MODULE_0__.MongoClient.connect(`mongodb+srv://phuongtrangxinhdep:rwK6BAsRXk0Xlob6@cluster0.hf5pn.mongodb.net/${dbName}?retryWrites=true&w=majority`);\n    return cluster;\n};\nconst writeDataToMongoDb = async (cluster, collection, data)=>{\n    //Lấy về database\n    const db = cluster.db();\n    //Tiến hành ghi lên db\n    await db.collection(collection).insertOne(data);\n};\nconst readDataFromMongoDb = async (cluster, collection)=>{\n    //Lấy vè database\n    const db = cluster.db();\n    //Đọc dữ liệu và lấy về\n    const data = await db.collection(collection).find().sort({\n        _id: -1\n    }).toArray();\n    return data;\n};\nconst deleteDataFromMongoDb = async (cluster, collection, id)=>{\n    //Lấy về database\n    const db = cluster.db();\n    //Tiến hành xóa data dựa vào id\n    await db.collection(collection).deleteOne({\n        _id: (0,mongodb__WEBPACK_IMPORTED_MODULE_0__.ObjectId)(id)\n    });\n};\n//Cập nhật một nội dung trên db\nconst replaceDataByIdToMongoDb = async (cluster, collection, id, objReplace)=>{\n    //Lấy về databalse\n    const db = cluster.db();\n    //Tiến hành cập nhật data ghi đè theo id\n    await db.collection(collection).replaceOne({\n        _id: (0,mongodb__WEBPACK_IMPORTED_MODULE_0__.ObjectId)(id)\n    }, {\n        _id: (0,mongodb__WEBPACK_IMPORTED_MODULE_0__.ObjectId)(id),\n        ...objReplace\n    });\n};\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKGFwaSkvLi9zdXBwb3J0L3V0aS1yZXF1ZXN0L2Nvbm5lY3QtdG8tbW9uZ29kYi5qcy5qcyIsIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7O0FBQStDO0FBRXhDLEtBQUssQ0FBQ0UsZ0JBQWdCLFVBQVVDLE1BQU0sR0FBSyxDQUFDO0lBQ2pELEtBQUssQ0FBQ0MsT0FBTyxHQUFHLEtBQUssQ0FBQ0osd0RBQW1CLEVBQ3RDLDZFQUE2RSxFQUFFRyxNQUFNLENBQUMsNEJBQTRCO0lBRXJILE1BQU0sQ0FBQ0MsT0FBTztBQUNoQixDQUFDO0FBRU0sS0FBSyxDQUFDRSxrQkFBa0IsVUFBVUYsT0FBTyxFQUFFRyxVQUFVLEVBQUVDLElBQUksR0FBSyxDQUFDO0lBQ3RFLEVBQWlCO0lBQ2IsS0FBQyxDQUFDQyxFQUFFLEdBQUdMLE9BQU8sQ0FBQ0ssRUFBRTtJQUNyQixFQUFzQjtJQUNsQixLQUFDLENBQUNBLEVBQUUsQ0FBQ0YsVUFBVSxDQUFDQSxVQUFVLEVBQUVHLFNBQVMsQ0FBQ0YsSUFBSTtBQUNoRCxDQUFDO0FBRU0sS0FBSyxDQUFDRyxtQkFBbUIsVUFBVVAsT0FBTyxFQUFFRyxVQUFVLEdBQUssQ0FBQztJQUNqRSxFQUFpQjtJQUNkLEtBQUUsQ0FBQ0UsRUFBRSxHQUFHTCxPQUFPLENBQUNLLEVBQUU7SUFDckIsRUFBdUI7SUFDWCxLQUFQLENBQUNELElBQUksR0FBRyxLQUFLLENBQUNDLEVBQUUsQ0FDbEJGLFVBQVUsQ0FBQ0EsVUFBVSxFQUNyQkssSUFBSSxHQUNKQyxJQUFJLENBQUMsQ0FBQztRQUFDQyxHQUFHLEdBQUcsQ0FBQztJQUFDLENBQUMsRUFDaEJDLE9BQU87SUFDVixNQUFNLENBQUNQLElBQUk7QUFDYixDQUFDO0FBRU0sS0FBSyxDQUFDUSxxQkFBcUIsVUFBVVosT0FBTyxFQUFFRyxVQUFVLEVBQUVVLEVBQUUsR0FBSyxDQUFDO0lBQ3ZFLEVBQWlCO0lBQ2IsS0FBQyxDQUFDUixFQUFFLEdBQUdMLE9BQU8sQ0FBQ0ssRUFBRTtJQUNyQixFQUErQjtJQUN4QixLQUFGLENBQUNBLEVBQUUsQ0FBQ0YsVUFBVSxDQUFDQSxVQUFVLEVBQUVXLFNBQVMsQ0FBQyxDQUFDO1FBQUNKLEdBQUcsRUFBRWIsaURBQVEsQ0FBQ2dCLEVBQUU7SUFBRSxDQUFDO0FBQ2pFLENBQUM7QUFFRCxFQUErQjtBQUN4QixLQUFLLENBQUNFLHdCQUF3QixVQUNuQ2YsT0FBTyxFQUNQRyxVQUFVLEVBQ1ZVLEVBQUUsRUFDRkcsVUFBVSxHQUNQLENBQUM7SUFDSixFQUFrQjtJQUNkLEtBQUMsQ0FBQ1gsRUFBRSxHQUFHTCxPQUFPLENBQUNLLEVBQUU7SUFDckIsRUFBd0M7SUFDeEMsS0FBSyxDQUFDQSxFQUFFLENBQ0xGLFVBQVUsQ0FBQ0EsVUFBVSxFQUNyQmMsVUFBVSxDQUFDLENBQUM7UUFBQ1AsR0FBRyxFQUFFYixpREFBUSxDQUFDZ0IsRUFBRTtJQUFFLENBQUMsRUFBRSxDQUFDO1FBQUNILEdBQUcsRUFBRWIsaURBQVEsQ0FBQ2dCLEVBQUU7V0FBTUcsVUFBVTtJQUFDLENBQUM7QUFDM0UsQ0FBQyIsInNvdXJjZXMiOlsid2VicGFjazovL3Jvb3QvLi9zdXBwb3J0L3V0aS1yZXF1ZXN0L2Nvbm5lY3QtdG8tbW9uZ29kYi5qcz8xOTEwIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IE1vbmdvQ2xpZW50LCBPYmplY3RJZCB9IGZyb20gXCJtb25nb2RiXCI7XG5cbmV4cG9ydCBjb25zdCBjb25uZWN0VG9Nb25nb0RiID0gYXN5bmMgKGRiTmFtZSkgPT4ge1xuICBjb25zdCBjbHVzdGVyID0gYXdhaXQgTW9uZ29DbGllbnQuY29ubmVjdChcbiAgICBgbW9uZ29kYitzcnY6Ly9waHVvbmd0cmFuZ3hpbmhkZXA6cndLNkJBc1JYazBYbG9iNkBjbHVzdGVyMC5oZjVwbi5tb25nb2RiLm5ldC8ke2RiTmFtZX0/cmV0cnlXcml0ZXM9dHJ1ZSZ3PW1ham9yaXR5YFxuICApO1xuICByZXR1cm4gY2x1c3Rlcjtcbn07XG5cbmV4cG9ydCBjb25zdCB3cml0ZURhdGFUb01vbmdvRGIgPSBhc3luYyAoY2x1c3RlciwgY29sbGVjdGlvbiwgZGF0YSkgPT4ge1xuICAvL0zhuqV5IHbhu4EgZGF0YWJhc2VcbiAgY29uc3QgZGIgPSBjbHVzdGVyLmRiKCk7XG4gIC8vVGnhur9uIGjDoG5oIGdoaSBsw6puIGRiXG4gIGF3YWl0IGRiLmNvbGxlY3Rpb24oY29sbGVjdGlvbikuaW5zZXJ0T25lKGRhdGEpO1xufTtcblxuZXhwb3J0IGNvbnN0IHJlYWREYXRhRnJvbU1vbmdvRGIgPSBhc3luYyAoY2x1c3RlciwgY29sbGVjdGlvbikgPT4ge1xuICAvL0zhuqV5IHbDqCBkYXRhYmFzZVxuICBjb25zdCBkYiA9IGNsdXN0ZXIuZGIoKTtcbiAgLy/EkOG7jWMgZOG7ryBsaeG7h3UgdsOgIGzhuqV5IHbhu4FcbiAgY29uc3QgZGF0YSA9IGF3YWl0IGRiXG4gICAgLmNvbGxlY3Rpb24oY29sbGVjdGlvbilcbiAgICAuZmluZCgpXG4gICAgLnNvcnQoeyBfaWQ6IC0xIH0pXG4gICAgLnRvQXJyYXkoKTtcbiAgcmV0dXJuIGRhdGE7XG59O1xuXG5leHBvcnQgY29uc3QgZGVsZXRlRGF0YUZyb21Nb25nb0RiID0gYXN5bmMgKGNsdXN0ZXIsIGNvbGxlY3Rpb24sIGlkKSA9PiB7XG4gIC8vTOG6pXkgduG7gSBkYXRhYmFzZVxuICBjb25zdCBkYiA9IGNsdXN0ZXIuZGIoKTtcbiAgLy9UaeG6v24gaMOgbmggeMOzYSBkYXRhIGThu7FhIHbDoG8gaWRcbiAgYXdhaXQgZGIuY29sbGVjdGlvbihjb2xsZWN0aW9uKS5kZWxldGVPbmUoeyBfaWQ6IE9iamVjdElkKGlkKSB9KTtcbn07XG5cbi8vQ+G6rXAgbmjhuq10IG3hu5l0IG7hu5lpIGR1bmcgdHLDqm4gZGJcbmV4cG9ydCBjb25zdCByZXBsYWNlRGF0YUJ5SWRUb01vbmdvRGIgPSBhc3luYyAoXG4gIGNsdXN0ZXIsXG4gIGNvbGxlY3Rpb24sXG4gIGlkLFxuICBvYmpSZXBsYWNlXG4pID0+IHtcbiAgLy9M4bqleSB24buBIGRhdGFiYWxzZVxuICBjb25zdCBkYiA9IGNsdXN0ZXIuZGIoKTtcbiAgLy9UaeG6v24gaMOgbmggY+G6rXAgbmjhuq10IGRhdGEgZ2hpIMSRw6ggdGhlbyBpZFxuICBhd2FpdCBkYlxuICAgIC5jb2xsZWN0aW9uKGNvbGxlY3Rpb24pXG4gICAgLnJlcGxhY2VPbmUoeyBfaWQ6IE9iamVjdElkKGlkKSB9LCB7IF9pZDogT2JqZWN0SWQoaWQpLCAuLi5vYmpSZXBsYWNlIH0pO1xufTtcbiJdLCJuYW1lcyI6WyJNb25nb0NsaWVudCIsIk9iamVjdElkIiwiY29ubmVjdFRvTW9uZ29EYiIsImRiTmFtZSIsImNsdXN0ZXIiLCJjb25uZWN0Iiwid3JpdGVEYXRhVG9Nb25nb0RiIiwiY29sbGVjdGlvbiIsImRhdGEiLCJkYiIsImluc2VydE9uZSIsInJlYWREYXRhRnJvbU1vbmdvRGIiLCJmaW5kIiwic29ydCIsIl9pZCIsInRvQXJyYXkiLCJkZWxldGVEYXRhRnJvbU1vbmdvRGIiLCJpZCIsImRlbGV0ZU9uZSIsInJlcGxhY2VEYXRhQnlJZFRvTW9uZ29EYiIsIm9ialJlcGxhY2UiLCJyZXBsYWNlT25lIl0sInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///(api)/./support/uti-request/connect-to-mongodb.js\n");
 
 /***/ })
 
@@ -50,7 +108,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 var __webpack_require__ = require("../../webpack-api-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = (__webpack_exec__("(api)/./pages/api/quan-ly-giao-vien.js"));
+var __webpack_exports__ = __webpack_require__.X(0, [387], () => (__webpack_exec__(6848)));
 module.exports = __webpack_exports__;
 
 })();

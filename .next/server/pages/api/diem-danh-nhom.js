@@ -1,45 +1,110 @@
 "use strict";
-/*
- * ATTENTION: An "eval-source-map" devtool has been used.
- * This devtool is neither made for production nor for readable output files.
- * It uses "eval()" calls to create a separate source file with attached SourceMaps in the browser devtools.
- * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
- * or disable the default devtool with "devtool: false".
- * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
- */
 (() => {
 var exports = {};
-exports.id = "pages/api/diem-danh-nhom";
-exports.ids = ["pages/api/diem-danh-nhom"];
+exports.id = 8172;
+exports.ids = [8172];
 exports.modules = {
 
-/***/ "mongodb":
-/*!**************************!*\
-  !*** external "mongodb" ***!
-  \**************************/
+/***/ 8013:
 /***/ ((module) => {
 
 module.exports = require("mongodb");
 
 /***/ }),
 
-/***/ "(api)/./pages/api/diem-danh-nhom.js":
-/*!*************************************!*\
-  !*** ./pages/api/diem-danh-nhom.js ***!
-  \*************************************/
+/***/ 6937:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../support/uti-request/connect-to-mongodb */ \"(api)/./support/uti-request/connect-to-mongodb.js\");\n\nconst handler = async (req, res)=>{\n    //Des ra ba thông số cần thiết để kiểm tra đầu vào\n    const { taughtDate , taughtTime , arrLearnedStus  } = req.body;\n    //Kết nối với db\n    let cluster;\n    try {\n        cluster = await (0,_support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__.connectToMongoDb)(\"ddn\");\n    } catch (error) {\n        res.status(500).json({\n            thongbao: \"Kết nối đến db của điểm danh nh\\xf3m thất bại.\"\n        });\n    }\n    //Xử lý post request\n    if (req.method === \"POST\") {\n        //Kiểm tra thông tin submit lên\n        if (taughtDate.trim().length === 0 || taughtTime === 0 || arrLearnedStus.length === 0) {\n            res.status(422).json({\n                thongbao: \"Th\\xf4ng tin ng\\xe0y , giờ dạy , danh s\\xe1ch học sinh nh\\xf3m kh\\xf4ng hợp lệ.\"\n            });\n            return;\n        } //End kiểm tra\n        //Xử lý post\n        try {\n            await (0,_support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__.writeDataToMongoDb)(cluster, \"mangDiemDanhNhom\", req.body);\n            res.status(200).json({\n                thongbao: \"Lưu ng\\xe0y điểm danh l\\xean db th\\xe0nh c\\xf4ng\"\n            });\n        } catch (error) {\n            res.status(500).json({\n                thongbao: \"Lưu ng\\xe0y điểm danh l\\xean db thất bại.\"\n            });\n            cluster.close();\n        }\n        cluster.close();\n    } //End post request\n    //Xử lý get request\n    if (req.method === \"GET\") {\n        try {\n            const data = await (0,_support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__.readDataFromMongoDb)(cluster, \"mangDiemDanhNhom\");\n            res.status(200).json({\n                thongbao: \"Get mảng điểm danh nh\\xf3m th\\xe0nh c\\xf4ng\",\n                data: data\n            });\n        } catch (error) {\n            res.status(500).json({\n                thongbao: \"Get mảng điểm d\\xe1nh nh\\xf3m lỗi.\"\n            });\n            cluster.close();\n        }\n        cluster.close();\n    } //End get request\n    //Xử lý put request\n    if (req.method === \"PUT\") {\n        try {\n            await (0,_support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__.replaceDataByIdToMongoDb)(cluster, \"mangDiemDanhNhom\", req.body.id, req.body.data);\n            res.status(200).json({\n                thongbao: \"Sửa ng\\xe0y đi\\xeam danh nh\\xf3m th\\xe0nh c\\xf4ng.\"\n            });\n        } catch (error) {\n            res.status(500).json({\n                thongbao: \"Sửa ng\\xe0y đi\\xeam danh nh\\xf3m thất bại.\"\n            });\n            cluster.close();\n        }\n        cluster.close();\n    }\n    //Xử lý del request\n    if (req.method === \"DELETE\") {\n        try {\n            await (0,_support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__.deleteDataFromMongoDb)(cluster, \"mangDiemDanhNhom\", req.body);\n            res.status(200).json({\n                thongbao: \"X\\xf3a ng\\xe0y đi\\xeam danh nh\\xf3m th\\xe0nh c\\xf4ng.\"\n            });\n        } catch (error) {\n            res.status(500).json({\n                thongbao: \"X\\xf3a ng\\xe0y đi\\xeam danh nh\\xf3m thất bại.\"\n            });\n            cluster.close();\n        }\n        cluster.close();\n    }\n};\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (handler);\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,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aEIsR0FBRyxDQUFDSyxJQUFJLENBQUNVLElBQUk7WUFFZmQsR0FBRyxDQUFDTyxNQUFNLENBQUMsR0FBRyxFQUFFQyxJQUFJLENBQUMsQ0FBQztnQkFBQ0MsUUFBUSxFQUFFLENBQXFDO1lBQVMsQ0FBQztRQUMxRSxDQUFQLENBQUMsS0FBSyxFQUFFSCxLQUFLLEVBQUUsQ0FBQztZQUNmTixHQUFHLENBQUNPLE1BQU0sQ0FBQyxHQUFHLEVBQUVDLElBQUksQ0FBQyxDQUFDO2dCQUFDQyxRQUFRLEVBQUUsQ0FBbUM7WUFBVyxDQUFDO1lBQ3RFSixPQUFILENBQUNRLEtBQUs7UUFDZixDQUFDO1FBQ0RSLE9BQU8sQ0FBQ1EsS0FBSztJQUNmLENBQUM7SUFFRCxFQUFtQjtJQUNoQixFQUFELEVBQUVkLEdBQUcsQ0FBQ1csTUFBTSxLQUFLLENBQVEsU0FBRSxDQUFDO1FBQzVCLEdBQUcsQ0FBQyxDQUFDO1lBQ0gsS0FBSyxDQUFDYiw4RkFBcUIsQ0FBQ1EsT0FBTyxFQUFFLENBQWtCLG1CQUFFTixHQUFHLENBQUNLLElBQUk7WUFDakVKLEdBQUcsQ0FBQ08sTUFBTSxDQUFDLEdBQUcsRUFBRUMsSUFBSSxDQUFDLENBQUM7Z0JBQUNDLFFBQVEsRUFBRSxDQUFxQztZQUFRLENBQUM7UUFDMUUsQ0FBTixDQUFDLEtBQUssRUFBRUgsS0FBSyxFQUFFLENBQUM7WUFDZk4sR0FBRyxDQUFDTyxNQUFNLENBQUMsR0FBRyxFQUFFQyxJQUFJLENBQUMsQ0FBQztnQkFBQ0MsUUFBUSxFQUFFLENBQW1DO1lBQUMsQ0FBQztZQUN0RUosT0FBTyxDQUFDUSxLQUFLO1FBQ2YsQ0FBQztRQUNEUixPQUFPLENBQUNRLEtBQUs7SUFDZixDQUFDO0FBQ0gsQ0FBQztBQUVELGlFQUFlZixPQUFPLEVBQUMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly9yb290Ly4vcGFnZXMvYXBpL2RpZW0tZGFuaC1uaG9tLmpzPzMwN2UiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHtcbiAgY29ubmVjdFRvTW9uZ29EYixcbiAgd3JpdGVEYXRhVG9Nb25nb0RiLFxuICByZWFkRGF0YUZyb21Nb25nb0RiLFxuICByZXBsYWNlRGF0YUJ5SWRUb01vbmdvRGIsXG4gIGRlbGV0ZURhdGFGcm9tTW9uZ29EYixcbn0gZnJvbSBcIi4uLy4uL3N1cHBvcnQvdXRpLXJlcXVlc3QvY29ubmVjdC10by1tb25nb2RiXCI7XG5cbmNvbnN0IGhhbmRsZXIgPSBhc3luYyAocmVxLCByZXMpID0+IHtcbiAgLy9EZXMgcmEgYmEgdGjDtG5nIHPhu5EgY+G6p24gdGhp4bq/dCDEkeG7gyBraeG7g20gdHJhIMSR4bqndSB2w6BvXG4gIGNvbnN0IHsgdGF1Z2h0RGF0ZSwgdGF1Z2h0VGltZSwgYXJyTGVhcm5lZFN0dXMgfSA9IHJlcS5ib2R5O1xuICAvL0vhur90IG7hu5FpIHbhu5tpIGRiXG4gIGxldCBjbHVzdGVyO1xuICB0cnkge1xuICAgIGNsdXN0ZXIgPSBhd2FpdCBjb25uZWN0VG9Nb25nb0RiKFwiZGRuXCIpO1xuICB9IGNhdGNoIChlcnJvcikge1xuICAgIHJlc1xuICAgICAgLnN0YXR1cyg1MDApXG4gICAgICAuanNvbih7IHRob25nYmFvOiBcIkvhur90IG7hu5FpIMSR4bq/biBkYiBj4bunYSDEkWnhu4NtIGRhbmggbmjDs20gdGjhuqV0IGLhuqFpLlwiIH0pO1xuICB9XG4gIC8vWOG7rSBsw70gcG9zdCByZXF1ZXN0XG4gIGlmIChyZXEubWV0aG9kID09PSBcIlBPU1RcIikge1xuICAgIC8vS2nhu4NtIHRyYSB0aMO0bmcgdGluIHN1Ym1pdCBsw6puXG4gICAgaWYgKFxuICAgICAgdGF1Z2h0RGF0ZS50cmltKCkubGVuZ3RoID09PSAwIHx8XG4gICAgICB0YXVnaHRUaW1lID09PSAwIHx8XG4gICAgICBhcnJMZWFybmVkU3R1cy5sZW5ndGggPT09IDBcbiAgICApIHtcbiAgICAgIHJlcy5zdGF0dXMoNDIyKS5qc29uKHtcbiAgICAgICAgdGhvbmdiYW86XG4gICAgICAgICAgXCJUaMO0bmcgdGluIG5nw6B5ICwgZ2nhu50gZOG6oXkgLCBkYW5oIHPDoWNoIGjhu41jIHNpbmggbmjDs20ga2jDtG5nIGjhu6NwIGzhu4cuXCIsXG4gICAgICB9KTtcbiAgICAgIHJldHVybjtcbiAgICB9IC8vRW5kIGtp4buDbSB0cmFcbiAgICAvL1jhu60gbMO9IHBvc3RcbiAgICB0cnkge1xuICAgICAgYXdhaXQgd3JpdGVEYXRhVG9Nb25nb0RiKGNsdXN0ZXIsIFwibWFuZ0RpZW1EYW5oTmhvbVwiLCByZXEuYm9keSk7XG4gICAgICByZXNcbiAgICAgICAgLnN0YXR1cygyMDApXG4gICAgICAgIC5qc29uKHsgdGhvbmdiYW86IFwiTMawdSBuZ8OgeSDEkWnhu4NtIGRhbmggbMOqbiBkYiB0aMOgbmggY8O0bmdcIiB9KTtcbiAgICB9IGNhdGNoIChlcnJvcikge1xuICAgICAgcmVzLnN0YXR1cyg1MDApLmpzb24oeyB0aG9uZ2JhbzogXCJMxrB1IG5nw6B5IMSRaeG7g20gZGFuaCBsw6puIGRiIHRo4bqldCBi4bqhaS5cIiB9KTtcbiAgICAgIGNsdXN0ZXIuY2xvc2UoKTtcbiAgICB9XG4gICAgY2x1c3Rlci5jbG9zZSgpO1xuICB9IC8vRW5kIHBvc3QgcmVxdWVzdFxuXG4gIC8vWOG7rSBsw70gZ2V0IHJlcXVlc3RcbiAgaWYgKHJlcS5tZXRob2QgPT09IFwiR0VUXCIpIHtcbiAgICB0cnkge1xuICAgICAgY29uc3QgZGF0YSA9IGF3YWl0IHJlYWREYXRhRnJvbU1vbmdvRGIoY2x1c3RlciwgXCJtYW5nRGllbURhbmhOaG9tXCIpO1xuICAgICAgcmVzXG4gICAgICAgIC5zdGF0dXMoMjAwKVxuICAgICAgICAuanNvbih7IHRob25nYmFvOiBcIkdldCBt4bqjbmcgxJFp4buDbSBkYW5oIG5ow7NtIHRow6BuaCBjw7RuZ1wiLCBkYXRhOiBkYXRhIH0pO1xuICAgIH0gY2F0Y2ggKGVycm9yKSB7XG4gICAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IHRob25nYmFvOiBcIkdldCBt4bqjbmcgxJFp4buDbSBkw6FuaCBuaMOzbSBs4buXaS5cIiB9KTtcbiAgICAgIGNsdXN0ZXIuY2xvc2UoKTtcbiAgICB9XG4gICAgY2x1c3Rlci5jbG9zZSgpO1xuICB9IC8vRW5kIGdldCByZXF1ZXN0XG5cbiAgLy9Y4butIGzDvSBwdXQgcmVxdWVzdFxuICBpZiAocmVxLm1ldGhvZCA9PT0gXCJQVVRcIikge1xuICAgIHRyeSB7XG4gICAgICBhd2FpdCByZXBsYWNlRGF0YUJ5SWRUb01vbmdvRGIoXG4gICAgICAgIGNsdXN0ZXIsXG4gICAgICAgIFwibWFuZ0RpZW1EYW5oTmhvbVwiLFxuICAgICAgICByZXEuYm9keS5pZCxcbiAgICAgICAgcmVxLmJvZHkuZGF0YVxuICAgICAgKTtcbiAgICAgIHJlcy5zdGF0dXMoMjAwKS5qc29uKHsgdGhvbmdiYW86IFwiU+G7rWEgbmfDoHkgxJFpw6ptIGRhbmggbmjDs20gdGjDoG5oIGPDtG5nLlwiIH0pO1xuICAgIH0gY2F0Y2ggKGVycm9yKSB7XG4gICAgICByZXMuc3RhdHVzKDUwMCkuanNvbih7IHRob25nYmFvOiBcIlPhu61hIG5nw6B5IMSRacOqbSBkYW5oIG5ow7NtIHRo4bqldCBi4bqhaS5cIiB9KTtcbiAgICAgIGNsdXN0ZXIuY2xvc2UoKTtcbiAgICB9XG4gICAgY2x1c3Rlci5jbG9zZSgpO1xuICB9XG5cbiAgLy9Y4butIGzDvSBkZWwgcmVxdWVzdFxuICBpZiAocmVxLm1ldGhvZCA9PT0gXCJERUxFVEVcIikge1xuICAgIHRyeSB7XG4gICAgICBhd2FpdCBkZWxldGVEYXRhRnJvbU1vbmdvRGIoY2x1c3RlciwgXCJtYW5nRGllbURhbmhOaG9tXCIsIHJlcS5ib2R5KTtcbiAgICAgIHJlcy5zdGF0dXMoMjAwKS5qc29uKHsgdGhvbmdiYW86IFwiWMOzYSBuZ8OgeSDEkWnDqm0gZGFuaCBuaMOzbSB0aMOgbmggY8O0bmcuXCIgfSk7XG4gICAgfSBjYXRjaCAoZXJyb3IpIHtcbiAgICAgIHJlcy5zdGF0dXMoNTAwKS5qc29uKHsgdGhvbmdiYW86IFwiWMOzYSBuZ8OgeSDEkWnDqm0gZGFuaCBuaMOzbSB0aOG6pXQgYuG6oWkuXCIgfSk7XG4gICAgICBjbHVzdGVyLmNsb3NlKCk7XG4gICAgfVxuICAgIGNsdXN0ZXIuY2xvc2UoKTtcbiAgfVxufTtcblxuZXhwb3J0IGRlZmF1bHQgaGFuZGxlcjtcbiJdLCJuYW1lcyI6WyJjb25uZWN0VG9Nb25nb0RiIiwid3JpdGVEYXRhVG9Nb25nb0RiIiwicmVhZERhdGFGcm9tTW9uZ29EYiIsInJlcGxhY2VEYXRhQnlJZFRvTW9uZ29EYiIsImRlbGV0ZURhdGFGcm9tTW9uZ29EYiIsImhhbmRsZXIiLCJyZXEiLCJyZXMiLCJ0YXVnaHREYXRlIiwidGF1Z2h0VGltZSIsImFyckxlYXJuZWRTdHVzIiwiYm9keSIsImNsdXN0ZXIiLCJlcnJvciIsInN0YXR1cyIsImpzb24iLCJ0aG9uZ2JhbyIsIm1ldGhvZCIsInRyaW0iLCJsZW5ndGgiLCJjbG9zZSIsImRhdGEiLCJpZCJdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///(api)/./pages/api/diem-danh-nhom.js\n");
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8630);
 
-/***/ }),
+const handler = async (req, res)=>{
+    //Des ra ba thông số cần thiết để kiểm tra đầu vào
+    const { taughtDate , taughtTime , arrLearnedStus  } = req.body;
+    //Kết nối với db
+    let cluster;
+    try {
+        cluster = await (0,_support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__/* .connectToMongoDb */ .bV)("ddn");
+    } catch (error) {
+        res.status(500).json({
+            thongbao: "Kết nối đến db của điểm danh nh\xf3m thất bại."
+        });
+    }
+    //Xử lý post request
+    if (req.method === "POST") {
+        //Kiểm tra thông tin submit lên
+        if (taughtDate.trim().length === 0 || taughtTime === 0 || arrLearnedStus.length === 0) {
+            res.status(422).json({
+                thongbao: "Th\xf4ng tin ng\xe0y , giờ dạy , danh s\xe1ch học sinh nh\xf3m kh\xf4ng hợp lệ."
+            });
+            return;
+        } //End kiểm tra
+        //Xử lý post
+        try {
+            await (0,_support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__/* .writeDataToMongoDb */ .iU)(cluster, "mangDiemDanhNhom", req.body);
+            res.status(200).json({
+                thongbao: "Lưu ng\xe0y điểm danh l\xean db th\xe0nh c\xf4ng"
+            });
+        } catch (error) {
+            res.status(500).json({
+                thongbao: "Lưu ng\xe0y điểm danh l\xean db thất bại."
+            });
+            cluster.close();
+        }
+        cluster.close();
+    } //End post request
+    //Xử lý get request
+    if (req.method === "GET") {
+        try {
+            const data = await (0,_support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__/* .readDataFromMongoDb */ .Dt)(cluster, "mangDiemDanhNhom");
+            res.status(200).json({
+                thongbao: "Get mảng điểm danh nh\xf3m th\xe0nh c\xf4ng",
+                data: data
+            });
+        } catch (error) {
+            res.status(500).json({
+                thongbao: "Get mảng điểm d\xe1nh nh\xf3m lỗi."
+            });
+            cluster.close();
+        }
+        cluster.close();
+    } //End get request
+    //Xử lý put request
+    if (req.method === "PUT") {
+        try {
+            await (0,_support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__/* .replaceDataByIdToMongoDb */ .Mb)(cluster, "mangDiemDanhNhom", req.body.id, req.body.data);
+            res.status(200).json({
+                thongbao: "Sửa ng\xe0y đi\xeam danh nh\xf3m th\xe0nh c\xf4ng."
+            });
+        } catch (error) {
+            res.status(500).json({
+                thongbao: "Sửa ng\xe0y đi\xeam danh nh\xf3m thất bại."
+            });
+            cluster.close();
+        }
+        cluster.close();
+    }
+    //Xử lý del request
+    if (req.method === "DELETE") {
+        try {
+            await (0,_support_uti_request_connect_to_mongodb__WEBPACK_IMPORTED_MODULE_0__/* .deleteDataFromMongoDb */ .CA)(cluster, "mangDiemDanhNhom", req.body);
+            res.status(200).json({
+                thongbao: "X\xf3a ng\xe0y đi\xeam danh nh\xf3m th\xe0nh c\xf4ng."
+            });
+        } catch (error) {
+            res.status(500).json({
+                thongbao: "X\xf3a ng\xe0y đi\xeam danh nh\xf3m thất bại."
+            });
+            cluster.close();
+        }
+        cluster.close();
+    }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (handler);
 
-/***/ "(api)/./support/uti-request/connect-to-mongodb.js":
-/*!***************************************************!*\
-  !*** ./support/uti-request/connect-to-mongodb.js ***!
-  \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"connectToMongoDb\": () => (/* binding */ connectToMongoDb),\n/* harmony export */   \"writeDataToMongoDb\": () => (/* binding */ writeDataToMongoDb),\n/* harmony export */   \"readDataFromMongoDb\": () => (/* binding */ readDataFromMongoDb),\n/* harmony export */   \"deleteDataFromMongoDb\": () => (/* binding */ deleteDataFromMongoDb),\n/* harmony export */   \"replaceDataByIdToMongoDb\": () => (/* binding */ replaceDataByIdToMongoDb)\n/* harmony export */ });\n/* harmony import */ var mongodb__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mongodb */ \"mongodb\");\n/* harmony import */ var mongodb__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mongodb__WEBPACK_IMPORTED_MODULE_0__);\n\nconst connectToMongoDb = async (dbName)=>{\n    const cluster = await mongodb__WEBPACK_IMPORTED_MODULE_0__.MongoClient.connect(`mongodb+srv://phuongtrangxinhdep:rwK6BAsRXk0Xlob6@cluster0.hf5pn.mongodb.net/${dbName}?retryWrites=true&w=majority`);\n    return cluster;\n};\nconst writeDataToMongoDb = async (cluster, collection, data)=>{\n    //Lấy về database\n    const db = cluster.db();\n    //Tiến hành ghi lên db\n    await db.collection(collection).insertOne(data);\n};\nconst readDataFromMongoDb = async (cluster, collection)=>{\n    //Lấy vè database\n    const db = cluster.db();\n    //Đọc dữ liệu và lấy về\n    const data = await db.collection(collection).find().sort({\n        _id: -1\n    }).toArray();\n    return data;\n};\nconst deleteDataFromMongoDb = async (cluster, collection, id)=>{\n    //Lấy về database\n    const db = cluster.db();\n    //Tiến hành xóa data dựa vào id\n    await db.collection(collection).deleteOne({\n        _id: (0,mongodb__WEBPACK_IMPORTED_MODULE_0__.ObjectId)(id)\n    });\n};\n//Cập nhật một nội dung trên db\nconst replaceDataByIdToMongoDb = async (cluster, collection, id, objReplace)=>{\n    //Lấy về databalse\n    const db = cluster.db();\n    //Tiến hành cập nhật data ghi đè theo id\n    await db.collection(collection).replaceOne({\n        _id: (0,mongodb__WEBPACK_IMPORTED_MODULE_0__.ObjectId)(id)\n    }, {\n        _id: (0,mongodb__WEBPACK_IMPORTED_MODULE_0__.ObjectId)(id),\n        ...objReplace\n    });\n};\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKGFwaSkvLi9zdXBwb3J0L3V0aS1yZXF1ZXN0L2Nvbm5lY3QtdG8tbW9uZ29kYi5qcy5qcyIsIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7O0FBQStDO0FBRXhDLEtBQUssQ0FBQ0UsZ0JBQWdCLFVBQVVDLE1BQU0sR0FBSyxDQUFDO0lBQ2pELEtBQUssQ0FBQ0MsT0FBTyxHQUFHLEtBQUssQ0FBQ0osd0RBQW1CLEVBQ3RDLDZFQUE2RSxFQUFFRyxNQUFNLENBQUMsNEJBQTRCO0lBRXJILE1BQU0sQ0FBQ0MsT0FBTztBQUNoQixDQUFDO0FBRU0sS0FBSyxDQUFDRSxrQkFBa0IsVUFBVUYsT0FBTyxFQUFFRyxVQUFVLEVBQUVDLElBQUksR0FBSyxDQUFDO0lBQ3RFLEVBQWlCO0lBQ2IsS0FBQyxDQUFDQyxFQUFFLEdBQUdMLE9BQU8sQ0FBQ0ssRUFBRTtJQUNyQixFQUFzQjtJQUNsQixLQUFDLENBQUNBLEVBQUUsQ0FBQ0YsVUFBVSxDQUFDQSxVQUFVLEVBQUVHLFNBQVMsQ0FBQ0YsSUFBSTtBQUNoRCxDQUFDO0FBRU0sS0FBSyxDQUFDRyxtQkFBbUIsVUFBVVAsT0FBTyxFQUFFRyxVQUFVLEdBQUssQ0FBQztJQUNqRSxFQUFpQjtJQUNkLEtBQUUsQ0FBQ0UsRUFBRSxHQUFHTCxPQUFPLENBQUNLLEVBQUU7SUFDckIsRUFBdUI7SUFDWCxLQUFQLENBQUNELElBQUksR0FBRyxLQUFLLENBQUNDLEVBQUUsQ0FDbEJGLFVBQVUsQ0FBQ0EsVUFBVSxFQUNyQkssSUFBSSxHQUNKQyxJQUFJLENBQUMsQ0FBQztRQUFDQyxHQUFHLEdBQUcsQ0FBQztJQUFDLENBQUMsRUFDaEJDLE9BQU87SUFDVixNQUFNLENBQUNQLElBQUk7QUFDYixDQUFDO0FBRU0sS0FBSyxDQUFDUSxxQkFBcUIsVUFBVVosT0FBTyxFQUFFRyxVQUFVLEVBQUVVLEVBQUUsR0FBSyxDQUFDO0lBQ3ZFLEVBQWlCO0lBQ2IsS0FBQyxDQUFDUixFQUFFLEdBQUdMLE9BQU8sQ0FBQ0ssRUFBRTtJQUNyQixFQUErQjtJQUN4QixLQUFGLENBQUNBLEVBQUUsQ0FBQ0YsVUFBVSxDQUFDQSxVQUFVLEVBQUVXLFNBQVMsQ0FBQyxDQUFDO1FBQUNKLEdBQUcsRUFBRWIsaURBQVEsQ0FBQ2dCLEVBQUU7SUFBRSxDQUFDO0FBQ2pFLENBQUM7QUFFRCxFQUErQjtBQUN4QixLQUFLLENBQUNFLHdCQUF3QixVQUNuQ2YsT0FBTyxFQUNQRyxVQUFVLEVBQ1ZVLEVBQUUsRUFDRkcsVUFBVSxHQUNQLENBQUM7SUFDSixFQUFrQjtJQUNkLEtBQUMsQ0FBQ1gsRUFBRSxHQUFHTCxPQUFPLENBQUNLLEVBQUU7SUFDckIsRUFBd0M7SUFDeEMsS0FBSyxDQUFDQSxFQUFFLENBQ0xGLFVBQVUsQ0FBQ0EsVUFBVSxFQUNyQmMsVUFBVSxDQUFDLENBQUM7UUFBQ1AsR0FBRyxFQUFFYixpREFBUSxDQUFDZ0IsRUFBRTtJQUFFLENBQUMsRUFBRSxDQUFDO1FBQUNILEdBQUcsRUFBRWIsaURBQVEsQ0FBQ2dCLEVBQUU7V0FBTUcsVUFBVTtJQUFDLENBQUM7QUFDM0UsQ0FBQyIsInNvdXJjZXMiOlsid2VicGFjazovL3Jvb3QvLi9zdXBwb3J0L3V0aS1yZXF1ZXN0L2Nvbm5lY3QtdG8tbW9uZ29kYi5qcz8xOTEwIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IE1vbmdvQ2xpZW50LCBPYmplY3RJZCB9IGZyb20gXCJtb25nb2RiXCI7XG5cbmV4cG9ydCBjb25zdCBjb25uZWN0VG9Nb25nb0RiID0gYXN5bmMgKGRiTmFtZSkgPT4ge1xuICBjb25zdCBjbHVzdGVyID0gYXdhaXQgTW9uZ29DbGllbnQuY29ubmVjdChcbiAgICBgbW9uZ29kYitzcnY6Ly9waHVvbmd0cmFuZ3hpbmhkZXA6cndLNkJBc1JYazBYbG9iNkBjbHVzdGVyMC5oZjVwbi5tb25nb2RiLm5ldC8ke2RiTmFtZX0/cmV0cnlXcml0ZXM9dHJ1ZSZ3PW1ham9yaXR5YFxuICApO1xuICByZXR1cm4gY2x1c3Rlcjtcbn07XG5cbmV4cG9ydCBjb25zdCB3cml0ZURhdGFUb01vbmdvRGIgPSBhc3luYyAoY2x1c3RlciwgY29sbGVjdGlvbiwgZGF0YSkgPT4ge1xuICAvL0zhuqV5IHbhu4EgZGF0YWJhc2VcbiAgY29uc3QgZGIgPSBjbHVzdGVyLmRiKCk7XG4gIC8vVGnhur9uIGjDoG5oIGdoaSBsw6puIGRiXG4gIGF3YWl0IGRiLmNvbGxlY3Rpb24oY29sbGVjdGlvbikuaW5zZXJ0T25lKGRhdGEpO1xufTtcblxuZXhwb3J0IGNvbnN0IHJlYWREYXRhRnJvbU1vbmdvRGIgPSBhc3luYyAoY2x1c3RlciwgY29sbGVjdGlvbikgPT4ge1xuICAvL0zhuqV5IHbDqCBkYXRhYmFzZVxuICBjb25zdCBkYiA9IGNsdXN0ZXIuZGIoKTtcbiAgLy/EkOG7jWMgZOG7ryBsaeG7h3UgdsOgIGzhuqV5IHbhu4FcbiAgY29uc3QgZGF0YSA9IGF3YWl0IGRiXG4gICAgLmNvbGxlY3Rpb24oY29sbGVjdGlvbilcbiAgICAuZmluZCgpXG4gICAgLnNvcnQoeyBfaWQ6IC0xIH0pXG4gICAgLnRvQXJyYXkoKTtcbiAgcmV0dXJuIGRhdGE7XG59O1xuXG5leHBvcnQgY29uc3QgZGVsZXRlRGF0YUZyb21Nb25nb0RiID0gYXN5bmMgKGNsdXN0ZXIsIGNvbGxlY3Rpb24sIGlkKSA9PiB7XG4gIC8vTOG6pXkgduG7gSBkYXRhYmFzZVxuICBjb25zdCBkYiA9IGNsdXN0ZXIuZGIoKTtcbiAgLy9UaeG6v24gaMOgbmggeMOzYSBkYXRhIGThu7FhIHbDoG8gaWRcbiAgYXdhaXQgZGIuY29sbGVjdGlvbihjb2xsZWN0aW9uKS5kZWxldGVPbmUoeyBfaWQ6IE9iamVjdElkKGlkKSB9KTtcbn07XG5cbi8vQ+G6rXAgbmjhuq10IG3hu5l0IG7hu5lpIGR1bmcgdHLDqm4gZGJcbmV4cG9ydCBjb25zdCByZXBsYWNlRGF0YUJ5SWRUb01vbmdvRGIgPSBhc3luYyAoXG4gIGNsdXN0ZXIsXG4gIGNvbGxlY3Rpb24sXG4gIGlkLFxuICBvYmpSZXBsYWNlXG4pID0+IHtcbiAgLy9M4bqleSB24buBIGRhdGFiYWxzZVxuICBjb25zdCBkYiA9IGNsdXN0ZXIuZGIoKTtcbiAgLy9UaeG6v24gaMOgbmggY+G6rXAgbmjhuq10IGRhdGEgZ2hpIMSRw6ggdGhlbyBpZFxuICBhd2FpdCBkYlxuICAgIC5jb2xsZWN0aW9uKGNvbGxlY3Rpb24pXG4gICAgLnJlcGxhY2VPbmUoeyBfaWQ6IE9iamVjdElkKGlkKSB9LCB7IF9pZDogT2JqZWN0SWQoaWQpLCAuLi5vYmpSZXBsYWNlIH0pO1xufTtcbiJdLCJuYW1lcyI6WyJNb25nb0NsaWVudCIsIk9iamVjdElkIiwiY29ubmVjdFRvTW9uZ29EYiIsImRiTmFtZSIsImNsdXN0ZXIiLCJjb25uZWN0Iiwid3JpdGVEYXRhVG9Nb25nb0RiIiwiY29sbGVjdGlvbiIsImRhdGEiLCJkYiIsImluc2VydE9uZSIsInJlYWREYXRhRnJvbU1vbmdvRGIiLCJmaW5kIiwic29ydCIsIl9pZCIsInRvQXJyYXkiLCJkZWxldGVEYXRhRnJvbU1vbmdvRGIiLCJpZCIsImRlbGV0ZU9uZSIsInJlcGxhY2VEYXRhQnlJZFRvTW9uZ29EYiIsIm9ialJlcGxhY2UiLCJyZXBsYWNlT25lIl0sInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///(api)/./support/uti-request/connect-to-mongodb.js\n");
 
 /***/ })
 
@@ -50,7 +115,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 var __webpack_require__ = require("../../webpack-api-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = (__webpack_exec__("(api)/./pages/api/diem-danh-nhom.js"));
+var __webpack_exports__ = __webpack_require__.X(0, [387], () => (__webpack_exec__(6937)));
 module.exports = __webpack_exports__;
 
 })();

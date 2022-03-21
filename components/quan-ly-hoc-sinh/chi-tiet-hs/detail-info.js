@@ -87,13 +87,13 @@ const ThongTinChiTiet = (props) => {
   };
   //Xử lý side effect giá trị mặc định cho 3 thằng này trước
   useEffect(() => {
-    if (props.stuData.singleClass) {
+    if (props.stuData && props.stuData.singleClass) {
       changeIsSingle(props.stuData.singleClass);
     }
-    if (props.stuData.groupClass) {
+    if (props.stuData && props.stuData.groupClass) {
       changeIsGroup(props.stuData.groupClass);
     }
-    if (props.stuData.sex) {
+    if (props.stuData && props.stuData.sex) {
       changeSex(props.stuData.sex);
     }
   }, []);
@@ -147,7 +147,7 @@ const ThongTinChiTiet = (props) => {
               className={classes["input-date"]}
               type="date"
               defaultValue={
-                props.stuData.dateBorn ? props.stuData.dateBorn : ""
+                props.stuData && props.stuData.dateBorn ? props.stuData.dateBorn : ""
               }
               required
               disabled={isDisableInput ? "disabled" : ""}
@@ -163,7 +163,7 @@ const ThongTinChiTiet = (props) => {
               min="0"
               step="1000"
               defaultValue={
-                props.stuData.singleFee ? props.stuData.singleFee : ""
+                props.stuData && props.stuData.singleFee ? props.stuData.singleFee : ""
               }
               required
               disabled={isDisableInput ? "disabled" : ""}
@@ -179,7 +179,7 @@ const ThongTinChiTiet = (props) => {
               min="0"
               step="1000"
               defaultValue={
-                props.stuData.groupFee ? props.stuData.groupFee : ""
+                props.stuData && props.stuData.groupFee ? props.stuData.groupFee : ""
               }
               required
               disabled={isDisableInput ? "disabled" : ""}
@@ -194,7 +194,7 @@ const ThongTinChiTiet = (props) => {
               type="text"
               required
               disabled={isDisableInput ? "disabled" : ""}
-              defaultValue={props.stuData.nameStu ? props.stuData.nameStu : ""}
+              defaultValue={props.stuData && props.stuData.nameStu ? props.stuData.nameStu : ""}
             />
           </div>
 
@@ -206,7 +206,7 @@ const ThongTinChiTiet = (props) => {
               type="text"
               disabled={isDisableInput ? "disabled" : ""}
               defaultValue={
-                props.stuData.nameParent ? props.stuData.nameParent : ""
+                props.stuData && props.stuData.nameParent ? props.stuData.nameParent : ""
               }
             />
           </div>
@@ -218,7 +218,7 @@ const ThongTinChiTiet = (props) => {
               type="number"
               minLength={10}
               disabled={isDisableInput ? "disabled" : ""}
-              defaultValue={props.stuData.phone ? props.stuData.phone : ""}
+              defaultValue={props.stuData && props.stuData.phone ? props.stuData.phone : ""}
             />
           </div>
           <div className={classes.control}>
@@ -228,13 +228,13 @@ const ThongTinChiTiet = (props) => {
               className={classes["input-name"]}
               type="text"
               disabled={isDisableInput ? "disabled" : ""}
-              defaultValue={props.stuData.address ? props.stuData.address : ""}
+              defaultValue={props.stuData && props.stuData.address ? props.stuData.address : ""}
             />
           </div>
           <div className={classes.control}>
             <textarea
               ref={infoRef}
-              defaultValue={props.stuData.info ? props.stuData.info : ""}
+              defaultValue={props.stuData && props.stuData.info ? props.stuData.info : ""}
               rows="7"
               cols="90"
               type="text"
