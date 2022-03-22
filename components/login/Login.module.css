@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  max-width: 300px;
+  margin: 2rem auto;
+  border-radius: 5px;
+  background-color: var(--mauNen--);
+  padding: 1rem;
+  font-size: 1rem;
+}
+.container label {
+  font-size: 0.9rem;
+  margin: 5px;
+}
+.container input {
+  outline: none;
+  border: 1px solid var(--mauVanBanMo--);
+  border-radius: 5px;
+  padding: 1px 4px;
+  margin-bottom: 0.5rem;
+}
+.container input:focus {
+  border: 1px solid var(--mauHighlight--);
+  background-color: var(--mauHighlightMo--);
+}
