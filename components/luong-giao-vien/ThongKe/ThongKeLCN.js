@@ -13,6 +13,7 @@ const ThongKeLuongCaNhan = (props) => {
   //Des props
   const { monthYear, singleWage, idTeaSelected, arrLuongCaNhan } = props;
 
+
   //mảng labels cho hàng đầu tiên
   const arrLabels = ["Học sinh", "Ngày học", "Hs", "Tổng giờ", "Thành tiền"];
   //Biến render hàng labels
@@ -37,8 +38,7 @@ const ThongKeLuongCaNhan = (props) => {
   //Tạo mảng chứa các giá trị tiền tính được của từng dòng data, mỗi vòng lặp bên dưới push vào mản này
   let arrThanhTien = [];
   //Sort lại mảng render chính theo thứ tự tên học sinh abc
-  const arrLuongCaNhanSort = sortArrByNameStu(arrLuongCaNhan)
-  console.log(arrLuongCaNhan)
+  const arrLuongCaNhanSort = sortArrByNameStu(arrLuongCaNhan);
   //Biến render hàng data
   const renderDataRow = arrLuongCaNhanSort.map((cv) => {
     //Callback kích hoạt hệ số scale

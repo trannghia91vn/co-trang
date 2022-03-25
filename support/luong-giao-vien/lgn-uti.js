@@ -192,8 +192,7 @@ export const getMonthWageData = (
       +cv.monthYear.month === +monthYear.month &&
       +cv.monthYear.year === +monthYear.year
   );
-
-  console.log(objMonthWage);
+    
   //Tạo các biến mảng chứa data cá nhân, nhóm ,phụ phi để lấy ra từ đối tượng trên --> truyền xuống render kết quả
   let arrLuongCaNhanData = [];
   let arrLuongNhomData = [];
@@ -239,7 +238,6 @@ export const getMonthWageData = (
         taughtData: null,
       };
     });
-    console.log(arrLuongCaNhanDataWithoutTaughData);
     //Từ mang điểm danh map ra idstu và mảng taughtData
     const arrStuFromDDCN = arrLuongCaNhanFromDDCN.map((cv) => {
       return { idStu: cv.idStu, taughtData: cv.taughtData };
@@ -255,7 +253,6 @@ export const getMonthWageData = (
     });
     arrLuongCaNhanData = arrLuongCaNhanDataWithoutTaughData;
   }
-  console.log(arrLuongCaNhanData);
   //Xử lý lại mảng lương nhóm data chính lấy từ arrLuongNhomFormDDN,thay thế phần des từ arrLuongNhomData thôi
   const arrDateAndDes = arrLuongNhomData.map((cv) => {
     return { idGroupDate: cv.idGroupDate, description: cv.description };
@@ -302,7 +299,7 @@ export const sortArrByNameStu = (arr) => {
     const indexObjMatched = arr.findIndex((cv) => cv.nameStu.includes(name));
     if (indexObjMatched !== -1) {
       arrResult.push(arr[indexObjMatched]);
-      arr.splice(indexObjMatched, 1);
+      // arr.splice(indexObjMatched, 1);
     }
   });
   return arrResult;

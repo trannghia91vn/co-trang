@@ -87,6 +87,7 @@ const TrangTinhLuongGiaoVien = (props) => {
   );
   //Lấy về mảng lương cá nhân để submit post
   const arrLuongCaNhan = useSelector((state) => state.lgv.arrLuongCaNhan);
+  console.log(arrLuongCaNhan);
   //Lấy về mảng lương cá nhân để submit post
   const arrLuongNhom = useSelector((state) => state.lgv.arrLuongNhom);
   //Lấy về mảng lương cá nhân để submit post
@@ -110,7 +111,6 @@ const TrangTinhLuongGiaoVien = (props) => {
   //Des ra ba mảng cần để render kết quả
   const { arrLuongCaNhanData, arrLuongNhomData, arrPhuPhiData, idMonthWage } =
     monthWageData;
-
 
   //------------ KHU CALLBACK------------
   //Func lấy giá trị tổng tiền phụ phí
@@ -252,6 +252,24 @@ const TrangTinhLuongGiaoVien = (props) => {
       );
     }
   }, [teacherSelected, monthYearFilter]);
+  //Xử lý ghi đè lại mảng con trong magnr arrLuongGiaoVien trên redux trong trường hợp  mảng con đó bị trống (cá nhan và nhóm)
+  useEffect(() => {
+    dispatchFn(
+      LgvActions.replaceArrLCN({
+        arrLuongCaNhanData: arrLuongCaNhanData,
+        idTea: idTea,
+        monthYear: monthYearFilter,
+      })
+    );
+    dispatchFn(
+      LgvActions.replaceArrLN({
+        arrLuongNhomData: arrLuongNhomData,
+        idTea: idTea,
+        monthYear: monthYearFilter,
+      })
+    );
+  }, [arrLuongCaNhanData, arrLuongNhomData]);
+
   //------------ KHU XỬ LÝ PHỤ ------------
 
   return (

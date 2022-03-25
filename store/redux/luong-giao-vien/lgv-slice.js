@@ -224,6 +224,34 @@ const LgvSlice = createSlice({
         monthWageMatched.arrPhuPhi.splice(indexDateMatched, 1);
       }
     }, //Xóa ngày phụ phí trong db
+    replaceArrLCN(state, action) {
+      //Des
+      const { arrLuongCaNhanData, idTea, monthYear } = action.payload;
+      //Tìm tháng lương trùng khớp
+      const monthWageMatched = getMonthWageByIdTeaMonthYear(
+        idTea,
+        monthYear,
+        state
+      );
+      if (monthWageMatched && monthWageMatched.arrLuongCaNhan.length === 0) {
+        //Ghi đè lại mảng arrLuongCaNhan của arrLuongThangGiaoVien
+        monthWageMatched.arrLuongCaNhan = arrLuongCaNhanData;
+      }
+    }, //Ghi đè lại để thao tác cho edit
+    replaceArrLN(state, action) {
+      //Des
+      const { arrLuongNhomData, idTea, monthYear } = action.payload;
+      //Tìm tháng lương trùng khớp
+      const monthWageMatched = getMonthWageByIdTeaMonthYear(
+        idTea,
+        monthYear,
+        state
+      );
+      if (monthWageMatched && monthWageMatched.arrLuongNhom.length === 0) {
+        //Ghi đè lại mảng arrLuongCaNhan của arrLuongThangGiaoVien
+        monthWageMatched.arrLuongNhom = arrLuongNhomData;
+      }
+    }, //Ghi đè lại để thao tác cho edit
   },
 });
 
