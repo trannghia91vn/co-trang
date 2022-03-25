@@ -8,7 +8,7 @@ export const getArrDiemDanhCaNhanByStuAndMonthYear = (
   const result = arrDiemDanhCaNhan.filter(
     (cv) =>
       cv.idStu === idStu &&
-      new Date(cv.dateSingleCheck).getMonth() === +month-1 &&
+      new Date(cv.dateSingleCheck).getMonth() === +month - 1 &&
       new Date(cv.dateSingleCheck).getFullYear() === +year
   );
   return result;
@@ -45,10 +45,14 @@ export const getArrDiemDanhCaNhanNow = (arrDiemDanhCaNhan) => {
 };
 
 //Func lọc mảng điểm danh cá nhân theo ngày tháng now
-export const getArrDiemDanhCaNhanMonthYear = (arrDiemDanhCaNhan,month,year) => {
+export const getArrDiemDanhCaNhanMonthYear = (
+  arrDiemDanhCaNhan,
+  month,
+  year
+) => {
   const result = arrDiemDanhCaNhan.filter(
     (cv) =>
-      new Date(cv.dateSingleCheck).getMonth() === month-1 &&
+      new Date(cv.dateSingleCheck).getMonth() === month - 1 &&
       new Date(cv.dateSingleCheck).getFullYear() === year
   );
   return result;
@@ -80,3 +84,50 @@ export const sortArrByName = (arr) => {
   return arrResult;
 };
 
+//Func update lại data cho lương giáo viên khi có điểm danh mới
+export const updateDataLuongCaNhan = (
+  arrLuongGiaoVien,
+  idTea,
+  idStu,
+  monthYear,
+  dateSingleCheck,
+  taughtTime
+) => {
+  //Clone mảng luong giáo vinee để tránh nảh hương
+  const arrLuongThangGiaoVien = [...arrLuongGiaoVien]
+  //Đầu tiên là tìm ra đối tượng lương tháng dựa trên id giáo viên và monthYear
+  const dataMonthWageByTeaMonthYear = arrLuongThangGiaoVien.find(
+    (cv) =>
+      cv.idTea === idTea &&
+      +cv.monthYear.month === +monthYear.month &&
+      +cv.monthYear.year === +monthYear.year
+  );
+  //Tách về _id lương tháng tìm được để chạy update
+  const idMonthWageMatched = dataMonthWageByTeaMonthYear._id;
+  //Trả về mảng arrLuongCaNhan để tiến hành update
+  const arrLuongCaNhan = [...dataMonthWageByTeaMonthYear.arrLuongCaNhan];
+  //Tìm trong mảng này học sinh được điêm danh thoe : idTea,idStu,monthYear
+  const dataStuMatched = arrLuongCaNhan.find(
+    (cv) =>
+      cv.idTea === idTea &&
+      cv.idStu === idStu &&
+      +cv.monthYear.month === +monthYear.month &&
+      +cv.monthYear.year === +monthYear.year
+  );
+  //Khi tìm thấy thì trả về arr taughtData để update ngày điểm danh mới
+  const arrTaughtData = dataStuMatched.taughtData;
+  //Thêm mới vào mảng này
+  arrTaughtData.push({
+    dateSingleCheck: dateSingleCheck,
+    taughtTime: taughtTime,
+  });
+  //Thay thế kết quả
+  dataMonthWageByTeaMonthYear.arrLuongCaNhan = arrLuongCaNhan;
+  //Tách props _id ra đẻ có phần data phù hơp cho submit put
+  delete dataMonthWageByTeaMonthYear._id
+  //Trả về obj tương thích update
+  return {
+    id : idMonthWageMatched,
+    data : dataMonthWageByTeaMonthYear,
+  }
+};

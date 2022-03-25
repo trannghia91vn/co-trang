@@ -30,10 +30,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/quan-ly-giao-vien": [
+    "/luong-giao-vien": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/quan-ly-giao-vien.js"
+      "static/chunks/pages/luong-giao-vien.js"
+    ],
+    "/luong-giao-vien/tinh-luong": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/luong-giao-vien/tinh-luong.js"
     ]
   },
   "ampFirstPages": []

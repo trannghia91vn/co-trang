@@ -10,7 +10,9 @@ import {
 } from "../../store/redux/quan-ly-hoc-sinh/qlhs-slice";
 import { fetchGetArrTeacher } from "../../store/redux/quan-ly-giao-vien/qlgv-slice";
 import { fetchGetArrDiemDanhCaNhan } from "../../store/redux/diem-danh-ca-nhan/ddcn-slice";
+import { fetchGetLuongGiaoVien } from "../../store/redux/luong-giao-vien/lgv-slice";
 import { LoadingActions } from "../../store/redux/loading/loading-slice";
+import { updateDataLuongCaNhan } from "../../support/diem-danh-ca-nhan/ddcn-uti";
 
 const TrangThemDiemDanhCaNhan = (props) => {
   //Tạo chay data mẫu cho điều hướng nối dung theo thứ tự luôn
@@ -60,6 +62,8 @@ const TrangThemDiemDanhCaNhan = (props) => {
   const arrSingleStuTags = arrStudentTags.filter((cv) => cv.singleClass);
   //DATA-DÙNG-SUBMIT Từ mảng tags học sinh, lọc ra học sinh được chọn theo id
   const stuSelected = arrSingleStuTags.find((tag) => tag.isSelected);
+  const arrLuongGiaoVien = useSelector(state=>state.lgv.arrLuongThangGiaoVien)
+  console.log(arrLuongGiaoVien)
 
   //------------ KHU VỤC CALLBACKS ------------
   //Thay đổi idDate tạm thời dùng để load data default cho giao diện sửa
@@ -82,6 +86,10 @@ const TrangThemDiemDanhCaNhan = (props) => {
   const reloadPage = () => {
     router.reload();
   };
+
+  // const testData = updateDataLuongCaNhan(arrLuongGiaoVien,)
+  // console.log(teacherTaughtData)
+
   //SUBMIT Post request thêm ngày điêm danh mới
   const addDateSingleCheckHandler = () => {
     //Tổng hợp data tiến hành post request
@@ -168,6 +176,8 @@ const TrangThemDiemDanhCaNhan = (props) => {
     dispatchFn(fetchGetArrTeacher());
     //Get về mảng điểm danh cá nhân để có data render cho Lịch điểm danh
     dispatchFn(fetchGetArrDiemDanhCaNhan());
+    //Get về mảng lương giáo viên đẻ update lại phần điểm danh cá nhân
+    dispatchFn(fetchGetLuongGiaoVien());
   }, []);
   //Xử lý kiểm tra xem nút cập nhật có được bấm hay không
   useEffect(() => {

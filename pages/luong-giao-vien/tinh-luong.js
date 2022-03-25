@@ -12,6 +12,8 @@ import {
   getArrStudentsTaughtByIdTeaMonthYear,
   getSingleGroupWageTeacher,
   getMonthWageData,
+  getArrDdcnHandeled,
+  getInitArrLuongNhom,
 } from "../../support/luong-giao-vien/lgn-uti";
 import { LgvActions } from "../../store/redux/luong-giao-vien/lgv-slice";
 import { useRouter } from "next/router";
@@ -77,6 +79,12 @@ const TrangTinhLuongGiaoVien = (props) => {
   );
   //Lấy về mảng điểm danh nhóm
   const arrDiemDanhNhom = useSelector((state) => state.ddn.arrDiemDanhNhom);
+  //Xử lý từ arr điểm danh nhóm -> arr lương nhóm --> dùng arr này so sánh với arr lương nhóm của arr lương cá giáo viên lấy về từ db để quêyst định lấy thằng nào
+  const arrLuongNhomFromDDN = getInitArrLuongNhom(
+    arrDiemDanhNhom,
+    idTea,
+    monthYearFilter
+  );
   //Lấy về mảng lương cá nhân để submit post
   const arrLuongCaNhan = useSelector((state) => state.lgv.arrLuongCaNhan);
   //Lấy về mảng lương cá nhân để submit post
@@ -88,11 +96,16 @@ const TrangTinhLuongGiaoVien = (props) => {
   const arrLuongThangGiaoVien = useSelector(
     (state) => state.lgv.arrLuongThangGiaoVien
   );
+
+  //Xử lý lấy arrLuongCaNhan từ điêm danh cá nhân gần nhất dể truyền xuống Func hỗ trợ bên dưới
+  const arrLuongCaNhanFromDDCN = getArrDdcnHandeled(arrDataCaNhan);
   //Lọc ra đối tượng lương tháng theo idTea,monthYEar
   const monthWageData = getMonthWageData(
     arrLuongThangGiaoVien,
     idTea,
-    monthYearFilter
+    monthYearFilter,
+    arrLuongCaNhanFromDDCN,
+    arrLuongNhomFromDDN
   );
   //Des ra ba mảng cần để render kết quả
   const { arrLuongCaNhanData, arrLuongNhomData, arrPhuPhiData, idMonthWage } =

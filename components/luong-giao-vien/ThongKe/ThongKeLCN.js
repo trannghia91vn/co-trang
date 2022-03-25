@@ -2,14 +2,16 @@ import classes from "./TKLCN.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { LgvActions } from "../../../store/redux/luong-giao-vien/lgv-slice";
 import { Fragment, useEffect } from "react";
-import { getCalcMoneyEachStu } from "../../../support/luong-giao-vien/lgn-uti";
+import {
+  getCalcMoneyEachStu,
+  sortArrByNameStu,
+} from "../../../support/luong-giao-vien/lgn-uti";
 import { formatMoney } from "../../../support/hoc-phi-hoc-sinh/hphs-uti";
 
 const ThongKeLuongCaNhan = (props) => {
   const dispatchFn = useDispatch();
   //Des props
   const { monthYear, singleWage, idTeaSelected, arrLuongCaNhan } = props;
-  console.log(arrLuongCaNhan);
 
   //mảng labels cho hàng đầu tiên
   const arrLabels = ["Học sinh", "Ngày học", "Hs", "Tổng giờ", "Thành tiền"];
@@ -34,8 +36,10 @@ const ThongKeLuongCaNhan = (props) => {
 
   //Tạo mảng chứa các giá trị tiền tính được của từng dòng data, mỗi vòng lặp bên dưới push vào mản này
   let arrThanhTien = [];
+  //Sort lại mảng render chính theo thứ tự tên học sinh abc
+  const arrLuongCaNhanSort = sortArrByNameStu(arrLuongCaNhan)
   //Biến render hàng data
-  const renderDataRow = arrLuongCaNhan.map((cv) => {
+  const renderDataRow = arrLuongCaNhanSort.map((cv) => {
     //Callback kích hoạt hệ số scale
     const active45 = (id) => {
       dispatchFn(
@@ -137,6 +141,7 @@ const ThongKeLuongCaNhan = (props) => {
   useEffect(() => {
     props.getTotalSingleWage(totalMoneyCalc);
   }, [arrLuongCaNhan]);
+
   //Biến render hàng tổng
   const renderResultRow = (
     <Fragment>

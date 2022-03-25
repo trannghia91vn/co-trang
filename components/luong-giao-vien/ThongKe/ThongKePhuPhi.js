@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { LgvActions } from "../../../store/redux/luong-giao-vien/lgv-slice";
 import { BsFillCalendarCheckFill } from "react-icons/bs";
 import { formatMoney } from "../../../support/hoc-phi-hoc-sinh/hphs-uti";
+import { sortDateExtraChecked } from "../../../support/luong-giao-vien/lgn-uti";
 
 const ThongKePhuPhi = (props) => {
   const dispatchFn = useDispatch();
@@ -45,10 +46,13 @@ const ThongKePhuPhi = (props) => {
     clearInput();
   };
 
+  //Sort lại mảng phụ phí tăng dần theo ngày
+  const arrPhuPhiSortDate = sortDateExtraChecked(arrPhuPhiFilter)
+
   //Tọạo biến render kết quả tạm thời của ngày thêm phu phí
   const renderPlusWageDates =
     arrPhuPhiFilter.length > 0 &&
-    arrPhuPhiFilter.map((cv) => {
+    arrPhuPhiSortDate.map((cv) => {
       //Callback xóa ngày thêm phụ phí
       const delPlusWageDate = (id) => {
         dispatchFn(

@@ -1,9 +1,13 @@
 import classes from "../ThemMoi/LuongCaNhan.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import { filterArrLuongNhomByIdTeaMonthYear } from "../../../support/luong-giao-vien/lgn-uti";
+import {
+  filterArrLuongNhomByIdTeaMonthYear,
+  sortDateGroupChecked,
+} from "../../../support/luong-giao-vien/lgn-uti";
 import { Fragment, useRef, useEffect } from "react";
 import { formatMoney } from "../../../support/hoc-phi-hoc-sinh/hphs-uti";
 import { LgvActions } from "../../../store/redux/luong-giao-vien/lgv-slice";
+import { BsFillCalendarCheckFill } from "react-icons/bs";
 
 export const DesLuongNhom = (props) => {
   const dispatchFn = useDispatch();
@@ -93,10 +97,13 @@ const ThongKeLuongNhom = (props) => {
     </div>
   ));
 
+  //Sort lại mảng render chính theo thứ tự ngày tăng dần
+  const arrLuongNhomSortDate = sortDateGroupChecked(arrLuongNhomFilter);
+
   //Thiết lập mảng chứa tổng của từng dòng bên dưới
   const arrSumMoneyRow = [];
   //Biến render hàng data
-  const renderDataRow = arrLuongNhomFilter.map((cv) => {
+  const renderDataRow = arrLuongNhomSortDate.map((cv) => {
     //Biến lấy lại ngày thôi
     const day = new Date(cv.taughtDate).getDate();
     //Xử lý đổi phút ra giờ dạy
@@ -110,7 +117,16 @@ const ThongKeLuongNhom = (props) => {
     return (
       <Fragment key={cv.idGroupDate}>
         {/* Render ngày */}
-        <div className={classes.cell}>{day}</div>
+        {/* <div className={classes.cell}>{day}</div> */}
+        <div className={classes.cell}>
+          <div className={classes.date}>
+            <BsFillCalendarCheckFill
+              style={{ fontSize: ".9rem", margin: "2px" }}
+            />
+            {day}
+          </div>
+        </div>
+
         {/* Render form thêm ghi chú */}
         <DesLuongNhom
           description={cv.description}

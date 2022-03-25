@@ -117,3 +117,15 @@
   background-color: var(--mauPhu1--);
   color: #fff;
 }
+.date {
+  padding: 5px;
+  background-color: var(--mauPhu2--);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: var(--mauTieuDe--);
+  font-size: 1rem;
+  font-weight: bold;
+}

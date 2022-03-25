@@ -178,7 +178,13 @@ export const filterArrLuongNhomByIdTeaMonthYear = (
 };
 
 //Từ arrLuongThangGiaoVien lấy các thông tin cần thiét từ đối tượng tìm thấy thông qua idTea,monthYEar
-export const getMonthWageData = (arrLuongThangGiaoVien, idTea, monthYear) => {
+export const getMonthWageData = (
+  arrLuongThangGiaoVien,
+  idTea,
+  monthYear,
+  arrLuongCaNhanFromDDCN,
+  arrLuongNhomFromDDN
+) => {
   //Tiếp đến ta sẽ tìm đối tượng lương tháng theo idTea,monthYear phù phơk
   const objMonthWage = arrLuongThangGiaoVien.find(
     (cv) =>
@@ -202,6 +208,60 @@ export const getMonthWageData = (arrLuongThangGiaoVien, idTea, monthYear) => {
     groupWageData = objMonthWage.groupWage;
     idMonthWage = objMonthWage._id;
   }
+  //Xử lý tính tổng ngày dạy của tất cả hs, so sánh nếu tổng của mảng được lấy từ ddcn nhiều hơn thì lấy daata của thằng này để load
+  //Đầu tiên là tính tổng ngày dạy của mảng get từ arrLuongGiaoVien
+  let total1 = 0;
+  let total2 = 0;
+  arrLuongCaNhanData.forEach((cv) => {
+    total1 += cv.taughtData.length;
+  });
+  arrLuongCaNhanFromDDCN.forEach((cv) => {
+    total2 += cv.taughtData.length;
+  });
+
+  if (total2 > total1) {
+    //Map thàng arrLuongCaNhanData Bỏ props taughtData đi
+    const arrLuongCaNhanDataWithoutTaughData = arrLuongCaNhanData.map((cv) => {
+      return {
+        idStu: cv.idStu,
+        isTea: cv.isTea,
+        monthYear: cv.monthYear,
+        nameStu: cv.nameStu,
+        scale: cv.scale,
+        taughtData: null,
+      };
+    });
+    //Từ mang điểm danh map ra idstu và mảng taughtData
+    const arrStuFromDDCN = arrLuongCaNhanFromDDCN.map((cv) => {
+      return { idStu: cv.idStu, taughtData: cv.taughtData };
+    });
+    //Chạy lạp trả về kết quả :
+    arrStuFromDDCN.forEach((obj) => {
+      const objMatched = arrLuongCaNhanDataWithoutTaughData.find(
+        (cv) => cv.idStu === obj.idStu
+      );
+      if (objMatched) {
+        objMatched.taughtData = obj.taughtData;
+      }
+    });
+    arrLuongCaNhanData = arrLuongCaNhanDataWithoutTaughData;
+  }
+  //Xử lý lại mảng lương nhóm data chính lấy từ arrLuongNhomFormDDN,thay thế phần des từ arrLuongNhomData thôi
+  const arrDateAndDes = arrLuongNhomData.map((cv) => {
+    return { idGroupDate: cv.idGroupDate, description: cv.description };
+  });
+  //Chạy vòng lặp cho mảng này để chỉnh sửa des cho arrLuongNhomFromDDN
+  arrDateAndDes.forEach((obj) => {
+    const objMatched = arrLuongNhomFromDDN.find(
+      (cv) => cv.idGroupDate === obj.idGroupDate
+    );
+    if (objMatched) {
+      objMatched.description = obj.description;
+    }
+  });
+
+  arrLuongNhomData = arrLuongNhomFromDDN;
+
   return {
     arrLuongCaNhanData,
     arrLuongNhomData,
@@ -211,3 +271,52 @@ export const getMonthWageData = (arrLuongThangGiaoVien, idTea, monthYear) => {
     idMonthWage,
   };
 };
+
+//Callback lấy Phần tên : ví dụ : Trần Nghĩa ->> lấy Nghĩa : phục vụ cho func bên dưới
+const getLastName = (name) => {
+  const arrNameSplit = name.trim().split(" ");
+  const lastName = arrNameSplit[arrNameSplit.length - 1];
+  return lastName;
+};
+//Lọc lại mảng theo thứ tự tên abc
+export const sortArrByNameStu = (arr) => {
+  //CHú ý : khi tái sủ dụng cái này thì thay props nameStu tương ứng bên dưới là đượcÏ
+  //map về mảng lastname
+  const arrNameStu = arr.map((cv) => cv.nameStu);
+  const arrLastNameStu = arrNameStu.map((cv) => getLastName(cv));
+  //Sort mảng này lại
+  const arrLastNameSort = arrLastNameStu.sort();
+  //Tạo mảng rổng chứa kết quả, tìm kiếm tên được sort trong mảng gôc và đẩy
+  const arrResult = [];
+  arrLastNameSort.forEach((name) => {
+    const indexObjMatched = arr.findIndex((cv) => cv.nameStu.includes(name));
+    if (indexObjMatched !== -1) {
+      arrResult.push(arr[indexObjMatched]);
+      arr.splice(indexObjMatched, 1);
+    }
+  });
+  return arrResult;
+};
+
+//Func sắp xếp lại mảng ngày điểm danh theo thứ tự tăng dần
+export const sortDateGroupChecked = (arr) => {
+  const arrSort = arr.sort((a, b) =>
+    new Date(a.taughtDate).getDate() >
+    new Date(b.taughtDate).getDate()
+      ? 1
+      : -1
+  );
+  return arrSort;
+};
+
+//Func sắp xếp lại mảng ngày điểm danh theo thứ tự tăng dần
+export const sortDateExtraChecked = (arr) => {
+  const arrSort = arr.sort((a, b) =>
+    new Date(a.date).getDate() >
+    new Date(b.date).getDate()
+      ? 1
+      : -1
+  );
+  return arrSort;
+};
+
