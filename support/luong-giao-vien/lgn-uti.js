@@ -193,6 +193,7 @@ export const getMonthWageData = (
       +cv.monthYear.year === +monthYear.year
   );
 
+  console.log(objMonthWage);
   //Tạo các biến mảng chứa data cá nhân, nhóm ,phụ phi để lấy ra từ đối tượng trên --> truyền xuống render kết quả
   let arrLuongCaNhanData = [];
   let arrLuongNhomData = [];
@@ -220,8 +221,15 @@ export const getMonthWageData = (
   });
 
   if (total2 > total1) {
+    //Mảng nào được dùng cho bên dưới
+    let arrUse = [];
+    if (arrLuongCaNhanData.length > 0) {
+      arrUse = arrLuongCaNhanData;
+    } else {
+      arrUse = arrLuongCaNhanFromDDCN;
+    }
     //Map thàng arrLuongCaNhanData Bỏ props taughtData đi
-    const arrLuongCaNhanDataWithoutTaughData = arrLuongCaNhanData.map((cv) => {
+    const arrLuongCaNhanDataWithoutTaughData = arrUse.map((cv) => {
       return {
         idStu: cv.idStu,
         isTea: cv.isTea,
@@ -231,6 +239,7 @@ export const getMonthWageData = (
         taughtData: null,
       };
     });
+    console.log(arrLuongCaNhanDataWithoutTaughData);
     //Từ mang điểm danh map ra idstu và mảng taughtData
     const arrStuFromDDCN = arrLuongCaNhanFromDDCN.map((cv) => {
       return { idStu: cv.idStu, taughtData: cv.taughtData };
@@ -246,6 +255,7 @@ export const getMonthWageData = (
     });
     arrLuongCaNhanData = arrLuongCaNhanDataWithoutTaughData;
   }
+  console.log(arrLuongCaNhanData);
   //Xử lý lại mảng lương nhóm data chính lấy từ arrLuongNhomFormDDN,thay thế phần des từ arrLuongNhomData thôi
   const arrDateAndDes = arrLuongNhomData.map((cv) => {
     return { idGroupDate: cv.idGroupDate, description: cv.description };
@@ -301,10 +311,7 @@ export const sortArrByNameStu = (arr) => {
 //Func sắp xếp lại mảng ngày điểm danh theo thứ tự tăng dần
 export const sortDateGroupChecked = (arr) => {
   const arrSort = arr.sort((a, b) =>
-    new Date(a.taughtDate).getDate() >
-    new Date(b.taughtDate).getDate()
-      ? 1
-      : -1
+    new Date(a.taughtDate).getDate() > new Date(b.taughtDate).getDate() ? 1 : -1
   );
   return arrSort;
 };
@@ -312,11 +319,7 @@ export const sortDateGroupChecked = (arr) => {
 //Func sắp xếp lại mảng ngày điểm danh theo thứ tự tăng dần
 export const sortDateExtraChecked = (arr) => {
   const arrSort = arr.sort((a, b) =>
-    new Date(a.date).getDate() >
-    new Date(b.date).getDate()
-      ? 1
-      : -1
+    new Date(a.date).getDate() > new Date(b.date).getDate() ? 1 : -1
   );
   return arrSort;
 };
-

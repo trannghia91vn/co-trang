@@ -63,7 +63,6 @@ const TrangThemDiemDanhCaNhan = (props) => {
   //DATA-DÙNG-SUBMIT Từ mảng tags học sinh, lọc ra học sinh được chọn theo id
   const stuSelected = arrSingleStuTags.find((tag) => tag.isSelected);
   const arrLuongGiaoVien = useSelector(state=>state.lgv.arrLuongThangGiaoVien)
-  console.log(arrLuongGiaoVien)
 
   //------------ KHU VỤC CALLBACKS ------------
   //Thay đổi idDate tạm thời dùng để load data default cho giao diện sửa

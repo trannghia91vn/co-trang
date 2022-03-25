@@ -111,6 +111,7 @@ const TrangTinhLuongGiaoVien = (props) => {
   const { arrLuongCaNhanData, arrLuongNhomData, arrPhuPhiData, idMonthWage } =
     monthWageData;
 
+
   //------------ KHU CALLBACK------------
   //Func lấy giá trị tổng tiền phụ phí
   const getTotalPlusWageHandler = (val) => {

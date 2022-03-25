@@ -38,6 +38,7 @@ const ThongKeLuongCaNhan = (props) => {
   let arrThanhTien = [];
   //Sort lại mảng render chính theo thứ tự tên học sinh abc
   const arrLuongCaNhanSort = sortArrByNameStu(arrLuongCaNhan)
+  console.log(arrLuongCaNhan)
   //Biến render hàng data
   const renderDataRow = arrLuongCaNhanSort.map((cv) => {
     //Callback kích hoạt hệ số scale
