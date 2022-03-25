@@ -13,7 +13,6 @@ const ThongKeLuongCaNhan = (props) => {
   //Des props
   const { monthYear, singleWage, idTeaSelected, arrLuongCaNhan } = props;
 
-
   //mảng labels cho hàng đầu tiên
   const arrLabels = ["Học sinh", "Ngày học", "Hs", "Tổng giờ", "Thành tiền"];
   //Biến render hàng labels

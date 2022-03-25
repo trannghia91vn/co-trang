@@ -268,7 +268,6 @@ export const getMonthWageData = (
   });
 
   arrLuongNhomData = arrLuongNhomFromDDN;
-
   return {
     arrLuongCaNhanData,
     arrLuongNhomData,
@@ -290,9 +289,9 @@ export const sortArrByNameStu = (arr) => {
   //CHú ý : khi tái sủ dụng cái này thì thay props nameStu tương ứng bên dưới là đượcÏ
   //map về mảng lastname
   const arrNameStu = arr.map((cv) => cv.nameStu);
-  const arrLastNameStu = arrNameStu.map((cv) => getLastName(cv));
+  // const arrLastNameStu = arrNameStu.map((cv) => getLastName(cv));
   //Sort mảng này lại
-  const arrLastNameSort = arrLastNameStu.sort();
+  const arrLastNameSort = arrNameStu.sort();
   //Tạo mảng rổng chứa kết quả, tìm kiếm tên được sort trong mảng gôc và đẩy
   const arrResult = [];
   arrLastNameSort.forEach((name) => {
