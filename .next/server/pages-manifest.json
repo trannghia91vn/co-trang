@@ -2,9 +2,9 @@
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
   "/_error": "pages/_error.js",
-  "/api/diem-danh-ca-nhan": "pages/api/diem-danh-ca-nhan.js",
-  "/api/quan-ly-giao-vien": "pages/api/quan-ly-giao-vien.js",
   "/api/luong-giao-vien": "pages/api/luong-giao-vien.js",
+  "/luong-giao-vien/tinh-luong": "pages/luong-giao-vien/tinh-luong.js",
+  "/api/quan-ly-giao-vien": "pages/api/quan-ly-giao-vien.js",
   "/api/diem-danh-nhom": "pages/api/diem-danh-nhom.js",
-  "/": "pages/index.js"
+  "/api/diem-danh-ca-nhan": "pages/api/diem-danh-ca-nhan.js"
 }

@@ -30,7 +30,7 @@ export const getArrStudentsTaughtByIdTeaMonthYear = (
           nameStu: cv.nameStu,
           dateSingleCheck: cv.dateSingleCheck,
           taughtTime: item.taughtTime,
-          scale: 1,
+          scale: cv.scale ? cv.scale : 1,
         };
         arrResult.push(data);
       }
@@ -192,7 +192,8 @@ export const getMonthWageData = (
       +cv.monthYear.month === +monthYear.month &&
       +cv.monthYear.year === +monthYear.year
   );
-    
+  //Tạo một biến để truyền xuống comp ThongKeLCN -> để nếu lấy data của arrLuongCaNhanFromDDCN hay data từ arrLuongThangGiaoVien thì phải có dispatch active hệ số lên redux khác nhau
+  // let targetScale = null;
   //Tạo các biến mảng chứa data cá nhân, nhóm ,phụ phi để lấy ra từ đối tượng trên --> truyền xuống render kết quả
   let arrLuongCaNhanData = [];
   let arrLuongNhomData = [];
@@ -212,6 +213,7 @@ export const getMonthWageData = (
   //Đầu tiên là tính tổng ngày dạy của mảng get từ arrLuongGiaoVien
   let total1 = 0;
   let total2 = 0;
+
   arrLuongCaNhanData.forEach((cv) => {
     total1 += cv.taughtData.length;
   });
@@ -220,12 +222,16 @@ export const getMonthWageData = (
   });
 
   if (total2 > total1) {
+    console.log("is it run");
     //Mảng nào được dùng cho bên dưới
     let arrUse = [];
-    if (arrLuongCaNhanData.length > 0) {
+    if (arrLuongCaNhanData.length === arrLuongCaNhanFromDDCN.length) {
       arrUse = arrLuongCaNhanData;
+      //Trả về đích cho hệ số scale
+      // targetScale = "toLuongThangRedux";
     } else {
       arrUse = arrLuongCaNhanFromDDCN;
+      // targetScale = "toDDCNRedux";
     }
     //Map thàng arrLuongCaNhanData Bỏ props taughtData đi
     const arrLuongCaNhanDataWithoutTaughData = arrUse.map((cv) => {
@@ -269,6 +275,7 @@ export const getMonthWageData = (
 
   arrLuongNhomData = arrLuongNhomFromDDN;
   return {
+    // targetScale,
     arrLuongCaNhanData,
     arrLuongNhomData,
     arrPhuPhiData,
@@ -318,4 +325,32 @@ export const sortDateExtraChecked = (arr) => {
     new Date(a.date).getDate() > new Date(b.date).getDate() ? 1 : -1
   );
   return arrSort;
+};
+
+//Func hỗ trợ thay đổi hệ số scale nội bộ trong comp ThongKeLCN
+export const changeScaleInterierThongKeLCN = (
+  arrLuongCaNhanSort,
+  idStu,
+  scale
+) => {
+  //Clone lại mảng đầu vào cho chắc
+  const arrResult = [...arrLuongCaNhanSort];
+  //TÌm kiếm đói tượng theo idStu và thay đỏi hệ số slcae của nó thôi
+  const objMatchedByIdStu = arrResult.find((cv) => cv.idStu === idStu);
+  //Tọa obj thay thế ( vì lỗi read-only không thay đổi được value của props)
+  let objReplace = {};
+  //Thay đổi hệ số
+  if (objMatchedByIdStu) {
+    objReplace.idStu = objMatchedByIdStu.idStu;
+    objReplace.isTea = objMatchedByIdStu.isTea;
+    objReplace.monthYear = objMatchedByIdStu.monthYear;
+    objReplace.nameStu = objMatchedByIdStu.nameStu;
+    objReplace.taughtData = objMatchedByIdStu.taughtData;
+    objReplace.scale = scale;
+  }
+  //Xóa đối tượng cũ đi và thay thê mới
+  const indexObjMatched = arrResult.findIndex((cv) => cv.idStu === idStu);
+  arrResult.splice(indexObjMatched, 1);
+  arrResult.push(objReplace);
+  return arrResult;
 };

@@ -14,6 +14,7 @@ import {
   getMonthWageData,
   getArrDdcnHandeled,
   getInitArrLuongNhom,
+  changeScaleInterierThongKeLCN,
 } from "../../support/luong-giao-vien/lgn-uti";
 import { LgvActions } from "../../store/redux/luong-giao-vien/lgv-slice";
 import { useRouter } from "next/router";
@@ -87,7 +88,6 @@ const TrangTinhLuongGiaoVien = (props) => {
   );
   //Lấy về mảng lương cá nhân để submit post
   const arrLuongCaNhan = useSelector((state) => state.lgv.arrLuongCaNhan);
-  console.log(arrLuongCaNhan);
   //Lấy về mảng lương cá nhân để submit post
   const arrLuongNhom = useSelector((state) => state.lgv.arrLuongNhom);
   //Lấy về mảng lương cá nhân để submit post
@@ -109,10 +109,29 @@ const TrangTinhLuongGiaoVien = (props) => {
     arrLuongNhomFromDDN
   );
   //Des ra ba mảng cần để render kết quả
-  const { arrLuongCaNhanData, arrLuongNhomData, arrPhuPhiData, idMonthWage } =
-    monthWageData;
+  const {
+    arrLuongCaNhanData,
+    arrLuongNhomData,
+    arrPhuPhiData,
+    idMonthWage,
+    // targetScale,
+  } = monthWageData;
+  //Tạo một mảng state lấy mảng được chỉnh sửa từ comp ThongKeLCN lên
+  const [arrLCNFromThongKe, changeArrLCNFromThongKe] = useState([]);
+  //Tạo mảng cuối cùng xem mang lương cá nhân nào được dùng đẻ render và submit
+  let arrLuongCaNhanDataFinal = [];
+  if (arrLCNFromThongKe.length === 0) {
+    arrLuongCaNhanDataFinal = arrLuongCaNhanData;
+  } else {
+    arrLuongCaNhanDataFinal = arrLCNFromThongKe;
+  }
 
   //------------ KHU CALLBACK------------
+  //Func thay đổi giá trị scale của arrLuongCaNhanData
+  const changeArrLuongCaNhan = (arr) => {
+    console.log(arr)
+    changeArrLCNFromThongKe(arr);
+  };
   //Func lấy giá trị tổng tiền phụ phí
   const getTotalPlusWageHandler = (val) => {
     changeTotalPlusWage(val);
@@ -175,7 +194,7 @@ const TrangTinhLuongGiaoVien = (props) => {
       monthYear: monthYearFilter,
       singleWage: singleWage,
       groupWage: groupWage,
-      arrLuongCaNhan: arrLuongCaNhanData,
+      arrLuongCaNhan: arrLuongCaNhanDataFinal,
       arrLuongNhom: arrLuongNhomData,
       arrPhuPhi: arrPhuPhiData,
     };
@@ -278,12 +297,13 @@ const TrangTinhLuongGiaoVien = (props) => {
       {isLoading && <Loading />}
       {!refresh && (
         <LuongGiaoVien
+          // targetScale={targetScale}
           arrTeacherTags={arrTeacherTags}
           teaSelected={teacherSelected}
           idTeaSelected={idTea}
           monthYear={monthYearFilter}
           arrDataCaNhan={arrDataCaNhan}
-          arrLuongCaNhanData={arrLuongCaNhanData}
+          arrLuongCaNhanData={arrLuongCaNhanDataFinal}
           arrLuongNhomData={arrLuongNhomData}
           arrPhuPhiData={arrPhuPhiData}
           singleWage={singleWage}
@@ -299,6 +319,7 @@ const TrangTinhLuongGiaoVien = (props) => {
           doAddMonthWage={addMonthWageHandler}
           doUpdateMonthWage={updateMonthWageHandler}
           doDelMonthWage={delMonthWageHandler}
+          changeArrLuongCaNhan={changeArrLuongCaNhan}
         />
       )}
     </Fragment>

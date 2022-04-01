@@ -27,6 +27,7 @@ const LuongGiaoVien = (props) => {
     arrLuongCaNhanData,
     arrLuongNhomData,
     arrPhuPhiData,
+    changeArrLuongCaNhan,
   } = props;
   //Biến state render giao diện hỏi xóa data
   const [confirmDel, changeConfirmDel] = useState(false);
@@ -72,11 +73,13 @@ const LuongGiaoVien = (props) => {
       )}
       {teaSelected && monthWageExist && (
         <ThongKeLuongCaNhan
+          // targetScale={targetScale}
           monthYear={monthYear}
           idTeaSelected={idTeaSelected}
           singleWage={singleWage}
           arrLuongCaNhan={arrLuongCaNhanData}
           getTotalSingleWage={props.getTotalSingleWage}
+          changeArrLuongCaNhan={changeArrLuongCaNhan}
         />
       )}
       {teaSelected && !monthWageExist && (
@@ -160,7 +163,9 @@ const LuongGiaoVien = (props) => {
       {/* Render giao diện xác thực xóa  */}
       {teaSelected && monthWageExist && confirmDel && (
         <div className={classes.result}>
-          <label style={{fontSize:'1rem',color:'coral'}}>Cô Trang lùn có chắc muốn xóa toàn bộ data lương tháng này không ?</label>
+          <label style={{ fontSize: "1rem", color: "coral" }}>
+            Cô Trang lùn có chắc muốn xóa toàn bộ data lương tháng này không ?
+          </label>
           <div className={classes["result-actions"]}>
             <button
               type="button"

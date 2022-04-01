@@ -1,17 +1,24 @@
 import classes from "./TKLCN.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { LgvActions } from "../../../store/redux/luong-giao-vien/lgv-slice";
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   getCalcMoneyEachStu,
   sortArrByNameStu,
+  changeScaleInterierThongKeLCN,
 } from "../../../support/luong-giao-vien/lgn-uti";
 import { formatMoney } from "../../../support/hoc-phi-hoc-sinh/hphs-uti";
 
 const ThongKeLuongCaNhan = (props) => {
   const dispatchFn = useDispatch();
   //Des props
-  const { monthYear, singleWage, idTeaSelected, arrLuongCaNhan } = props;
+  const {
+    monthYear,
+    singleWage,
+    idTeaSelected,
+    arrLuongCaNhan,
+    changeArrLuongCaNhan,
+  } = props;
 
   //mảng labels cho hàng đầu tiên
   const arrLabels = ["Học sinh", "Ngày học", "Hs", "Tổng giờ", "Thành tiền"];
@@ -38,28 +45,25 @@ const ThongKeLuongCaNhan = (props) => {
   let arrThanhTien = [];
   //Sort lại mảng render chính theo thứ tự tên học sinh abc
   const arrLuongCaNhanSort = sortArrByNameStu(arrLuongCaNhan);
+  //Tạo arrLuongCaNhan nội bộ đẻ render
+  const [arrLuongCaNhanRender, changeArrLCNRender] =
+    useState(arrLuongCaNhanSort);
   //Biến render hàng data
-  const renderDataRow = arrLuongCaNhanSort.map((cv) => {
+  const renderDataRow = sortArrByNameStu(arrLuongCaNhanRender).map((cv) => {
     //Callback kích hoạt hệ số scale
     const active45 = (id) => {
-      dispatchFn(
-        LgvActions.changeSingleStuScale({
-          idTea: idTeaSelected,
-          monthYear: monthYear,
-          idStu: id,
-          scale: 45,
-        })
-      );
+      changeArrLCNRender((preState) => {
+        const arrResult = changeScaleInterierThongKeLCN(preState, id, 45);
+        changeArrLuongCaNhan(arrResult);
+        return arrResult;
+      });
     };
     const active60 = (id) => {
-      dispatchFn(
-        LgvActions.changeSingleStuScale({
-          idTea: idTeaSelected,
-          monthYear: monthYear,
-          idStu: id,
-          scale: 60,
-        })
-      );
+      changeArrLCNRender((preState) => {
+        const arrResult = changeScaleInterierThongKeLCN(preState, id, 60);
+        changeArrLuongCaNhan(arrResult);
+        return arrResult;
+      });
     };
 
     //Xử lý biến render mảng ngày học và giờ dạy
@@ -140,7 +144,7 @@ const ThongKeLuongCaNhan = (props) => {
   //Xử lý side effect push tổng tiền cá nhân lên comp chính
   useEffect(() => {
     props.getTotalSingleWage(totalMoneyCalc);
-  }, [arrLuongCaNhan]);
+  }, [arrLuongCaNhanRender]);
 
   //Biến render hàng tổng
   const renderResultRow = (
