@@ -2,6 +2,10 @@ import classes from "./MonthYearPick.module.css";
 import { Fragment, useRef, useState } from "react";
 
 const LocNamThang = (props) => {
+  //Tọa biến năm nay để làm default value cho chọn năm
+  const now = new Date();
+  const nowYear = now.getFullYear();
+  const nowMonth = now.getMonth();
   //Biến ref chứa input
   const monthRef = useRef();
   const yearRef = useRef();
@@ -50,7 +54,14 @@ const LocNamThang = (props) => {
     <Fragment>
       <form onSubmit={getMonthYearHandler} className={classes.container}>
         <label>Tháng:</label>
-        <input ref={monthRef} type="number" min="1" max="12" required />
+        <input
+          ref={monthRef}
+          type="number"
+          min="1"
+          max="12"
+          defaultValue={nowMonth + 1}
+          required
+        />
         <label>Năm:</label>
         <input
           ref={yearRef}
@@ -58,6 +69,7 @@ const LocNamThang = (props) => {
           minLength="4"
           maxLength="4"
           min="2021"
+          defaultValue={nowYear}
           required
         />
         <button className="btn-sm btn-sm-sub">Lọc</button>

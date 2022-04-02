@@ -213,7 +213,34 @@ export const getMonthWageData = (
   //Đầu tiên là tính tổng ngày dạy của mảng get từ arrLuongGiaoVien
   let total1 = 0;
   let total2 = 0;
+  //Xử lý tổng giờ dạy cũ và mới. Khi có thay đổi giờ dạy giữa cũ và mới thì lấy mảng arrLuongCaNhanFromDDCN làm mảng thực thi
+  let totalTime1 = 0;
+  let totalTime2 = 0;
+  //Xử lý tổng số học sinh trong mảng
+  let totalStus1 = 0;
+  let totalStus2 = 0;
 
+  //Thiết lập để tính total taught time của từng mảng
+  //Tính cho mảng arrLuongCaNhanData
+  const arrTotalTaughtData1 = arrLuongCaNhanData.map((cv) => cv.taughtData);
+  let arrTaughtTime1 = [];
+  arrTotalTaughtData1.forEach((arr) =>
+    arr.forEach((cv) => arrTaughtTime1.push(cv.taughtTime))
+  );
+  if (arrTaughtTime1.length > 0) {
+    totalTime1 = arrTaughtTime1.reduce((tong, cv) => tong + cv);
+  }
+  //Tính cho mảng arrLuongCaNhanFromDDCN
+  const arrTotalTaughtData2 = arrLuongCaNhanFromDDCN.map((cv) => cv.taughtData);
+  let arrTaughtTime2 = [];
+  arrTotalTaughtData2.forEach((arr) =>
+    arr.forEach((cv) => arrTaughtTime2.push(cv.taughtTime))
+  );
+  if (arrTaughtTime2.length > 0) {
+    totalTime2 = arrTaughtTime2.reduce((tong, cv) => tong + cv);
+  }
+
+  //Tính tổng số ngày dạy trong tháng
   arrLuongCaNhanData.forEach((cv) => {
     total1 += cv.taughtData.length;
   });
@@ -221,44 +248,76 @@ export const getMonthWageData = (
     total2 += cv.taughtData.length;
   });
 
-  if (total2 > total1) {
-    console.log("is it run");
-    //Mảng nào được dùng cho bên dưới
-    let arrUse = [];
-    if (arrLuongCaNhanData.length === arrLuongCaNhanFromDDCN.length) {
-      arrUse = arrLuongCaNhanData;
-      //Trả về đích cho hệ số scale
-      // targetScale = "toLuongThangRedux";
-    } else {
-      arrUse = arrLuongCaNhanFromDDCN;
-      // targetScale = "toDDCNRedux";
-    }
-    //Map thàng arrLuongCaNhanData Bỏ props taughtData đi
-    const arrLuongCaNhanDataWithoutTaughData = arrUse.map((cv) => {
-      return {
-        idStu: cv.idStu,
-        isTea: cv.isTea,
-        monthYear: cv.monthYear,
-        nameStu: cv.nameStu,
-        scale: cv.scale,
-        taughtData: null,
-      };
-    });
-    //Từ mang điểm danh map ra idstu và mảng taughtData
-    const arrStuFromDDCN = arrLuongCaNhanFromDDCN.map((cv) => {
-      return { idStu: cv.idStu, taughtData: cv.taughtData };
-    });
-    //Chạy lạp trả về kết quả :
-    arrStuFromDDCN.forEach((obj) => {
-      const objMatched = arrLuongCaNhanDataWithoutTaughData.find(
-        (cv) => cv.idStu === obj.idStu
-      );
-      if (objMatched) {
-        objMatched.taughtData = obj.taughtData;
-      }
-    });
-    arrLuongCaNhanData = arrLuongCaNhanDataWithoutTaughData;
+  //Tính tổng số học sinh
+  totalStus1 = arrLuongCaNhanData.length;
+  totalStus2 = arrLuongCaNhanFromDDCN.length;
+
+  let arrUse = [];
+  //Thiết lập điều kiện cuối cùng để lấy arr luong cá nhân nào dùng cho render
+  if (
+    total1 === total2 &&
+    totalTime1 === totalTime2 &&
+    totalStus1 === totalStus2
+  ) {
+    arrUse = arrLuongCaNhanData;
+  } else {
+    arrUse = arrLuongCaNhanFromDDCN;
   }
+
+  arrLuongCaNhanData = arrUse;
+
+  // if (total2 > total1) {
+  //   //Mảng nào được dùng cho bên dưới
+  //   let arrUse = [];
+  //   if (totalTime1 === totalTime2) {
+  //     arrUse = arrLuongCaNhanData;
+  //     //Trả về đích cho hệ số scale
+  //     // targetScale = "toLuongThangRedux";
+  //   } else {
+  //     arrUse = arrLuongCaNhanFromDDCN;
+  //     // targetScale = "toDDCNRedux";
+  //   }
+  //   //Map thàng arrLuongCaNhanData Bỏ props taughtData đi
+  //   const arrLuongCaNhanDataWithoutTaughData = arrUse.map((cv) => {
+  //     return {
+  //       idStu: cv.idStu,
+  //       isTea: cv.isTea,
+  //       monthYear: cv.monthYear,
+  //       nameStu: cv.nameStu,
+  //       scale: cv.scale,
+  //       taughtData: null,
+  //     };
+  //   });
+  //   //Từ mang điểm danh map ra idstu và mảng taughtData
+  //   const arrStuFromDDCN = arrLuongCaNhanFromDDCN.map((cv) => {
+  //     return { idStu: cv.idStu, taughtData: cv.taughtData };
+  //   });
+  //   //Chạy lạp trả về kết quả :
+  //   arrStuFromDDCN.forEach((obj) => {
+  //     const objMatched = arrLuongCaNhanDataWithoutTaughData.find(
+  //       (cv) => cv.idStu === obj.idStu
+  //     );
+  //     if (objMatched) {
+  //       objMatched.taughtData = obj.taughtData;
+  //     }
+  //   });
+  //   arrLuongCaNhanData = arrLuongCaNhanDataWithoutTaughData;
+  // }
+
+  //Xử lý xóa nếu arrLuongCaNhanData có dup 2 idStu giống nhau
+  let arrRemoveDupIdStu = [];
+  const arrIdStu = arrLuongCaNhanData.map((cv) => cv.idStu);
+  
+  const arrIdStuRemoveDup = [...new Set(arrIdStu)];
+  console.log(arrIdStuRemoveDup)
+  arrIdStuRemoveDup.forEach((id) => {
+    const objMatched = arrLuongCaNhanData.find((cv) => cv.idStu === id);
+    arrRemoveDupIdStu.push(objMatched);
+  });
+  //Cuối cùng là gán
+  arrLuongCaNhanData = arrRemoveDupIdStu;
+  console.log(arrLuongCaNhanData)
+
   //Xử lý lại mảng lương nhóm data chính lấy từ arrLuongNhomFormDDN,thay thế phần des từ arrLuongNhomData thôi
   const arrDateAndDes = arrLuongNhomData.map((cv) => {
     return { idGroupDate: cv.idGroupDate, description: cv.description };
